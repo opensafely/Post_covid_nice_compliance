@@ -12,7 +12,7 @@ actions:
         cohort: output/input.csv
 
   describe:
-    run: python:latest python analysis/report.py
+    run: r:latest analysis/report.R
     needs: [generate_study_population]
     outputs:
       moderately_sensitive:
