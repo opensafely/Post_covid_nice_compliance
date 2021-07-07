@@ -1,13 +1,23 @@
-library('tidyverse')
+library(tidyverse)
+library(lubridate)
 
-df_input <- read_csv(
-  here::here("output", "input.csv"),
-  col_types = cols(patient_id = col_integer(),age_at_diag = col_integer())
-)
+#1 number of patients with PC recorded / ongoing covid reported
 
-plot_age <- ggplot(data=df_input, aes(df_input$age_at_diag)) + geom_histogram()
+cohort_df <- here::here("output", "input.csv") %>%
+  read_csv()
 
-ggsave(
-  plot= plot_age,
-  filename="descriptive.png", path=here::here("output"),
-)
+cohort_df %>% 
+    pivot_longer(where(is.Date), names_to = "date_events", values_to = "date") %>% 
+    select(patient_id, prac_id, prac_msoa, everything()) %>%
+    filter(date_events %in% c('diag_ongoing_covid', 'diag_post_covid'),
+            !is.na(date)) %>%
+    group_by(date_events) %>%
+    summarise(counts = n()) %>%
+    write_csv("output/PC_count_table.csv")
+
+#2 number of patients with red flag diagnoses (by RF)
+
+#3 diagnostic tests issues
+
+#3 referral patterns, self-care, secondary care, treated in primary care
+

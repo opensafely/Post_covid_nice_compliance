@@ -55,7 +55,7 @@ study = StudyDefinition(
     #diagnosis variables
     diag_ongoing_covid = patients.with_these_clinical_events(ongoing_covid_code,
                                                             find_first_match_in_period = True,
-                                                            #between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
                                                             return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
