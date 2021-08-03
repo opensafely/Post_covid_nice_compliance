@@ -28,8 +28,8 @@ study = StudyDefinition(
                                                     #                         "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("has_pc AND one_practice AND age_majority > 17", 
-                                    has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2021-01-01"),
+    population=patients.satisfying("has_acute_covid_4_weeks_ago AND one_practice AND age_majority > 17 AND attends_GP_4_weeks_after", 
+                                    has_acute_covid_ = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2021-01-01"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
                                     age_majority = patients.age_as_of("pc_or_oc_diag_dat")
     ),
