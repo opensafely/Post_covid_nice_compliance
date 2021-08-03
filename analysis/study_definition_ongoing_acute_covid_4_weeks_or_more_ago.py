@@ -20,7 +20,7 @@ study = StudyDefinition(
         "incidence": 0.95,
     },
 
-    pc_or_oc_diag_dat = patients.with_these_clinical_events(ongoing_and_pc_diag_codes,
+    acute_diag_dat = patients.with_these_clinical_events(acute_covid_codes,
                                                      find_first_match_in_period = True,
                                                      returning = "date",
                                                      date_format = "YYYY-MM-DD",
@@ -28,14 +28,24 @@ study = StudyDefinition(
                                                     #                         "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("has_acute_covid_4_weeks_ago AND one_practice AND age_majority > 17 AND attends_GP_4_weeks_after", 
-                                    has_acute_covid_ = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2021-01-01"),
+    positive_test_dat = patients.with_test_result_in_sgss(pathogen="SARS-CoV-2",
+                                                         test_result='postitive',
+                                                         restrict_to_earliest_specimen_date=True,
+                                                         returning='date',
+                                                         date_format="YYYY-MM-DD",
+                                                         return_expectations={"date:" {"earliest":"2019-02-01", "latest":"2021-03-01"}}
+                                                         ), 
+
+    population=patients.satisfying("(tested_positive_covid OR hospitalised_with_covid OR other_covid) AND one_practice AND age_majority > 17 AND attends_GP_at_least_4_weeks_after", 
+                                    tested_positive_covid = patients.with_test_result_in_sgss(pathogen="NoSARS-CoV-2", test_result='postitive', restrict_to_earliest_specimen_date=True, returning='binary_flag') 
+                                    hospitalised_with_covid = patients.admitted_to_hospital(returning='binary_flag', find_first_match_in_period=True, with_these_diagnoses=None, with_discharge_destination=None) 
+                                    has_acute_covid_ = patients.with_these_clinical_events(acute_diag_dat, on_or_before = "2021-01-01"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
-                                    age_majority = patients.age_as_of("pc_or_oc_diag_dat")
+                                    age_majority = patients.age_as_of("positive_test_dat")
     ),
     
     age_at_diag=patients.age_as_of(
-        "pc_or_oc_diag_dat",
+        "acute_diag_dat",
         return_expectations={"int": {"distribution": "population_ages"}}
     ),
 

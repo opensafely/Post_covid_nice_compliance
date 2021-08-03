@@ -10,10 +10,11 @@ from cohortextractor import (
 #all_referral_codes
 referral_codes = codelist_from_csv("codelists/rob_w-specialist-op-referrals-taken-from-nhse-guidance-on-longpost-covid-68f95f8f.csv", system="snomed", column="term")
 
-#og_covid and pc_codes
+#acute, og_covid and pc_codes
 ongoing_covid_code = codelist_from_csv("codelists/ongoing_covid_codelist.csv", system = "snomed", column = "term")
 pc_code = codelist_from_csv("codelists/post_covid_codelist.csv", system = "snomed", column = "term")
 ongoing_and_pc_diag_codes = combine_codelists(ongoing_covid_code, pc_code)
+acute_covid_codes = codelist_from_csv("codelists/acute_covid.csv", system = "snomed", column = "term")
 
 #red flag diags
 rf_hypoxaemia_codes = codelist_from_csv("codelists/oxygen_saturation.csv", system = "snomed", column = "term")
