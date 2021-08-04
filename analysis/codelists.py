@@ -15,6 +15,7 @@ ongoing_covid_code = codelist_from_csv("codelists/ongoing_covid_codelist.csv", s
 pc_code = codelist_from_csv("codelists/post_covid_codelist.csv", system = "snomed", column = "term")
 ongoing_and_pc_diag_codes = combine_codelists(ongoing_covid_code, pc_code)
 acute_covid_codes = codelist_from_csv("codelists/acute_covid.csv", system = "snomed", column = "term")
+hospitalised_with_covid_code = codelist_from_csv("codelists/opensafely-covid-identification.csv", system = "icd", column = "term")
 
 #red flag diags
 rf_hypoxaemia_codes = codelist_from_csv("codelists/oxygen_saturation.csv", system = "snomed", column = "term")
@@ -51,3 +52,8 @@ primary_care_codes = codelist_from_csv("codelists/primary_care.csv", system = "s
 
 #management - community
 community_care_codes = codelist_from_csv("codelists/community_care.csv", system = "snomed", column = "term")
+
+#advice
+advice_given_1_1 = codelist_from_csv("codelists/advice_given_1_1.csv", system = "snomed", column = "term")
+interpreter_needed = codelist_from_csv("codelists/interpreter_needed.csv", system = "snomed", column = "term")
+interpreter_booked = codelist_from_csv("codelists/interpreter_booked.csv", system = "snomed", column = "term")

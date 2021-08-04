@@ -5,15 +5,21 @@ expectations:
 
 actions:
 
-  generate_og_pc_cohort:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_ongoing_post_covid
+  generate_acute_cohort:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_any_acute_covid_pri_care
     outputs:
       highly_sensitive:
-        cohort: output/input_ongoing_post_covid.csv
+        cohort: output/input_any_acute_covid_pri_care.csv
         
-  describe:
-    run: r:latest analysis/report.R
-    needs: [generate_og_pc_cohort]
-    outputs:
-      moderately_sensitive:
-        pc_counts: output/PC_count_table.csv
+#  generate_og_pc_cohort:
+#    run: cohortextractor:latest generate_cohort --study-definition study_definition_ongoing_post_covid
+#    outputs:
+#      highly_sensitive:
+#        cohort: output/input_acute_covid.csv
+
+#  describe:
+#    run: r:latest analysis/report.R
+#    needs: [generate_og_pc_cohort]
+#    outputs:
+#      moderately_sensitive:
+#        pc_counts: output/PC_count_table.csv
