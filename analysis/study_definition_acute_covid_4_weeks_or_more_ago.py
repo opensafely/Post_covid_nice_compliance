@@ -29,7 +29,7 @@ study = StudyDefinition(
                                                     ),
 
     positive_test_dat = patients.with_test_result_in_sgss(pathogen="SARS-CoV-2",
-                                                         test_result='postitive',
+                                                         test_result='positive',
                                                          restrict_to_earliest_specimen_date=True,
                                                          returning='date',
                                                          date_format="YYYY-MM-DD",
@@ -38,12 +38,15 @@ study = StudyDefinition(
 
     hospitalised_with_covid = patients.admitted_to_hospital(returning = "date", find_first_match_in_period = True, with_these_diagnoses = hospitalised_with_covid),
 
+    earliest_diag_date = min(acute_diag_dat, positive_test_dat, hospitalised_with_covid)
+
     population=patients.satisfying("(tested_positive_covid OR hospitalised_with_covid OR has_acute_covid) AND one_practice AND age_majority > 17 AND attends_GP_at_least_4_weeks_after", 
-                                    tested_positive_covid = patients.with_test_result_in_sgss(pathogen="NoSARS-CoV-2", test_result='postitive', restrict_to_earliest_specimen_date=True, returning='binary_flag') 
+                                    tested_positive_covid = patients.with_test_result_in_sgss(pathogen="NoSARS-CoV-2", test_result='positive', restrict_to_earliest_specimen_date=True, returning='binary_flag') 
                                     hospitalised_with_covid = patients.admitted_to_hospital(returning='binary_flag', find_first_match_in_period=True, with_these_diagnoses = hospitalised_with_covid_code, with_discharge_destination=None) 
                                     has_acute_covid_ = patients.with_these_clinical_events(acute_covid_codes, returning = "binary flag"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
-                                    age_majority = patients.age_as_of("positive_test_dat")
+                                    age_majority = patients.age_as_of("positive_test_dat"),
+                                    attends_GP_at_least_4_weeks_after = patients.with_gp_consultations(on_or_after = earliest_diag_date, returning = 'binary flag')
     ),
     
     age_at_diag=patients.age_as_of(

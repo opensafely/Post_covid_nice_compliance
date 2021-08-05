@@ -18,12 +18,13 @@ acute_covid_codes = codelist_from_csv("codelists/acute_covid.csv", system = "sno
 hospitalised_with_covid_code = codelist_from_csv("codelists/opensafely-covid-identification.csv", system = "icd", column = "term")
 
 #red flag diags
-rf_hypoxaemia_codes = codelist_from_csv("codelists/oxygen_saturation.csv", system = "snomed", column = "term")
+rf_hypoxaemia_code_rest = codelist_from_csv("codelists/oxygen_saturation_rest.csv", system = "snomed", column = "term")
+rf_hypoxaemia_code_exertion = codelist_from_csv("codelists/oxygen_saturation_rest.csv", system = "snomed", column = "term")
 rf_respiratory_disease_code = codelist_from_csv("codelists/respiratory_disease.csv", system = "snomed", column = "term")
 rf_cardiac_pain_code = codelist_from_csv("codelists/cardiac_pain.csv", system = "snomed", column = "term")
 
 #diagnostics
-diagnostic_bloods = codelist_from_csv("codelists/blood_test.csv", system = "snomed", column = "term")
+diagnostic_bloods = codelist_from_csv("codelists/diagnostic_bloods.csv", system = "snomed", column = "term")
 diagnostic_bp_stand = codelist_from_csv("codelists/standing_bp.csv", system = "snomed", column = "term")
 diagnostic_bp_sit = codelist_from_csv("codelists/lying_bp.csv", system = "snomed", column = "term")
 diagnostic_sit_stand = codelist_from_csv("codelists/sit_stand_test.csv", system = "snomed", column = "term")
@@ -43,6 +44,8 @@ referral_dermatology = codelist_from_csv("codelists/dermatology_referral.csv", s
 referral_ent = codelist_from_csv("codelists/ENT_referral.csv", system = "snomed", column = "term")
 referral_inf_diseases = codelist_from_csv("codelists/inf_diseases_referral.csv", system = "snomed", column = "term")
 referral_pc_clinic = codelist_from_csv("codelists/pc_referral.csv", system = "snomed", column = "term")
+referral_emergency = codelist_from_csv("codelists/em_referral.csv", system = "snomed", column = "term")
+
 
 #management - self-care 
 self_care_codes = codelist_from_csv("codelists/self_care.csv", system = "snomed", column = "term")
@@ -57,3 +60,4 @@ community_care_codes = codelist_from_csv("codelists/community_care.csv", system 
 advice_given_1_1 = codelist_from_csv("codelists/advice_given_1_1.csv", system = "snomed", column = "term")
 interpreter_needed = codelist_from_csv("codelists/interpreter_needed.csv", system = "snomed", column = "term")
 interpreter_booked = codelist_from_csv("codelists/interpreter_booked.csv", system = "snomed", column = "term")
+discussion_about_daily_living_2_4 = codelist_from_csv("codelists/discussion_about_daily_living_2_4.csv", system = "snomed", column = "term")

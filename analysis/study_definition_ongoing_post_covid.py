@@ -28,10 +28,11 @@ study = StudyDefinition(
                                                     #                         "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("has_pc AND one_practice AND age_majority > 17", 
+    population=patients.satisfying("has_pc AND one_practice AND age_majority > 17 AND has_gp_appt_post_diag", 
                                     has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2021-01-01"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
-                                    age_majority = patients.age_as_of("pc_or_oc_diag_dat")
+                                    age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
+                                    has_gp_appt_post_diag = patients.with_gp_consultations(on_or_after = pc_or_oc_diag_dat, returning = "binary flag")
     ),
     
     age_at_diag=patients.age_as_of(
@@ -71,12 +72,22 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    diag_hypoxaemia = patients.with_these_clinical_events(rf_hypoxaemia_codes,
+    #THIS MAY NOT WORK IF THIS CODE should return numeric value
+    diag_hypoxaemia_rest = patients.with_these_clinical_events(rf_hypoxaemia_code_rest,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "date",
+                                                            returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"numeric_value": {"lowest":"70", "highest":"100"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+
+    diag_hypoxaemia_exertion patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "numeric_value",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"numeric_value": {"lowest":"70", "highest":"100"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -117,25 +128,37 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),
 
+    #ARE THESE NUMERIC VALUES/CODE/CATEGORY?
     diagnostic_bp_sit = patients.with_these_clinical_events(diagnostic_bp_sit,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "date",
+                                                            returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"numeric_value": {"lowest":"60/40", "highest":"180/120"},
                                                                                     "rate": "uniform"}
                                                                                     ),
-
+    #ARE THESE NUMERIC  VALUES/CODE/CATEGORY?
     diagnostic_bp_stand = patients.with_these_clinical_events(diagnostic_bp_stand,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "date",
+                                                            returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"numeric_value": {"lowest":"60/40", "highest":"180/120"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
     diagnostic_chest_xray = patients.with_these_clinical_events(diagnostic_chest_xray,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+
+
+    #referrals
+    referral_emergency = patients.with_these_clinical_events(referral_emergency,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
@@ -262,6 +285,15 @@ study = StudyDefinition(
                                                                                     ),
 
     #self-care, community or primary care management
+    discussion_about_daily_living_2_4 = patients.with_these_clinical_events(discussion_about_daily_living_2_4,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+
     self_care_advise_or_support = patients.with_these_clinical_events(self_care_codes,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
