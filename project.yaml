@@ -10,8 +10,14 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/input_any_acute_covid_pri_care.csv
-        
-#  generate_og_pc_cohort:
+
+  generate_acute_cohort_4_weeks:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_acute_covid_4_weeks_or_more_ago
+    outputs:
+      highly_sensitive:
+        cohort: output/input_acute_covid_4_weeks_or_more_ago.csv
+
+        #  generate_og_pc_cohort:
 #    run: cohortextractor:latest generate_cohort --study-definition study_definition_ongoing_post_covid
 #    outputs:
 #      highly_sensitive:
