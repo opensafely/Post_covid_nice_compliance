@@ -1,8 +1,8 @@
-# Post_covid_nice_compliance
+# Opensafely_template
 
-This is the code and configuration for Post_covid_nice_compliance.
+This is the code and configuration for Opensafely_template.
 
-You can run this project via [Gitpod](https://gitpod.io) in a web browser by clicking on this badge: [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/opensafely/Post_covid_nice_compliance)
+You can run this project via [Gitpod](https://gitpod.io) in a web browser by clicking on this badge: [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/rwillans/Opensafely_template)
 
 * The paper is [here]()
 * Raw model outputs, including charts, crosstabs, etc, are in `released_outputs/`
