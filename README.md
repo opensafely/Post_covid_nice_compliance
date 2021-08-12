@@ -1,8 +1,6 @@
-# Opensafely_template
+# {{project_name}}
 
-This is the code and configuration for Opensafely_template.
-
-You can run this project via [Gitpod](https://gitpod.io) in a web browser by clicking on this badge: [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/rwillans/Opensafely_template)
+This is the code and configuration for {{project_name}}
 
 * The paper is [here]()
 * Raw model outputs, including charts, crosstabs, etc, are in `released_outputs/`
@@ -12,11 +10,11 @@ You can run this project via [Gitpod](https://gitpod.io) in a web browser by cli
 
 # About the OpenSAFELY framework
 
-The OpenSAFELY framework is a Trusted Research Environment (TRE) for electronic
-health records research in the NHS, with a focus on public accountability and
-research quality.
+The OpenSAFELY framework is a secure analytics platform for
+electronic health records research in the NHS.
 
+Instead of requesting access for slices of patient data and
+transporting them elsewhere for analysis, the framework supports
+developing analytics against dummy data, and then running against the
+real data *within the same infrastructure that the data is stored*.
 Read more at [OpenSAFELY.org](https://opensafely.org).
-
-# Licences
-As standard, research projects have a MIT license. 
