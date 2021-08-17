@@ -39,12 +39,8 @@ study = StudyDefinition(
         return_expectations={"int": {"distribution": "population_ages"}}
     ),
 
-    #commented out until prac_id works
     prac_id = patients.registered_practice_as_of("acute_diag_dat",
                                                 returning="pseudo_id",
-                                                # options for return_expectations
-                                                #return_expectations={"category": {"ratios": {c: 1/1000 for c in range(1,1001)}}}
-                                                #return_expectations={"category": {"ratios": {"prac_1": 0.3, "prac_2": 0.3, "prac_3": 0.4}}}
                                                 return_expectations={"rate" : "universal", "int" : {"distribution":"normal", "mean":1500, "stddev":50}}),
 
     prac_msoa = patients.registered_practice_as_of("acute_diag_dat",
