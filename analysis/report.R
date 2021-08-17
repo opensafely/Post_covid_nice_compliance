@@ -7,8 +7,8 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
 
 
 
-#cohort_any_acute_covid_recorded %>% 
-#    pivot_longer(where(is.Date), names_to = "date_events", values_to = "date") # %>% 
+cohort_any_acute_covid_recorded %>% 
+    pivot_longer(where(is.Date), names_to = "date_events", values_to = "date") # %>% 
 #    select(patient_id, prac_id, prac_msoa, everything()) %>%
 #    filter(date_events %in% c('diag_ongoing_covid', 'diag_post_covid'),
 #            !is.na(date)) %>%
