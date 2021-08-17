@@ -77,16 +77,14 @@ study = StudyDefinition(
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"int": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
+                                                            return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
                                                                                     ),
 
     diag_hypoxaemia_exertion = patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"int": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
+                                                            return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
                                                                                     ),
 
     diag_cardiac_pain = patients.with_these_clinical_events(rf_cardiac_pain_code,
@@ -126,23 +124,22 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    #ARE THESE NUMERIC VALUES/CODE/CATEGORY?
+    #ARE THESE NUMERIC VALUES/CODE/CATEGORY? may need to revisit these
     diagnostic_bp_sit = patients.with_these_clinical_events(diagnostic_bp_sit,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"numeric_value": {"lowest":"60/40", "highest":"180/120"},
-                                                                                    "rate": "uniform"}
+                                                            return_expectations = {"float": {"distribution":"normal", "mean":80, "stddev":20}, "incidence" : 0.7}
                                                                                     ),
-    #ARE THESE NUMERIC  VALUES/CODE/CATEGORY?
+
+    #ARE THESE NUMERIC  VALUES/CODE/CATEGORY? may need to revisit these
     diagnostic_bp_stand = patients.with_these_clinical_events(diagnostic_bp_stand,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"numeric_value": {"lowest":"60/40", "highest":"180/120"},
-                                                                                    "rate": "uniform"}
+                                                            return_expectations = {"float": {"distribution":"normal", "mean":80, "stddev":20}, "incidence" : 0.7}
                                                                                     ),
 
     diagnostic_chest_xray = patients.with_these_clinical_events(diagnostic_chest_xray,
@@ -283,7 +280,7 @@ study = StudyDefinition(
                                                                                     ),
 
     #self-care, community or primary care management
-    discussion_about_daily_living_2_4 = patients.with_these_clinical_events(discussion_about_daily_living_2_4,
+    Rec_2_4_discussion_about_daily_living = patients.with_these_clinical_events(discussion_about_daily_living_2_4,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
