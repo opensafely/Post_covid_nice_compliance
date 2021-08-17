@@ -51,8 +51,8 @@ study = StudyDefinition(
     Rec_1_1_advice_given = patients.with_these_clinical_events(advice_given_1_1,
                                                                 find_first_match_in_period = True,
                                                                 on_or_after = "acute_diag_dat",
-                                                                returning = "date",
                                                                 date_format = "YYYY-MM-DD",
+                                                                returning = "date",
                                                                 return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
                                                                             "rate": "uniform"}),
 
