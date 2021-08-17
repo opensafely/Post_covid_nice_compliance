@@ -11,11 +11,11 @@ actions:
       highly_sensitive:
         cohort: output/input_any_acute_covid_pri_care.csv
         
-#  generate_og_pc_cohort:
-#    run: cohortextractor:latest generate_cohort --study-definition study_definition_ongoing_post_covid
-#    outputs:
-#      highly_sensitive:
-#        cohort: output/input_acute_covid.csv
+  generate_og_pc_cohort:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_ongoing_post_covid
+    outputs:
+      highly_sensitive:
+        cohort: output/input_ongoing_post_covid.csv
 
   describe:
     run: r:latest analysis/report.R
