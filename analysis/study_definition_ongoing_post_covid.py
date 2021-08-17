@@ -78,8 +78,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"int": {"lowest":"70", "highest":"100"},
-                                                                                    "rate": "uniform"}
+                                                            return_expectations = {"int": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
                                                                                     ),
 
     diag_hypoxaemia_exertion = patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
@@ -87,8 +86,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"numeric_value": {"lowest":"70", "highest":"100"},
-                                                                                    "rate": "uniform"}
+                                                            return_expectations = {"int": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
                                                                                     ),
 
     diag_cardiac_pain = patients.with_these_clinical_events(rf_cardiac_pain_code,
