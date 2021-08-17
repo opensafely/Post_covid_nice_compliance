@@ -82,7 +82,7 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    diag_hypoxaemia_exertion patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
+    diag_hypoxaemia_exertion = patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
