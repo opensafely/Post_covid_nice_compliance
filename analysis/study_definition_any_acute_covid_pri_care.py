@@ -64,7 +64,7 @@ study = StudyDefinition(
                                                                 return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
                                                                             "rate": "uniform"}),                                                 
     
-    Rec_1_9_interpreter_booked = patients.with_these_clinical_events(interpreter_booked,
+    Rec_1_8_interpreter_booked = patients.with_these_clinical_events(interpreter_booked,
                                                                 find_first_match_in_period = True,
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
