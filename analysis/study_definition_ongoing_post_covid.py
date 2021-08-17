@@ -78,7 +78,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"numeric_value": {"lowest":"70", "highest":"100"},
+                                                            return_expectations = {"int": {"lowest":"70", "highest":"100"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
