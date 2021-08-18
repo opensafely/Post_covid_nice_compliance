@@ -42,7 +42,6 @@ referral_dermatology = codelist_from_csv("codelists/dermatology_referral.csv", s
 referral_ent = codelist_from_csv("codelists/ENT_referral.csv", system = "snomed", column = "term")
 referral_inf_diseases = codelist_from_csv("codelists/inf_diseases_referral.csv", system = "snomed", column = "term")
 referral_pc_clinic = codelist_from_csv("codelists/referral_pc_clinic.csv", system = "snomed", column = "term")
-referral_emergency = codelist_from_csv("codelists/em_referral.csv", system = "snomed", column = "term")
 
 #pysch variables
 risk_of_self_harm = codelist_from_csv("codelists/risk_of_self_harm.csv", system = "snomed", column = "term")

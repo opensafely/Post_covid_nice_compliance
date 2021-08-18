@@ -144,15 +144,6 @@ study = StudyDefinition(
 
 
     #referrals
-    referral_emergency = patients.with_these_clinical_events(referral_emergency,
-                                                            find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "date",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
-                                                                                    "rate": "uniform"}
-                                                                                    ),
-
     referral_paed = patients.with_these_clinical_events(referral_paed,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
