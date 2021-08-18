@@ -162,7 +162,7 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    referral_mental_health = patients.with_these_clinical_events(referral_mental_health,
+    referral_psych = patients.with_these_clinical_events(referral_psych,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
@@ -170,6 +170,16 @@ study = StudyDefinition(
                                                             return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
+
+    referral_psych_iapt = patients.with_these_clinical_events(referral_psych_iapt,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+
 
     referral_respiratory = patients.with_these_clinical_events(referral_respiratory,
                                                             find_first_match_in_period = True,
@@ -270,8 +280,46 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),
 
+    #risk of self harm/anxiety/depression
+    risk_of_self_harm = patients.with_these_clinical_events(referral_pc_clinic,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+                                                                                    
+    mild_anxiety_or_depression = patients.with_these_clinical_events(mild_anxiety_or_depression,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+
+    #psych referral variables
+    psych_referral = patients.with_these_clinical_events(referral_psych,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+                                                                                    
+    psych_referral_iapt = patients.with_these_clinical_events(referral_psych_iapt,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_dat", "index_date"],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+
     #self-care, community or primary care management
-    Rec_2_4_discussion_about_daily_living = patients.with_these_clinical_events(discussion_about_daily_living_2_4,
+    discussion_about_daily_living = patients.with_these_clinical_events(discussion_about_daily_living,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",

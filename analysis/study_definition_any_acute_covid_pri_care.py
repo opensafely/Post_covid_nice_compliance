@@ -48,7 +48,7 @@ study = StudyDefinition(
                                                     return_expectations={"rate":"universal", "category": {"ratios" : {'msoa1':0.5, 'msoa2':0.5}}}
     ),
 
-    Rec_1_1_advice_given = patients.with_these_clinical_events(advice_given_1_1,
+    Rec_1_1_advice_given = patients.with_these_clinical_events(advice_given,
                                                                 find_first_match_in_period = True,
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
