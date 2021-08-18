@@ -23,15 +23,27 @@ Rec_2_4_denom <- nrow(cohort_ongoing_or_post_covid)
 Rec_2_4_num <- cohort_ongoing_or_post_covid %>% filter(Rec_2_4_discussion_about_daily_living > ymd("20190101")) %>% nrow()
 Rec_2_4_ratio <- Rec_2_4_num / Rec_2_4_denom
 
-rm(cohort_any_acute_covid_recorded, cohort_ongoing_or_post_covid)
-
-mget(ls()) %>% bind_rows() %>% write_csv('output/ratios.csv')
-
 #Compliance ratios from Section 3 of NG188 guidance
 
-#2 number of patients with red flag diagnoses (by RF)
+#Rec_3_1 abandoned as not sure what 'relevant acute services' ought to be, vagueness as to what 
 
-#3 diagnostic tests issues
+#3 diagnostic tests 
+
+Rec_3_4_denom <- Rec_2_4_denom
+Rec_3_4_num <- cohort_ongoing_or_post_covid %>% filter(diagnostic_bloods > ymd("20190101")) %>% nrow()
+Rec_3_4_ratio <- Rec_3_4_num / Rec_3_4_denom
+
+Rec_3_5_denom <- Rec_2_4_denom
+Rec_3_5_num <- cohort_ongoing_or_post_covid %>% filter(diagnostic_sit_stand > ymd("20190101")) %>% nrow()
+Rec_3_5_ratio <- Rec_3_5_num / Rec_3_5_denom
+
+Rec_3_6_denom <- Rec_2_4_denom
+Rec_3_6_num <- cohort_ongoing_or_post_covid %>% filter(diagnostic_bp_test > ymd("20190101")) %>% nrow()
+Rec_3_6_ratio <- Rec_3_6_num / Rec_3_6_denom
+
+Rec_3_7_denom <- Rec_2_4_denom
+Rec_3_7_num <- cohort_ongoing_or_post_covid %>% filter(diagnostic_bp_test > ymd("20190101")) %>% nrow()
+Rec_3_7_ratio <- Rec_3_7_num / Rec_3_7_denom
 
 #3 referral patterns, self-care, secondary care, treated in primary care
 
@@ -41,3 +53,7 @@ mget(ls()) %>% bind_rows() %>% write_csv('output/ratios.csv')
     #variables
     #demographic - age, ethnicity, health worker?, socioeconomic deprivation
     #comorbidities
+
+rm(cohort_any_acute_covid_recorded, cohort_ongoing_or_post_covid)
+
+mget(ls()) %>% bind_rows() %>% write_csv('output/ratios.csv')

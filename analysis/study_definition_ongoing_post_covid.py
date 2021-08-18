@@ -72,38 +72,38 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    #THIS MAY NOT WORK IF THIS CODE should return numeric value
-    diag_hypoxaemia_rest = patients.with_these_clinical_events(rf_hypoxaemia_code_rest,
-                                                            find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "numeric_value",
-                                                            return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
-                                                                                    ),
-
-    diag_hypoxaemia_exertion = patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
-                                                            find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "numeric_value",
-                                                            return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
-                                                                                    ),
-
-    diag_cardiac_pain = patients.with_these_clinical_events(rf_cardiac_pain_code,
-                                                            find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "date",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
-                                                                                    "rate": "uniform"}
-                                                                                    ),
-
-    diag_resp_disease = patients.with_these_clinical_events(rf_respiratory_disease_code,
-                                                            find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "date",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
-                                                                                    "rate": "uniform"}
-                                                                                    ),
+    # Commented out as not sure red flag calculations are going to work - too many variation 
+    # diag_hypoxaemia_rest = patients.with_these_clinical_events(rf_hypoxaemia_code_rest,
+    #                                                         find_first_match_in_period = True,
+    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
+    #                                                         returning = "numeric_value",
+    #                                                         return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
+    #                                                                                 ),
+    # 
+    # diag_hypoxaemia_exertion = patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
+    #                                                         find_first_match_in_period = True,
+    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
+    #                                                         returning = "numeric_value",
+    #                                                         return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
+    #                                                                                 ),
+    # 
+    # diag_cardiac_pain = patients.with_these_clinical_events(rf_cardiac_pain_code,
+    #                                                         find_first_match_in_period = True,
+    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
+    #                                                         returning = "date",
+    #                                                         date_format = "YYYY-MM-DD",
+    #                                                         return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+    #                                                                                 "rate": "uniform"}
+    #                                                                                 ),
+    # 
+    # diag_resp_disease = patients.with_these_clinical_events(rf_respiratory_disease_code,
+    #                                                         find_first_match_in_period = True,
+    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
+    #                                                         returning = "date",
+    #                                                         date_format = "YYYY-MM-DD",
+    #                                                         return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+    #                                                                                 "rate": "uniform"}
+    #                                                                                 ),
 
     #diagnostic dates
     diagnostic_bloods = patients.with_these_clinical_events(diagnostic_bloods,
@@ -125,16 +125,7 @@ study = StudyDefinition(
                                                                                     ),
 
     #ARE THESE NUMERIC VALUES/CODE/CATEGORY? may need to revisit these
-    diagnostic_bp_sit = patients.with_these_clinical_events(diagnostic_bp_sit,
-                                                            find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_dat", "index_date"],
-                                                            returning = "numeric_value",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"float": {"distribution":"normal", "mean":80, "stddev":20}, "incidence" : 0.7}
-                                                                                    ),
-
-    #ARE THESE NUMERIC  VALUES/CODE/CATEGORY? may need to revisit these
-    diagnostic_bp_stand = patients.with_these_clinical_events(diagnostic_bp_stand,
+    diagnostic_bp_test = patients.with_these_clinical_events(diagnostic_bp_test,
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",

@@ -17,16 +17,15 @@ ongoing_and_pc_diag_codes = combine_codelists(ongoing_covid_code, pc_code)
 acute_covid_codes = codelist_from_csv("codelists/acute_covid.csv", system = "snomed", column = "term")
 hospitalised_with_covid_code = codelist_from_csv("codelists/opensafely-covid-identification.csv", system = "icd", column = "term")
 
-#red flag diags
-rf_hypoxaemia_code_rest = codelist_from_csv("codelists/oxygen_saturation_rest.csv", system = "snomed", column = "term")
-rf_hypoxaemia_code_exertion = codelist_from_csv("codelists/oxygen_saturation_rest.csv", system = "snomed", column = "term")
-rf_respiratory_disease_code = codelist_from_csv("codelists/respiratory_disease.csv", system = "snomed", column = "term")
-rf_cardiac_pain_code = codelist_from_csv("codelists/cardiac_pain.csv", system = "snomed", column = "term")
+#red flag diags - coded out as rec too vague to work out
+# rf_hypoxaemia_code_rest = codelist_from_csv("codelists/oxygen_saturation_rest.csv", system = "snomed", column = "term")
+# rf_hypoxaemia_code_exertion = codelist_from_csv("codelists/oxygen_saturation_rest.csv", system = "snomed", column = "term")
+# rf_respiratory_disease_code = codelist_from_csv("codelists/respiratory_disease.csv", system = "snomed", column = "term")
+# rf_cardiac_pain_code = codelist_from_csv("codelists/cardiac_pain.csv", system = "snomed", column = "term")
 
 #diagnostics
 diagnostic_bloods = codelist_from_csv("codelists/diagnostic_bloods.csv", system = "snomed", column = "term")
-diagnostic_bp_stand = codelist_from_csv("codelists/standing_bp.csv", system = "snomed", column = "term")
-diagnostic_bp_sit = codelist_from_csv("codelists/lying_bp.csv", system = "snomed", column = "term")
+diagnostic_bp_test = codelist_from_csv("codelists/diagnostic_bp_test.csv", system = "snomed", column = "term")
 diagnostic_sit_stand = codelist_from_csv("codelists/sit_stand_test.csv", system = "snomed", column = "term")
 diagnostic_chest_xray = codelist_from_csv("codelists/chest_x_ray.csv", system = "snomed", column = "term")
 
