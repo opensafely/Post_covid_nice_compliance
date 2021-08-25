@@ -24,13 +24,13 @@ study = StudyDefinition(
                                                      find_first_match_in_period = True,
                                                      returning = "date",
                                                      date_format = "YYYY-MM-DD",
-                                                      return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                      return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                              "rate": "uniform"}, 
                                                     ),
 
     population=patients.satisfying("has_pc AND one_practice AND age_majority > 17 AND has_gp_appt_post_diag", 
-                                    has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2021-01-01"),
-                                    one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
+                                    has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2020-06-01"),
+                                    one_practice = patients.registered_with_one_practice_between("2019-02-01", "2020-06-01"),
                                     age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
                                     has_gp_appt_post_diag = patients.with_gp_consultations(on_or_after = "pc_or_oc_diag_dat", returning = "binary_flag")
     ),
@@ -42,9 +42,6 @@ study = StudyDefinition(
 
     prac_id = patients.registered_practice_as_of("pc_or_oc_diag_dat",
                                                 returning="pseudo_id",
-                                                # options for return_expectations
-                                                #return_expectations={"category": {"ratios": {c: 1/1000 for c in range(1,1001)}}}
-                                                #return_expectations={"category": {"ratios": {"prac_1": 0.3, "prac_2": 0.3, "prac_3": 0.4}}}
                                                 return_expectations={"rate" : "universal", "int" : {"distribution":"normal", "mean":1500, "stddev":50}}),
 
     #commented out until prac_id works
@@ -59,7 +56,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -68,64 +65,31 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
-
-    # Commented out as not sure red flag calculations are going to work - too many variation 
-    # diag_hypoxaemia_rest = patients.with_these_clinical_events(rf_hypoxaemia_code_rest,
-    #                                                         find_first_match_in_period = True,
-    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
-    #                                                         returning = "numeric_value",
-    #                                                         return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
-    #                                                                                 ),
-    # 
-    # diag_hypoxaemia_exertion = patients.with_these_clinical_events(rf_hypoxaemia_code_exertion,
-    #                                                         find_first_match_in_period = True,
-    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
-    #                                                         returning = "numeric_value",
-    #                                                         return_expectations = {"float": {"distribution":"normal", "mean":95, "stddev":5}, "incidence" : 0.7}
-    #                                                                                 ),
-    # 
-    # diag_cardiac_pain = patients.with_these_clinical_events(rf_cardiac_pain_code,
-    #                                                         find_first_match_in_period = True,
-    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
-    #                                                         returning = "date",
-    #                                                         date_format = "YYYY-MM-DD",
-    #                                                         return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
-    #                                                                                 "rate": "uniform"}
-    #                                                                                 ),
-    # 
-    # diag_resp_disease = patients.with_these_clinical_events(rf_respiratory_disease_code,
-    #                                                         find_first_match_in_period = True,
-    #                                                         between = ["pc_or_oc_diag_dat", "index_date"],
-    #                                                         returning = "date",
-    #                                                         date_format = "YYYY-MM-DD",
-    #                                                         return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
-    #                                                                                 "rate": "uniform"}
-    #                                                                                 ),
 
     #diagnostic dates
-    diagnostic_bloods = patients.with_these_clinical_events(diagnostic_bloods,
+    diagnostic_bloods = patients.with_these_clinical_events(diagnostic_bloods, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    diagnostic_sit_stand = patients.with_these_clinical_events(diagnostic_sit_stand,
+    diagnostic_sit_stand = patients.with_these_clinical_events(diagnostic_sit_stand, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
     #ARE THESE NUMERIC VALUES/CODE/CATEGORY? may need to revisit these
-    diagnostic_bp_test = patients.with_these_clinical_events(diagnostic_bp_test,
+    diagnostic_bp_test = patients.with_these_clinical_events(diagnostic_bp_test, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "numeric_value",
@@ -133,12 +97,12 @@ study = StudyDefinition(
                                                             return_expectations = {"float": {"distribution":"normal", "mean":80, "stddev":20}, "incidence" : 0.7}
                                                                                     ),
 
-    diagnostic_chest_xray = patients.with_these_clinical_events(diagnostic_chest_xray,
+    diagnostic_chest_xray = patients.with_these_clinical_events(diagnostic_chest_xray, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -149,16 +113,16 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    referral_psych = patients.with_these_clinical_events(referral_psych,
+    referral_psych = patients.with_these_clinical_events(referral_psych, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -167,7 +131,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -177,7 +141,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -186,7 +150,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -195,7 +159,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -204,7 +168,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -213,7 +177,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -222,7 +186,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -231,7 +195,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -240,7 +204,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -249,7 +213,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -258,26 +222,26 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    referral_pc_clinic = patients.with_these_clinical_events(referral_pc_clinic,
+    referral_pc_clinic = patients.with_these_clinical_events(referral_pc_clinic, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
     #risk of self harm/anxiety/depression
-    risk_of_self_harm = patients.with_these_clinical_events(referral_pc_clinic,
+    risk_of_self_harm = patients.with_these_clinical_events(referral_pc_clinic, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
                                                                                     
@@ -286,63 +250,63 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
     #psych referral variables
-    psych_referral = patients.with_these_clinical_events(referral_psych,
+    psych_referral = patients.with_these_clinical_events(referral_psych, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
                                                                                     
-    psych_referral_iapt = patients.with_these_clinical_events(referral_psych_iapt,
+    psych_referral_iapt = patients.with_these_clinical_events(referral_psych_iapt, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
     #self-care, community or primary care management
-    discussion_about_daily_living = patients.with_these_clinical_events(discussion_about_daily_living,
+    discussion_about_daily_living = patients.with_these_clinical_events(discussion_about_daily_living, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    self_care_advise_or_support = patients.with_these_clinical_events(self_care_codes,
+    self_care_advise_or_support = patients.with_these_clinical_events(self_care_codes, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    primary_care_managment = patients.with_these_clinical_events(primary_care_codes,
+    primary_care_managment = patients.with_these_clinical_events(primary_care_codes, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
-    community_care = patients.with_these_clinical_events(community_care_codes,
+    community_care = patients.with_these_clinical_events(community_care_codes, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                                     "rate": "uniform"}
                                                                                     )    
 

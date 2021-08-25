@@ -24,7 +24,7 @@ study = StudyDefinition(
                                                      find_first_match_in_period = True,
                                                      returning = "date",
                                                      date_format = "YYYY-MM-DD",
-                                                     return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                     return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                             "rate": "uniform"}, 
                                                     ),
 
@@ -48,28 +48,28 @@ study = StudyDefinition(
                                                     return_expectations={"rate":"universal", "category": {"ratios" : {'msoa1':0.5, 'msoa2':0.5}}}
     ),
 
-    Rec_1_1_advice_given = patients.with_these_clinical_events(advice_given,
+    advice_given = patients.with_these_clinical_events(advice_given,
                                                                 find_first_match_in_period = True,
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
                                                                 returning = "date",
-                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                             "rate": "uniform"}),
 
-    Rec_1_8_interpreter_needed = patients.with_these_clinical_events(interpreter_needed,
+    interpreter_needed = patients.with_these_clinical_events(interpreter_needed,   #checked
                                                                 find_first_match_in_period = True,
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
                                                                 returning = "date",
-                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                             "rate": "uniform"}),                                                 
     
-    Rec_1_8_interpreter_booked = patients.with_these_clinical_events(interpreter_booked,
+    interpreter_booked = patients.with_these_clinical_events(interpreter_booked,   #checked
                                                                 find_first_match_in_period = True,
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
                                                                 returning = "date",
-                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-03-01"},
+                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                             "rate": "uniform"}),      
 
     )
