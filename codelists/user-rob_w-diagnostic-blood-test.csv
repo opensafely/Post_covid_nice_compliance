@@ -1,0 +1,120 @@
+code,term
+1005581000000106,Amylase clearance
+1006501000000106,Calculated tubular maximal reabsorption of phosphate/glomerular filtration rate
+1011481000000105,Estimated glomerular filtration rate using creatinine Chronic Kidney Disease Epidemiology Collaboration equation per 1.73 square metres
+1011491000000107,Estimated glomerular filtration rate using cystatin C Chronic Kidney Disease Epidemiology Collaboration equation per 1.73 square metres
+1015971000000100,Renal function tests
+1015981000000103,Creatinine clearance test
+1015991000000101,Ammonium chloride acidification test
+1020021000000103,Phosphate tubular reabsorption rate
+1020291000000106,Glomerular filtration rate calculated by abbreviated Modification of Diet in Renal Disease Study Group calculation
+1021831000000103,Urate clearance test
+1028131000000104,Blood urea/renal function
+1031081000000108,Liver function tests
+104390007,Anti-thyroid antibody measurement
+104968004,Thyrotropin releasing hormone stimulation test
+104969007,"Thyrotropin releasing hormone stimulation panel, one hour"
+104970008,"Thyrotropin releasing hormone stimulation panel, two hour"
+104971007,"Thyrotropin releasing hormone stimulation panel, for hyperprolactinemia"
+104976002,Thyroxine uptake measurement
+104977006,Thyroxine/thyroxine binding globulin measurement
+104978001,Thyroxine/triiodothyronine uptake index measurement
+104994008,"Triiodothyronine, free measurement"
+104995009,"Triiodothyronine, true measurement"
+104996005,Triiodothyronine/triiodothyronine uptake index measurement
+1107411000000104,Estimated glomerular filtration rate by laboratory calculation
+113081006,"Parathyroid hormone measurement, functional N-terminal"
+117350006,Equilibrium dialysis radioimmunoassay method for free thyroxine measurement
+118002003,Measurement of thyroperoxidase antibody
+121866009,Thyrotropin beta subunit measurement
+12224000,Parathyroid related protein measurement
+166324000,Serum T3 measurement
+166329005,Serum T4 measurement
+166343000,Protein-bound iodine estimation
+166344006,T3 suppression test
+166602006,Liver function tests normal
+166603001,Liver function tests abnormal
+169180003,Hormone radioassay - thyroid
+17130003,T3 uptake measurement
+17164004,Thyroglobulin antibody measurement
+183823002,Refer for thyroid test
+195191000000106,Parathyroid hormone related peptide measurement
+195281000000103,Total thyroxine T4 measurement
+250668004,Triiodothyronine measurement
+26604007,Complete blood count
+26958001,Hepatic function panel
+269821003,Serum ferritin measurement
+27115008,Microsomal thyroid antibody measurement
+271541003,Serum parathyroid hormone measurement
+275759006,Serum ferritin/Total iron binding capacity measurement
+313408009,Total thyroxine measurement
+313440008,Measurement of serum thyroid stimulating hormone
+313441007,Measurement of plasma thyroid stimulating hormone
+313510008,Parathyroid antibody measurement
+313836009,Serum free triiodothyronine measurement
+313837000,Serum free T4 measurement
+313838005,Plasma free T4 measurement
+313839002,Plasma free triiodothyronine measurement
+313861007,Plasma total T4 measurement
+313862000,Serum total T4 measurement
+313880009,Measurement of serum thyroid stimulating hormone concentration 60 minutes after challenge
+313881008,Measurement of serum thyroid stimulating hormone concentration 90 minutes after challenge
+313882001,Measurement of serum thyroid stimulating hormone concentration 150 minutes after challenge
+313883006,Measurement of plasma thyroid stimulating hormone concentration 60 minutes after challenge
+313884000,Measurement of plasma thyroid stimulating hormone concentration 120 minutes after challenge
+313885004,Measurement of plasma thyroid stimulating hormone concentration 150 minutes after challenge
+313910001,Measurement of serum thyroid stimulating hormone concentration 120 minutes after challenge
+313911002,Measurement of plasma thyroid stimulating hormone concentration 90 minutes after challenge
+313917003,Measurement of plasma thyroid stimulating hormone concentration 30 minutes after challenge
+313943002,Measurement of serum thyroid stimulating hormone concentration 30 minutes after challenge
+3352000,Parathyroid hormone measurement
+35650009,Thyroid panel
+390780008,Thyroid hormone measurement
+390917008,Brain natriuretic peptide measurement
+391378005,Serum thyroglobulin level
+391422008,Plasma thyroglobulin level
+391554001,Plasma parathyroid hormone level
+395037008,Thyroid stimulating antibody level
+396550006,Blood test
+39700003,Free thyroxine index
+39966003,Thyroglobulin measurement
+401102003,Blood spot thyroid stimulating hormone level
+401105001,Serum total T3 level
+401152007,Plasma ferritin measurement
+401154008,Plasma parathyroid hormone related peptide measurement
+407719000,Serum thyroglobulin recovery level
+408258008,Plasma pro-brain natriuretic peptide level
+408259000,Serum pro-brain natriuretic peptide level
+408273009,Thyroid stimulating hormone binding site inhibitor globulin level
+412905009,Plasma B natriuretic peptide measurement
+414799001,N-terminal pro-brain natriuretic peptide measurement
+415719008,Thyroid inhibitor antibody measurement
+489004,Ferritin measurement
+5113004,T4 free measurement
+51583006,T3 reverse measurement
+54495009,Antibody to thyroid stimulating hormone receptor measurement
+55235003,C-reactive protein measurement
+61167004,Thyroid stimulating hormone measurement
+70148007,"Parathyroid hormone measurement, C-terminal"
+72765002,Thyroxine measurement
+782931000000108,Parathyroid immunoglobulin G antibody measurement
+785161000000109,Thyroid microsomal immunoglobulin G antibody measurement
+785171000000102,Thyroid peroxidase immunoglobulin G antibody measurement
+785401000000102,Thyroglobulin immunoglobulin G antibody measurement
+797661000000107,Thyroid stimulating immunoglobulin G antibody measurement
+84663005,T4 newborn screen
+857971000000104,Estimated glomerular filtration rate using Chronic Kidney Disease Epidemiology Collaboration formula
+863927004,Liver function test increased
+8698005,Parathyroid hormone immunochemiluminescent measurement
+89793009,"Tri-iodothyronine measurement, total"
+909691000000102,Measurement of amino-terminal pro B-type natriuretic peptide concentration in serum specimen
+909711000000100,Measurement of amino-terminal pro B-type natriuretic peptide concentration in plasma specimen
+909731000000108,Measurement of B-type natriuretic peptide concentration in serum specimen
+911321000000107,Measurement of concentration of thyroid peroxidase antibody in serum specimen
+911341000000100,Measurement of concentration of thyroid stimulating antibody in serum specimen
+963601000000106,Estimated glomerular filtration rate using cystatin C Chronic Kidney Disease Epidemiology Collaboration equation
+963621000000102,Estimated glomerular filtration rate using creatinine Chronic Kidney Disease Epidemiology Collaboration equation
+968191000000100,Estimated creatinine clearance using Cockcroft-Gault formula
+994501000000108,Water deprivation test
+996231000000108,Glomerular filtration rate calculated by abbreviated Modification of Diet in Renal Disease Study Group calculation adjusted for African American origin
+997531000000108,Liver function test
