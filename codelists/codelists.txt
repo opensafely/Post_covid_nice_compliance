@@ -16,3 +16,15 @@ user/rob_w/risk-of-self-harm/7605a81a
 user/rob_w/mild-anxiety-or-depression/78b86810
 user/rob_w/referral-to-iapt-programme-mental-health-team/2d8a0e71
 user/rob_w/referral-to-liason-psychiatry-service-iapt-programme/147a9b3c
+user/rob_w/referral-to-post-covid-clinic/7e1de7fc
+user/rob_w/referral-to-respiratory-medicine-service/650e74c7
+user/rob_w/referral-to-cardiology-service/4bff0192
+user/rob_w/referral-to-dermatology-service/32ef8e5d
+user/rob_w/referral-to-endocrinology-service/19e01b28
+user/rob_w/referral-to-ent-service/00d0a7f3
+user/rob_w/referral-to-gastroenterology-service/67c134bd
+user/rob_w/referral-to-infectious-diseases-service/4eb1c188
+user/rob_w/referral-to-neurology/35a24e53
+user/rob_w/referral-to-paediatric-service/038367e9
+user/rob_w/referral-to-pain-management-service/6a73f4b3
+user/rob_w/referral-to-rheumatology-service/5164817e
