@@ -119,6 +119,8 @@ Rec_3_11_prim_care <- cohort_ongoing_or_post_covid %>% filter(primary_care_manag
     #demographic - age, ethnicity, health worker?, socioeconomic deprivation
     #comorbidities
 
+write.csv(head(any_acute_covid_recorded), 'output/head_covid.csv')
+
 rm(cohort_any_acute_covid_recorded, cohort_ongoing_or_post_covid)
 
 mget(ls()) %>% bind_rows() %>% write_csv('output/ratios.csv')
