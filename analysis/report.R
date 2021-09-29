@@ -14,6 +14,9 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
                                               prac_msoa = col_character(),
                                               patient_id = col_double()))
 
+
+debug_op <- cohort_any_acute_covid_recorded %>% summary()
+
 Rec_1_1_denom <- nrow(cohort_any_acute_covid_recorded)
 Rec_1_1_num <- sum((cohort_any_acute_covid_recorded$advice_given - cohort_any_acute_covid_recorded$acute_diag_dat > 0), na.rm = TRUE)
 Rec_1_1_ratio <- Rec_1_1_num / Rec_1_1_denom
@@ -119,7 +122,7 @@ Rec_3_11_prim_care <- cohort_ongoing_or_post_covid %>% filter(primary_care_manag
     #demographic - age, ethnicity, health worker?, socioeconomic deprivation
     #comorbidities
 
-write.csv(head(cohort_any_acute_covid_recorded), 'output/head_covid.csv')
+write.csv(debug_op, 'output/debug_op.csv')
 
 rm(cohort_any_acute_covid_recorded, cohort_ongoing_or_post_covid)
 

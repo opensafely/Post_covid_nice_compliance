@@ -23,4 +23,4 @@ actions:
     outputs:
       moderately_sensitive:
         pc_counts: output/ratios.csv
-        head_data: output/head_covid.csv
+        debug_op: output/debug_op.csv
