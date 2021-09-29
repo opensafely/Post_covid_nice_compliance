@@ -15,7 +15,7 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
                                               patient_id = col_double()))
 
 
-debug_op <- cohort_any_acute_covid_recorded %>% summary()
+debug_op <- cohort_any_acute_covid_recorded %>% summary() %>% tibble()
 
 Rec_1_1_denom <- nrow(cohort_any_acute_covid_recorded)
 Rec_1_1_num <- sum((cohort_any_acute_covid_recorded$advice_given - cohort_any_acute_covid_recorded$acute_diag_dat > 0), na.rm = TRUE)
