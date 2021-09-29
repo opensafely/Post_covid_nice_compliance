@@ -23,4 +23,5 @@ actions:
     outputs:
       moderately_sensitive:
         pc_counts: output/ratios.csv
-        debug_op: output/debug_op.csv
+        debug_oc: output/debug_oc.csv
+        debug_ac: output/debug_ac.csv
