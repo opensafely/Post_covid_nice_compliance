@@ -24,7 +24,7 @@ study = StudyDefinition(
                                                      find_first_match_in_period = True,
                                                      returning = "date",
                                                      date_format = "YYYY-MM-DD",
-                                                      return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                     return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
                                                                              "rate": "uniform"}, 
                                                     ),
 
