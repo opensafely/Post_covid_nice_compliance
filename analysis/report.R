@@ -12,10 +12,11 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
                                               age_at_diag = col_double(),
                                               prac_id = col_double(),
                                               prac_msoa = col_character(),
-                                              patient_id = col_double()))
+                                              patient_id = col_double()),
+                                            na = c("", "NA"))
 
-
-debug_op <- cohort_any_acute_covid_recorded %>% summary() %>% tibble()
+#generate number of NAs
+debug_ac <- cohort_any_acute_covid_recorded %>% is.na() %>% colSums()
 
 Rec_1_1_denom <- nrow(cohort_any_acute_covid_recorded)
 Rec_1_1_num <- sum((cohort_any_acute_covid_recorded$advice_given - cohort_any_acute_covid_recorded$acute_diag_dat > 0), na.rm = TRUE)
@@ -64,7 +65,10 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                            prac_id = col_double(),
                                            prac_msoa = col_character(),
                                            diagnostic_bp_test = col_double(),
-                                           patient_id = col_double()))
+                                           patient_id = col_double()),
+                                         na = c("", "NA"))
+
+debug_oc <- cohort_ongoing_or_post_covid %>% is.na() %>% colSums()
 
 Rec_2_4_denom <- nrow(cohort_ongoing_or_post_covid)
 Rec_2_4_num <- cohort_ongoing_or_post_covid %>% filter(discussion_about_daily_living > ymd("20190101")) %>% nrow()
@@ -122,7 +126,7 @@ Rec_3_11_prim_care <- cohort_ongoing_or_post_covid %>% filter(primary_care_manag
     #demographic - age, ethnicity, health worker?, socioeconomic deprivation
     #comorbidities
 
-write.csv(debug_op, 'output/debug_op.csv')
+write.csv(debug_op, 'output/debug_ac.csv')
 
 rm(cohort_any_acute_covid_recorded, cohort_ongoing_or_post_covid)
 
