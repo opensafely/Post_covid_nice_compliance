@@ -18,7 +18,7 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
 #generate number of NAs
 #debug_ac <- cohort_any_acute_covid_recorded %>% is.na() %>% colSums()
 #debug_ac <- map(cohort_any_acute_covid_recorded, class)
-debug_ac <- cohort_ongoing_or_post_covid %>% group_by(year(pc_or_oc_diag_dat)) %>% summarise(n = n())
+debug_ac <- cohort_any_acute_covid_recorded %>% group_by(year(pc_or_oc_diag_dat)) %>% summarise(n = n())
 write.csv(debug_ac, 'output/debug_ac.csv')
 
 Rec_1_1_denom <- nrow(cohort_any_acute_covid_recorded)
