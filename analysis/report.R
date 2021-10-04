@@ -16,9 +16,11 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
                                             na = c("", "NA", "0"))
 
 #generate number of NAs
-#debug_ac <- cohort_any_acute_covid_recorded %>% is.na() %>% colSums()
+#debug_ac <- cohort_any_acute_covid_recorded %>% is.na() %>% colSums() 
 #debug_ac <- map(cohort_any_acute_covid_recorded, class)
-debug_ac <- cohort_any_acute_covid_recorded %>% group_by(year(acute_diag_dat)) %>% summarise(n = n())
+#debug_ac <- cohort_any_acute_covid_recorded %>% group_by(year(acute_diag_dat)) %>% summarise(n = n()) # no lines
+debug_ac <- nrow(cohort_any_acute_covid_recorded) # any lines?
+
 write.csv(debug_ac, 'output/debug_ac.csv')
 
 Rec_1_1_denom <- nrow(cohort_any_acute_covid_recorded)
@@ -73,7 +75,8 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
 
 #debug_oc <- cohort_ongoing_or_post_covid %>% is.na() %>% colSums()
 #debug_oc <- map(cohort_ongoing_or_post_covid, class)
-debug_oc <- cohort_ongoing_or_post_covid %>% group_by(year(pc_or_oc_diag_dat)) %>% summarise(n = n())
+#debug_oc <- cohort_ongoing_or_post_covid %>% group_by(year(pc_or_oc_diag_dat)) %>% summarise(n = n()) # no lines?
+debug_ac <- nrow(cohort_any_acute_covid_recorded) # any lines?
 
 write.csv(debug_oc, 'output/debug_oc.csv')
 
