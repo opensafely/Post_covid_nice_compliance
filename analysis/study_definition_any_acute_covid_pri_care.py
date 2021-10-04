@@ -23,6 +23,8 @@ study = StudyDefinition(
     population=patients.satisfying(
         """
         one_practice
+        AND
+        (age_majority > 17)
         """, 
         has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = "2019-02-01"),
         one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
