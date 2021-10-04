@@ -15,14 +15,6 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
                                               patient_id = col_double()),
                                             na = c("", "NA", "0"))
 
-#generate number of NAs
-#debug_ac <- cohort_any_acute_covid_recorded %>% is.na() %>% colSums() 
-#debug_ac <- map(cohort_any_acute_covid_recorded, class)
-#debug_ac <- cohort_any_acute_covid_recorded %>% group_by(year(acute_diag_dat)) %>% summarise(n = n()) # no lines
-debug_ac <- tibble(nrow(cohort_any_acute_covid_recorded)) # any lines?
-
-write.csv(debug_ac, 'output/debug_ac.csv')
-
 Rec_1_1_denom <- nrow(cohort_any_acute_covid_recorded)
 Rec_1_1_num <- sum((cohort_any_acute_covid_recorded$advice_given - cohort_any_acute_covid_recorded$acute_diag_dat > 0), na.rm = TRUE)
 Rec_1_1_ratio <- Rec_1_1_num / Rec_1_1_denom
@@ -73,12 +65,6 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                            patient_id = col_double()),
                                          na = c("", "NA", "0"))
 
-#debug_oc <- cohort_ongoing_or_post_covid %>% is.na() %>% colSums()
-#debug_oc <- map(cohort_ongoing_or_post_covid, class)
-#debug_oc <- cohort_ongoing_or_post_covid %>% group_by(year(pc_or_oc_diag_dat)) %>% summarise(n = n()) # no lines?
-debug_oc <- tibble(nrow(cohort_ongoing_or_post_covid)) # any lines?
-
-write.csv(debug_oc, 'output/debug_oc.csv')
 
 Rec_2_4_denom <- nrow(cohort_ongoing_or_post_covid)
 Rec_2_4_num <- cohort_ongoing_or_post_covid %>% filter(discussion_about_daily_living > ymd("20190101")) %>% nrow()
