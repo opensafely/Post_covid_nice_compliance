@@ -76,7 +76,7 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
 #debug_oc <- cohort_ongoing_or_post_covid %>% is.na() %>% colSums()
 #debug_oc <- map(cohort_ongoing_or_post_covid, class)
 #debug_oc <- cohort_ongoing_or_post_covid %>% group_by(year(pc_or_oc_diag_dat)) %>% summarise(n = n()) # no lines?
-debug_ac <- tibble(nrow(cohort_any_acute_covid_recorded)) # any lines?
+debug_oc <- tibble(nrow(cohort_ongoing_or_post_covid)) # any lines?
 
 write.csv(debug_oc, 'output/debug_oc.csv')
 
