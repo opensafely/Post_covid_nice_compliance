@@ -18,7 +18,7 @@ study = StudyDefinition(
     },
 
     #pandemic start
-    start_date = "2020-02-01"
+    start_date = "2020-02-01",
 
     #set index date as first march (right censor)
     index_date = "2021-06-01",
