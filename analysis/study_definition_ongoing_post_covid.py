@@ -10,6 +10,7 @@ from cohortextractor import (
 from codelists import *
 
 start_date = "2019-02-01"
+end_date = "2021-06-01"
 
 study = StudyDefinition(
     
@@ -26,7 +27,7 @@ study = StudyDefinition(
                                                      find_first_match_in_period = True,
                                                      returning = "date",
                                                      date_format = "YYYY-MM-DD",
-                                                     return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                     return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                              "rate": "uniform"}, 
                                                     ),
 
@@ -37,8 +38,8 @@ study = StudyDefinition(
                                    AND
                                    (age_majority >= 18)
                                    """, 
-                                   has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2020-06-01"),
-                                   one_practice = patients.registered_with_one_practice_between("2019-02-01", "2020-06-01"),
+                                   has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = end_date),
+                                   one_practice = patients.registered_with_one_practice_between(start_date, end_date),
                                    age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
                                    has_gp_appt_post_diag = patients.with_gp_consultations(on_or_after = "pc_or_oc_diag_dat", returning = "binary_flag")
     ),
@@ -64,7 +65,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -73,7 +74,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -83,7 +84,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -92,7 +93,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -110,7 +111,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -121,7 +122,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -130,7 +131,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -139,7 +140,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -149,7 +150,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -158,7 +159,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -167,7 +168,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -176,7 +177,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -185,7 +186,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -194,7 +195,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -203,7 +204,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -212,7 +213,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -221,7 +222,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -230,7 +231,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -239,7 +240,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -249,7 +250,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
                                                                                     
@@ -258,7 +259,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -268,7 +269,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
                                                                                     
@@ -277,7 +278,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -287,7 +288,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -296,7 +297,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -305,7 +306,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
 
@@ -314,7 +315,7 @@ study = StudyDefinition(
                                                             between = ["pc_or_oc_diag_dat", "index_date"],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     )    
 

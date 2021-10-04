@@ -20,9 +20,6 @@ study = StudyDefinition(
         "incidence": 0.95,
     },
 
-    #set index date as first march (right censor)
-    index_date = "2021-06-01",
-
     population=patients.satisfying(
         """
         one_practice
@@ -31,8 +28,8 @@ study = StudyDefinition(
         AND
         has_acute_covid
         """, 
-        has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = "2019-02-01"),
-        one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
+        has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = start_date),
+        one_practice = patients.registered_with_one_practice_between(start_date, end_date),
         age_majority = patients.age_as_of("acute_diag_dat")
     ),
     
@@ -40,7 +37,7 @@ study = StudyDefinition(
                                                      find_first_match_in_period = True,
                                                      returning = "date",
                                                      date_format = "YYYY-MM-DD",
-                                                     return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                     return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                             "rate": "uniform"}, 
                                                     ),
 
@@ -63,7 +60,7 @@ study = StudyDefinition(
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
                                                                 returning = "date",
-                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                                return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                             "rate": "uniform"}),
 
     interpreter_needed = patients.with_these_clinical_events(interpreter_needed,   #checked
@@ -71,7 +68,7 @@ study = StudyDefinition(
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
                                                                 returning = "date",
-                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                                return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                             "rate": "uniform"}),                                                 
     
     interpreter_booked = patients.with_these_clinical_events(interpreter_booked,   #checked
@@ -79,7 +76,7 @@ study = StudyDefinition(
                                                                 on_or_after = "acute_diag_dat",
                                                                 date_format = "YYYY-MM-DD",
                                                                 returning = "date",
-                                                                return_expectations = {"date": {"earliest":"2019-02-01", "latest":"2021-06-01"},
+                                                                return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                             "rate": "uniform"}),      
 
     )
