@@ -28,7 +28,7 @@ study = StudyDefinition(
                                                                             "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("one_practice AND has_acute_covid", 
+    population=patients.satisfying("""one_practice AND has_acute_covid""", 
                                     has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, returning = "binary_flag"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
                                     age_majority = patients.age_as_of("acute_diag_dat")
