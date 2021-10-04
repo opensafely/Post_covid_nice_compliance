@@ -17,9 +17,6 @@ study = StudyDefinition(
         "incidence": 0.95,
     },
 
-    #pandemic start
-    start_date = "2020-02-01",
-
     #set index date as first march (right censor)
     index_date = "2021-06-01",
 
@@ -27,8 +24,8 @@ study = StudyDefinition(
         """
         has_acute_covid
         """, 
-        has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = start_date),
-        one_practice = patients.registered_with_one_practice_between(start_date, index_date),
+        has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = "2019-02-01"),
+        one_practice = patients.registered_with_one_practice_between("2019-02-01", index_date),
         age_majority = patients.age_as_of("acute_diag_dat")
     ),
     
