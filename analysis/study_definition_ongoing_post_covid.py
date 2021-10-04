@@ -28,10 +28,10 @@ study = StudyDefinition(
                                                                              "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("has_pc AND one_practice", 
+    population=patients.satisfying("one_practice AND age_majority", 
                                     has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2020-06-01"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2020-06-01"),
-                                    #age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
+                                    age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
                                     has_gp_appt_post_diag = patients.with_gp_consultations(on_or_after = "pc_or_oc_diag_dat", returning = "binary_flag")
     ),
     
