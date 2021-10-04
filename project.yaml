@@ -17,11 +17,17 @@ actions:
       highly_sensitive:
         cohort: output/input_ongoing_post_covid.csv
 
+  debug_cohort:
+    run: r:latest analysis/debug_script.R
+    needs: [generate_acute_cohort, generate_og_pc_cohort]
+    outputs:
+      moderately_sensitive:
+        debug_oc: output/debug_oc.csv
+        debug_ac: output/debug_ac.csv
+
   describe:
     run: r:latest analysis/report.R
     needs: [generate_acute_cohort, generate_og_pc_cohort]
     outputs:
       moderately_sensitive:
         pc_counts: output/ratios.csv
-        debug_oc: output/debug_oc.csv
-        debug_ac: output/debug_ac.csv
