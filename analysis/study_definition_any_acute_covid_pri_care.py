@@ -17,9 +17,21 @@ study = StudyDefinition(
         "incidence": 0.95,
     },
 
+    #pandemic start
+    start_date = "2020-02-01"
+
     #set index date as first march (right censor)
     index_date = "2021-06-01",
 
+    population=patients.satisfying(
+        """
+        has_acute_covid
+        """, 
+        has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = start_date),
+        one_practice = patients.registered_with_one_practice_between(start_date, index_date),
+        age_majority = patients.age_as_of("acute_diag_dat")
+    ),
+    
     acute_diag_dat = patients.with_these_clinical_events(acute_covid_codes,
                                                      find_first_match_in_period = True,
                                                      returning = "date",
@@ -28,12 +40,6 @@ study = StudyDefinition(
                                                                             "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("""one_practice AND has_acute_covid""", 
-                                    has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, returning = "binary_flag"),
-                                    one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
-                                    age_majority = patients.age_as_of("acute_diag_dat")
-    ),
-    
     age_at_diag=patients.age_as_of(
         "acute_diag_dat",
         return_expectations={"int": {"distribution": "population_ages"}}
