@@ -10,15 +10,15 @@ from cohortextractor import (
 from codelists import *
 
 study = StudyDefinition(
-    
-    #set index date as first march (right censor)
-    index_date = "2021-06-01",
 
     default_expectations={
         "date": {"earliest": "1900-01-01", "latest": "index_date"},
         "rate": "uniform",
         "incidence": 0.95,
     },
+
+    #set index date as first march (right censor)
+    index_date = "2021-06-01",
 
     acute_diag_dat = patients.with_these_clinical_events(acute_covid_codes,
                                                      find_first_match_in_period = True,
@@ -28,7 +28,7 @@ study = StudyDefinition(
                                                                             "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("has_acute_covid AND one_practice AND age_majority > 17", 
+    population=patients.satisfying("has_acute_covid AND one_practice", 
                                     has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, returning = "binary_flag"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
                                     age_majority = patients.age_as_of("acute_diag_dat")

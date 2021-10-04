@@ -11,14 +11,14 @@ from codelists import *
 
 study = StudyDefinition(
     
-    #set index date as first of march (right censor)
-    index_date = "2021-03-01",
-
     default_expectations={
         "date": {"earliest": "1900-01-01", "latest": "index_date"},
         "rate": "uniform",
         "incidence": 0.95,
     },
+
+    #set index date as first of march (right censor)
+    index_date = "2021-03-01",
 
     pc_or_oc_diag_dat = patients.with_these_clinical_events(ongoing_and_pc_diag_codes,
                                                      find_first_match_in_period = True,
@@ -28,10 +28,10 @@ study = StudyDefinition(
                                                                              "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("has_pc AND one_practice AND age_majority > 17 AND has_gp_appt_post_diag", 
+    population=patients.satisfying("has_pc AND one_practice AND has_gp_appt_post_diag", 
                                     has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = "2020-06-01"),
                                     one_practice = patients.registered_with_one_practice_between("2019-02-01", "2020-06-01"),
-                                    age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
+                                    #age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
                                     has_gp_appt_post_diag = patients.with_gp_consultations(on_or_after = "pc_or_oc_diag_dat", returning = "binary_flag")
     ),
     
