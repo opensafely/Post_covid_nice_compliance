@@ -15,7 +15,7 @@ end_date = "2021-06-01"
 study = StudyDefinition(
 
     default_expectations={
-        "date": {"earliest": "1900-01-01", "latest": "index_date"},
+        "date": {"earliest": "1900-01-01", "latest": "2021-06-01"},
         "rate": "uniform",
         "incidence": 0.95,
     },
