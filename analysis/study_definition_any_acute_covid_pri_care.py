@@ -10,6 +10,7 @@ from cohortextractor import (
 from codelists import *
 
 start_date = "2019-02-01"
+end_date = "2021-06-01"
 
 study = StudyDefinition(
 
@@ -26,7 +27,9 @@ study = StudyDefinition(
         """
         one_practice
         AND
-        (age_majority > 17)
+        (age_majority >= 18)
+        AND
+        has_acute_covid
         """, 
         has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = "2019-02-01"),
         one_practice = patients.registered_with_one_practice_between("2019-02-01", "2021-06-01"),
