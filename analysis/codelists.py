@@ -32,7 +32,8 @@ referral_dermatology = codelist_from_csv("codelists/user-rob_w-referral-to-derma
 referral_ent = codelist_from_csv("codelists/user-rob_w-referral-to-ent-service.csv", system = "snomed", column = "code")
 referral_inf_diseases = codelist_from_csv("codelists/user-rob_w-referral-to-infectious-diseases-service.csv", system = "snomed", column = "code")
 referral_pc_clinic = codelist_from_csv("codelists/user-rob_w-referral-to-post-covid-clinic.csv", system = "snomed", column = "code")
- 
+referral_social_worker = codelist_from_csv("codelists/user-rob_w-referral-to-social-worker.csv", system = "snomed", column = "code")
+
 #pysch variables
 risk_of_self_harm = codelist_from_csv("codelists/user-rob_w-risk-of-self-harm.csv", system = "snomed", column = "code")
 referral_psych = codelist_from_csv("codelists/user-rob_w-referral-to-iapt-programme-mental-health-team.csv", system = "snomed", column = "code")
