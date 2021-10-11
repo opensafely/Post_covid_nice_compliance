@@ -35,6 +35,7 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                            referral_ent = col_date(format = "%Y-%m-%d"),
                                            referral_inf_diseases = col_date(format = "%Y-%m-%d"),
                                            referral_pc_clinic = col_date(format = "%Y-%m-%d"),
+                                           referral_pc_clinic_counts = col_number(),
                                            risk_of_self_harm = col_date(format = "%Y-%m-%d"),
                                            mild_anxiety_or_depression = col_date(format = "%Y-%m-%d"),
                                            psych_referral = col_date(format = "%Y-%m-%d"),
@@ -51,9 +52,10 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                          na = c("", "NA", "0"))
 
 debug_ac_count <- tibble(nrow(cohort_any_acute_covid_recorded))
-write.csv(debug_ac_count, 'output/debug_ac_counts.csv')
+write_csv(debug_ac_count, 'output/debug_ac_counts.csv')
 
 debug_oc_count <- tibble(nrow(cohort_ongoing_or_post_covid)) 
-write.csv(debug_oc_count, 'output/debug_oc_counts.csv')
+write_csv(debug_oc_count, 'output/debug_oc_counts.csv')
 
-
+debug_referral_count <- cohort_ongoing_or_post_covid %>% summarise(ref_total = sum(referral_pc_clinic_counts, na.rm = TRUE))
+write_csv(debug_referral_count, 'output/debug_referral_count.csv')

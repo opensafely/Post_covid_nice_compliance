@@ -227,11 +227,17 @@ study = StudyDefinition(
 
     referral_pc_clinic = patients.with_these_clinical_events(referral_pc_clinic, 
                                                             find_first_match_in_period = True,
-                                                            #between = ["pc_or_oc_diag_dat", end_date],
+                                                            between = ["pc_or_oc_diag_dat", end_date],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
+                                                                                    ),
+                                                                                    
+    referral_pc_clinic_counts = patients.with_these_clinical_events(referral_pc_clinic, 
+                                                            between = ["pc_or_oc_diag_dat", end_date],
+                                                            returning = "number_of_matches_in_period",
+                                                            return_expectations = {"int": {"distribution": "normal", "mean":2, "stddev": 1}, "incidence":0.75},
                                                                                     ),
 
     referral_social_worker = patients.with_these_clinical_events(referral_social_worker, 
