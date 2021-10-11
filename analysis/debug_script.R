@@ -50,17 +50,10 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                            patient_id = col_double()),
                                          na = c("", "NA", "0"))
 
-#generate number of NAs
-#debug_ac <- cohort_any_acute_covid_recorded %>% is.na() %>% colSums() 
-#debug_ac <- map(cohort_any_acute_covid_recorded, class)
-#debug_ac <- cohort_any_acute_covid_recorded %>% group_by(year(acute_diag_dat)) %>% summarise(n = n()) # no lines
-debug_ac <- tibble(nrow(cohort_any_acute_covid_recorded)) # any lines?
-write.csv(debug_ac, 'output/debug_ac.csv')
+debug_ac_count <- tibble(nrow(cohort_any_acute_covid_recorded))
+write.csv(debug_ac_count, 'output/debug_ac_counts.csv')
+
+debug_oc_count <- tibble(nrow(cohort_ongoing_or_post_covid)) 
+write.csv(debug_oc_count, 'output/debug_oc_counts.csv')
 
 
-
-#debug_oc <- cohort_ongoing_or_post_covid %>% is.na() %>% colSums()
-#debug_oc <- map(cohort_ongoing_or_post_covid, class)
-#debug_oc <- cohort_ongoing_or_post_covid %>% group_by(year(pc_or_oc_diag_dat)) %>% summarise(n = n()) # no lines?
-debug_oc <- tibble(nrow(cohort_ongoing_or_post_covid)) # any lines?
-write.csv(debug_oc, 'output/debug_oc.csv')

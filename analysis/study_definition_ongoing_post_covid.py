@@ -32,9 +32,6 @@ study = StudyDefinition(
                                    has_pc
                                    """, 
                                    has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = end_date)
-                                   #,one_practice = patients.registered_with_one_practice_between(start_date, end_date),
-                                   #,age_majority = patients.age_as_of("pc_or_oc_diag_dat"),
-                                   #,has_gp_appt_post_diag = patients.with_gp_consultations(on_or_after = "pc_or_oc_diag_dat", returning = "binary_flag")
     ),
     
     age_at_diag=patients.age_as_of(
@@ -230,7 +227,7 @@ study = StudyDefinition(
 
     referral_pc_clinic = patients.with_these_clinical_events(referral_pc_clinic, 
                                                             find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_dat", end_date],
+                                                            #between = ["pc_or_oc_diag_dat", end_date],
                                                             returning = "date",
                                                             date_format = "YYYY-MM-DD",
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
