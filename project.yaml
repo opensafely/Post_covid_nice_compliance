@@ -31,7 +31,7 @@ actions:
         debug_oc: output/debug_oc_counts.csv
         debug_ac: output/debug_ac_counts.csv
         debug_all_counts: output/debug_all_counts.csv
-        debug_all_crosstab: output/debug_all_crosstab.csv
+        debug_all_crosstab: output/debug_all_diag_refer_crosstab.csv
 
   describe:
     run: r:latest analysis/report.R
