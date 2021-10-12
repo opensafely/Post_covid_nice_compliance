@@ -51,6 +51,15 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                            patient_id = col_double()),
                                          na = c("", "NA", "0"))
 
+cohort_all <- read_csv('output/input_all.csv',
+                       col_types = cols(.default = col_date())
+)
+
+debug_all_counts <- cohort_all %>% summarise(across(.fns = ~sum(!is.na(.x))))
+debug_all_crosstab <- table(!is.na(cohort_all$diag_any_lc_diag), !is.na(cohort_all$referral_pc_clinic))
+write_csv(debug_all_counts, 'output/debug_all_counts.csv')
+write.table(debug_all_crosstab, 'output/debug_diag_referral_crosstab.csv', sep = ",")
+
 debug_ac_count <- tibble(nrow(cohort_any_acute_covid_recorded))
 write_csv(debug_ac_count, 'output/debug_ac_counts.csv')
 

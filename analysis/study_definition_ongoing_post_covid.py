@@ -28,11 +28,7 @@ study = StudyDefinition(
                                                                              "rate": "uniform"}, 
                                                     ),
 
-    population=patients.satisfying("""
-                                   has_pc
-                                   """, 
-                                   has_pc = patients.with_these_clinical_events(ongoing_and_pc_diag_codes, on_or_before = end_date)
-    ),
+    population = patients.with_these_clinical_events(ongoing_and_pc_diag_codes,on_or_before = end_date),
     
     age_at_diag=patients.age_as_of(
         "pc_or_oc_diag_dat",
@@ -43,7 +39,6 @@ study = StudyDefinition(
                                                 returning="pseudo_id",
                                                 return_expectations={"rate" : "universal", "int" : {"distribution":"normal", "mean":1500, "stddev":50}}),
 
-    #commented out until prac_id works
     prac_msoa = patients.registered_practice_as_of("pc_or_oc_diag_dat",
                                                     returning='msoa',
                                                     return_expectations={"rate":"universal", "category": {"ratios" : {'msoa1':0.5, 'msoa2':0.5}}}

@@ -16,20 +16,26 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/input_ongoing_post_covid.csv
+        
+  generate_cohort_all:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_all
+    outputs:
+      highly_sensitive:
+        cohort: output/input_all.csv
 
   debug_cohort:
     run: r:latest analysis/debug_script.R
-    needs: [generate_acute_cohort, generate_og_pc_cohort]
+    needs: [generate_acute_cohort, generate_og_pc_cohort, generate_cohort_all]
     outputs:
       moderately_sensitive:
         debug_oc: output/debug_oc_counts.csv
         debug_ac: output/debug_ac_counts.csv
-        debuc_debug_referral_count: output/debug_referral_count.csv
+        debug_all_counts: output/debug_all_counts.csv
+        debug_all_crosstab: output/debug_all_crosstab.csv
 
   describe:
     run: r:latest analysis/report.R
-    needs: [generate_acute_cohort, generate_og_pc_cohort]
+    needs: [generate_acute_cohort, generate_og_pc_cohort, generate_cohort_all]
     outputs:
       moderately_sensitive:
         pc_counts: output/ratios.csv
-        
