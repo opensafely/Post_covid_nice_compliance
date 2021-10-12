@@ -124,14 +124,14 @@ Rec_5_8_denom <- cohort_ongoing_or_post_covid %>% filter(age_at_diag < 19) %>% n
 Rec_5_8_num <- cohort_ongoing_or_post_covid %>% filter(age_at_diag < 19, referral_paed > ymd("20190101")) %>% nrow()
 Rec_5_8 <- Rec_5_8_num / Rec_5_8_denom
 
-og_ref_rates_by_month <-
+ref_rates <-
   cohort_ongoing_or_post_covid %>%
     mutate("was_referred" = !is.na(cohort_ongoing_or_post_covid$referral_pc_clinic)) %>% 
     group_by(month = floor_date(pc_or_oc_diag_dat, "month")) %>% 
     summarise(ref_rate = sum(was_referred, na.rm = TRUE)/sum(!is.na(pc_or_oc_diag_dat), na.rm = TRUE))
   
-write_csv(og_ref_rates_by_month, "ref_rates_by_month.csv")
-rm(og_ref_rates_by_month)
+write_csv(ref_rates, "ref_rates_by_month.csv")
+rm(ref_rates)
 
 #4 long covid rates by practice - need 
 
