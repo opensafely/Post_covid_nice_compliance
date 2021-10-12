@@ -130,7 +130,7 @@ ref_rates <-
     group_by(month = floor_date(pc_or_oc_diag_dat, "month")) %>% 
     summarise(ref_rate = sum(was_referred, na.rm = TRUE)/sum(!is.na(pc_or_oc_diag_dat), na.rm = TRUE))
   
-write_csv(ref_rates, "ref_rates_by_month.csv")
+write_csv(ref_rates, "output/ref_rates_by_month.csv")
 rm(ref_rates)
 
 #4 long covid rates by practice - need 
