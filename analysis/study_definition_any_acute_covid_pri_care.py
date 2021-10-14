@@ -25,8 +25,6 @@ study = StudyDefinition(
         has_acute_covid
         """, 
         has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = start_date)
-        #,one_practice = patients.registered_with_one_practice_between(start_date, end_date),
-        #,age_majority = patients.age_as_of("acute_diag_dat")
     ),
     
     acute_diag_dat = patients.with_these_clinical_events(acute_covid_codes,
