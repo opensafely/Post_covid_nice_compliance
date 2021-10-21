@@ -23,7 +23,7 @@ actions:
       highly_sensitive:
         cohort: output/input_all.csv
 
-  debug_cohort:
+  debug_cohorts:
     run: r:latest analysis/debug_script.R
     needs: [generate_acute_cohort, generate_og_pc_cohort, generate_cohort_all]
     outputs:
@@ -33,10 +33,17 @@ actions:
         debug_all_counts: output/debug_all_counts.csv
         debug_all_crosstab: output/debug_all_diag_refer_crosstab.csv
 
-  describe:
-    run: r:latest analysis/report.R
+  compliance_ratios:
+    run: r:latest analysis/guideline_compliance_ratios.R
     needs: [generate_acute_cohort, generate_og_pc_cohort, generate_cohort_all]
     outputs:
       moderately_sensitive:
         pc_counts: output/ratios.csv
         ref_rates: output/ref_rates_by_month.csv
+        
+  descriptive_coding_script:
+    run: r:latest analysis/descriptive_coding_script.R
+    needs: [generate_acute_cohort, generate_og_pc_cohort]
+    outputs:
+      moderately_sensitive:
+        test_op: output/test_op.csv

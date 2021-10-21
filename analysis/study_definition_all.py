@@ -24,6 +24,15 @@ study = StudyDefinition(
     population=patients.registered_as_of("2020-11-01"),
     
     #diagnosis variables
+    diag_acute_covid = patients.with_these_clinical_events(acute_covid_codes,
+                                                            find_first_match_in_period = True,
+                                                            #between = ["pc_or_oc_diag_dat", end_date],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                                                    "rate": "uniform"}
+                                                                                    ),           
+    
     diag_any_lc_diag = patients.with_these_clinical_events(ongoing_and_pc_diag_codes,
                                                             find_first_match_in_period = True,
                                                             #between = ["pc_or_oc_diag_dat", end_date],
@@ -32,7 +41,25 @@ study = StudyDefinition(
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),                                                                                
-                                                                                    
+    
+    diag_ongoing_covid = patients.with_these_clinical_events(ongoing_covid_code,
+                                                            find_first_match_in_period = True,
+                                                            #between = ["pc_or_oc_diag_dat", end_date],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+
+    diag_post_covid = patients.with_these_clinical_events(pc_code,
+                                                            find_first_match_in_period = True,
+                                                            #between = ["pc_or_oc_diag_dat", end_date],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                                                    "rate": "uniform"}
+                                                                                    ),
+    
     #referral variables
     referral_pc_clinic = patients.with_these_clinical_events(referral_pc_clinic, 
                                                             find_first_match_in_period = True,
@@ -42,4 +69,8 @@ study = StudyDefinition(
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
+
+
+
+
 )
