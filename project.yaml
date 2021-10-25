@@ -43,7 +43,7 @@ actions:
         
   descriptive_coding_script:
     run: r:latest analysis/descriptive_coding_script.R
-    needs: [generate_acute_cohort, generate_og_pc_cohort]
+    needs: [generate_acute_cohort, generate_og_pc_cohort, generate_cohort_all]
     outputs:
       moderately_sensitive:
         test_op: output/test_op.csv
