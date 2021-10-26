@@ -24,6 +24,64 @@ time_acute_to_lc <- cohort %>%
   summarise(mean(diff_acute_to_og, na.rm = TRUE),
             mean(diff_acute_to_pc, na.rm = TRUE))
 
+#freq_table
+freq_sex <- cohort %>%
+  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
+                             "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
+                             "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
+  group_by(sex) %>% 
+  summarise(acute_covid = sum(has_diag_acute_covid),
+            ongoing_covid = sum(has_diag_og_covid),
+            post_covid = sum(has_diag_pc_covid)) %>% 
+  rename("Demographic" = sex) %>% 
+  mutate("Grouping" = "Sex")
+
+freq_region <- cohort %>%
+  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
+         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
+         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
+  group_by(region) %>% 
+  summarise(acute_covid = sum(has_diag_acute_covid),
+            ongoing_covid = sum(has_diag_og_covid),
+            post_covid = sum(has_diag_pc_covid)) %>% 
+  rename("Demographic" = region) %>% 
+  mutate("Grouping" = "region")
+
+
+freq_imd <- cohort %>%
+  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
+         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
+         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
+  group_by(imd) %>% 
+  summarise(acute_covid = sum(has_diag_acute_covid),
+            ongoing_covid = sum(has_diag_og_covid),
+            post_covid = sum(has_diag_pc_covid)) %>% 
+  rename("Demographic" = imd) %>% 
+  mutate("Grouping" = "IMD")
+
+freq_ethnicity <- cohort %>%
+  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
+         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
+         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
+  group_by(ethnicity) %>% 
+  summarise(acute_covid = sum(has_diag_acute_covid),
+            ongoing_covid = sum(has_diag_og_covid),
+            post_covid = sum(has_diag_pc_covid)) %>% 
+  rename("Demographic" = ethnicity) %>% 
+  mutate("Grouping" = "ethnicity")
+
+freq_age_band <- cohort %>%
+  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
+         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
+         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
+  group_by(age_band = cut(age, breaks = 10)) %>% 
+  summarise(acute_covid = sum(has_diag_acute_covid),
+            ongoing_covid = sum(has_diag_og_covid),
+            post_covid = sum(has_diag_pc_covid)) %>% 
+  rename("Demographic" = age_band) %>% 
+  mutate("Grouping" = "Age Band")
+
+freq_table <- bind_rows(freq_age_band, freq_ethnicity, freq_imd, freq_region, freq_sex)
 
 #alluvial datasets
 alluvial_ac_ogpc <- cohort %>% 
@@ -48,6 +106,8 @@ ggplot(as.data.frame(alluvial_ac_ogpc), aes(y=freq,
   scale_x_discrete(limits = c("has_diag_acute_covid", "has_diag_og_covid", "has_diag_pc_covid"), expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) + 
   ggtitle("Patient flow from acute to ongoing and post covid conditions")
+
+ggsave("output/ac_to_lc.png")
 
 #Ongoing to self-care / community / pc / 
 alluvial_og_destination <- cohort %>% 
@@ -77,6 +137,8 @@ ggplot(as.data.frame(alluvial_og_destination), aes(y=freq,
   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) + 
   ggtitle("Patient flow from ongoing covid to referral destinations") 
 
+ggsave("output/og_destination.png")
+
 #Ongoing to self-care / community / pc / 
 alluvial_pc_destination <- cohort %>% 
   mutate("has_diag_post_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid"),
@@ -104,5 +166,7 @@ ggplot(as.data.frame(alluvial_pc_destination), aes(y=freq,
   scale_x_discrete(limits = c("has_diag_post_covid", "referral_self_care", "referral_community_care", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) +
   ggtitle("Patient flow from post covid to referral destinations") 
+
+ggsave("output/pc_destinations.png")
 
 write_csv(time_acute_to_lc, "mean diff to days.csv")
