@@ -169,4 +169,5 @@ ggplot(as.data.frame(alluvial_pc_destination), aes(y=freq,
 
 ggsave("output/pc_destinations.png")
 
-write_csv(time_acute_to_lc, "mean diff to days.csv")
+write_csv(time_acute_to_lc, "output/mean_diff_to_days.csv")
+write_csv(freq_table, "output/freq_table.csv")

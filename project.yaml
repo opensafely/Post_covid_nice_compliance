@@ -46,4 +46,8 @@ actions:
     needs: [generate_acute_cohort, generate_og_pc_cohort, generate_cohort_all]
     outputs:
       moderately_sensitive:
-        test_op: output/test_op.csv
+        ac_to_lc: output/ac_to_lc.png
+        og_dest: output/og_destination.png
+        pc_dest: output/pc_destinations.png
+        time_acute_to_lc: output/mean_diff_to_days.csv
+        freq_table: output/freq_table.csv
