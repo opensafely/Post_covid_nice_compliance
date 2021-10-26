@@ -1,0 +1,2 @@
+"mean(diff_acute_to_og, na.rm = TRUE)","mean(diff_acute_to_pc, na.rm = TRUE)"
+-1.48216264125859,-6.92260850310009

@@ -185,6 +185,12 @@
       "url": "https://codelists.opensafely.org/codelist/user/rob_w/referral-to-social-worker/5221cc10/",
       "downloaded_at": "2021-10-05 09:54:18.826418Z",
       "sha": "de12e94c83d5e8a141732fbc99f433b771c41bc5"
+    },
+    "opensafely-ethnicity.csv": {
+      "id": "opensafely/ethnicity/746e4c98",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity/746e4c98/",
+      "downloaded_at": "2021-10-26 08:54:15.319304Z",
+      "sha": "3d2f3998b71863a80b24d60f6f4282e14191ae13"
     }
   }
 }

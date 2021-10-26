@@ -13,7 +13,7 @@ ongoing_covid_code = codelist_from_csv("codelists/user-rob_w-ongoing-effects-of-
 pc_code = codelist_from_csv("codelists/user-rob_w-post-covid-codelist.csv", system = "snomed", column = "code")
 ongoing_and_pc_diag_codes = combine_codelists(ongoing_covid_code, pc_code)
 
-# #diagnostics
+#diagnostics
 diagnostic_bloods = codelist_from_csv("codelists/user-rob_w-diagnostic-blood-test.csv", system = "snomed", column = "code")
 diagnostic_bp_test = codelist_from_csv("codelists/user-rob_w-lying-and-standing-blood-pressure-readings.csv", system = "snomed", column = "code")
 diagnostic_sit_stand = codelist_from_csv("codelists/user-rob_w-assessment-using-1-min-sit-to-stand-test.csv", system = "snomed", column = "code")
@@ -50,3 +50,6 @@ advice_given = codelist_from_csv("codelists/user-rob_w-advice-about-covid-19-cod
 interpreter_needed = codelist_from_csv("codelists/user-rob_w-interpreter-needed.csv", system = "snomed", column = "code")
 interpreter_booked = codelist_from_csv("codelists/user-rob_w-interpreter-booked-or-used.csv", system = "snomed", column = "code")
 discussion_about_daily_living = codelist_from_csv("codelists/user-rob_w-discussion-about-daily-living.csv", system = "snomed", column = "code")
+
+#demographics
+ethnicity_codes = codelist_from_csv("codelists/opensafely-ethnicity.csv", system="ctv3", column="Code", category_column="Grouping_6")

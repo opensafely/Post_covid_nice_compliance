@@ -6,7 +6,13 @@ library(ggalluvial)
 
 # Start with time gap between acute and long covid diagnosis
 cohort <- read_csv(file = "output/input_all.csv",
-                   col_types = cols(patient_id = col_number(), .default = col_date())
+                   col_types = cols(patient_id = col_number(),
+                                    age = col_number(),
+                                    region = col_factor(),
+                                    sex = col_factor(),
+                                    imd = col_factor(),
+                                    ethnicity = col_factor(),
+                                    .default = col_date())
                    )
 
 cohort <- cohort %>% 
@@ -24,7 +30,8 @@ alluvial_ac_ogpc <- cohort %>%
   mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ "Acute Covid", TRUE ~ "No Acute Covid"),
          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid")) %>% 
-  group_by(has_diag_acute_covid,
+  group_by(sex, 
+           has_diag_acute_covid,
            has_diag_og_covid,
            has_diag_pc_covid) %>% 
   summarise(freq = n()) %>% 
