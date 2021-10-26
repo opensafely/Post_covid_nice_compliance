@@ -7,7 +7,7 @@ library(ggalluvial)
 # Start with time gap between acute and long covid diagnosis
 cohort <- read_csv(file = "output/input_all.csv",
                    col_types = cols(patient_id = col_number(),
-                                    age = col_number(),
+                                    age_group = col_factor(),
                                     region = col_factor(),
                                     sex = col_factor(),
                                     imd = col_factor(),
@@ -74,11 +74,11 @@ freq_age_band <- cohort %>%
   mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
-  group_by(age_band = cut(age, breaks = 10)) %>% 
+  group_by(age_group) %>% 
   summarise(acute_covid = sum(has_diag_acute_covid),
             ongoing_covid = sum(has_diag_og_covid),
             post_covid = sum(has_diag_pc_covid)) %>% 
-  rename("Demographic" = age_band) %>% 
+  rename("Demographic" = age_group) %>% 
   mutate("Grouping" = "Age Band")
 
 freq_table <- bind_rows(freq_age_band, freq_ethnicity, freq_imd, freq_region, freq_sex)
