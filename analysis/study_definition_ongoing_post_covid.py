@@ -8,6 +8,7 @@ from cohortextractor import (
 )
 
 from codelists import *
+from health_inequalities_var import health_inequalities
 
 start_date = "2019-02-01"
 end_date = "2021-10-01"
@@ -19,6 +20,8 @@ study = StudyDefinition(
         "rate": "uniform",
         "incidence": 0.95,
     },
+
+    index_date= "2019-02-01",
 
     pc_or_oc_diag_dat = patients.with_these_clinical_events(ongoing_and_pc_diag_codes,
                                                      find_first_match_in_period = True,
@@ -317,6 +320,8 @@ study = StudyDefinition(
                                                             date_format = "YYYY-MM-DD",
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
-                                                                                    )    
+                                                                                    ),
 
+    # Import common health inequalities variables (defined in another script)
+    **health_inequalities
 )
