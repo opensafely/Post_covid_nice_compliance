@@ -174,4 +174,17 @@ write_csv(freq_table, "output/freq_table.csv")
 
 #add lc and referral codes through time
 
-line_graph_df <- cohort %>% select(-diag_acute_covid, -diag_any_lc_diag) %>% pivot_longer(diag_post_covid)
+line_graph_df <- cohort %>% 
+  select(-diag_acute_covid, -diag_any_lc_diag) %>%
+  pivot_longer(cols = starts_with('referral')|starts_with('diag'), names_to = "code", names_repair = "minimal") %>% 
+  group_by(code, month = floor_date(value, unit = "month")) %>% 
+  summarise(n= n()) %>% 
+  filter(!is.na(month), n > 10)
+
+line_graph_df %>% 
+  ggplot(aes(x= month, y= n, color = code)) + 
+  geom_line()+
+  theme_minimal() + 
+  labs(title= "Long Covid diagnosis and referral codes through time")
+
+ggsave("output/coding_through_time.png")
