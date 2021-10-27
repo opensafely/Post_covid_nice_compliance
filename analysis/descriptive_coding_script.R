@@ -171,3 +171,7 @@ ggsave("output/pc_destinations.png")
 
 write_csv(time_acute_to_lc, "output/mean_diff_to_days.csv")
 write_csv(freq_table, "output/freq_table.csv")
+
+#add lc and referral codes through time
+
+line_graph_df <- cohort %>% select(-diag_acute_covid, -diag_any_lc_diag) %>% pivot_longer(diag_post_covid)
