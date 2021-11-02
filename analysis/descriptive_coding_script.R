@@ -82,18 +82,18 @@ alluvial_ac_ogpc <- cohort %>%
   filter(freq > 6)
 
 #Acute to ongoing / post covid
-ggplot(as.data.frame(alluvial_ac_ogpc), aes(y=freq, 
-                     axis1=has_diag_acute_covid,
-                     axis2=has_diag_og_covid,
-                     axis3=has_diag_pc_covid)) +
-  geom_alluvium(aes(fill = has_diag_acute_covid)) + 
-  geom_stratum(width = 1/12, fill = "black", color = "grey") + 
-  geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-  scale_x_discrete(limits = c("has_diag_acute_covid", "has_diag_og_covid", "has_diag_pc_covid"), expand = c(0.05, 0.05)) + 
-  scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) + 
-  ggtitle("Patient flow from acute to ongoing and post covid conditions")
-
-ggsave("output/ac_to_lc.png")
+# ggplot(as.data.frame(alluvial_ac_ogpc), aes(y=freq, 
+#                      axis1=has_diag_acute_covid,
+#                      axis2=has_diag_og_covid,
+#                      axis3=has_diag_pc_covid)) +
+#   geom_alluvium(aes(fill = has_diag_acute_covid)) + 
+#   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
+#   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
+#   scale_x_discrete(limits = c("has_diag_acute_covid", "has_diag_og_covid", "has_diag_pc_covid"), expand = c(0.05, 0.05)) + 
+#   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) + 
+#   ggtitle("Patient flow from acute to ongoing and post covid conditions")
+# 
+# ggsave("output/ac_to_lc.png")
 
 #Ongoing to self-care / community / pc / 
 alluvial_og_destination <- cohort %>% 
