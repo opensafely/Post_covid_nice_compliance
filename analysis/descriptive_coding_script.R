@@ -16,7 +16,6 @@ generate_freq_tables <- function(cohort_df, grouping_var){
               ongoing_covid = sum(!is.na(diag_ongoing_covid)),
               post_covid = sum(!is.na(diag_post_covid)),
               refer_post_covid_clinic = sum(!is.na(referral_pc_clinic)),
-              refer_primary_care = sum(!is.na(referral_primary_care_codes)),
               refer_self_care = sum(!is.na(referral_self_care)),
               mean_days_acute_to_og = mean(diff_acute_to_og, na.rm = TRUE),
               mean_days_acute_to_pc = mean(diff_acute_to_pc, na.rm = TRUE)
@@ -58,14 +57,15 @@ diag_referral_tab <- cohort %>%
   pivot_wider(names_from = referral, values_from = n, names_prefix = "referral_") %>% 
   rename()
   
-write_csv(diag_referral_tab, "diag_v_referral.csv")
+write_csv(diag_referral_tab, "output/diag_v_referral.csv")
 
 #demographic_variables
 demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
 
 #freq_table
 freq_table <- demo_vars %>% 
-  map(~generate_freq_tables(grouping_var = .data[[.x]], cohort_df = cohort)) %>%
+  map(~generate_freq_tables(grouping_var = .data[[.x]],
+                            cohort_df = cohort)) %>%
   bind_rows() %>%
   filter(across(where(is.numeric), ~ . >6))
 
