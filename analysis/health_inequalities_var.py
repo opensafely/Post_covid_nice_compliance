@@ -52,12 +52,12 @@ health_inequalities = dict(
             "rate": "universal",
             "category": {
                 "ratios": {
-                    "0": 0.05,
-                    "1": 0.19,
+                    "Unknown": 0.05,
+                    "1 (Most Deprived)": 0.19,
                     "2": 0.19,
                     "3": 0.19,
                     "4": 0.19,
-                    "5": 0.19,
+                    "5 (Least Deprived)": 0.19,
                 }
             },
         },
