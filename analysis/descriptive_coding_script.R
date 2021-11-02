@@ -27,21 +27,23 @@ time_acute_to_lc <- cohort %>%
 #freq_table
 freq_sex <- cohort %>%
   mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
-                             "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
-                             "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
+         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
+         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
   group_by(sex) %>% 
-  summarise(acute_covid = sum(has_diag_acute_covid),
+  summarise(total_patients = n(),
+            acute_covid = sum(has_diag_acute_covid),
             ongoing_covid = sum(has_diag_og_covid),
             post_covid = sum(has_diag_pc_covid)) %>% 
   rename("Demographic" = sex) %>% 
-  mutate("Grouping" = "Sex")
+  mutate("Grouping" = "Sex") 
 
 freq_region <- cohort %>%
   mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
   group_by(region) %>% 
-  summarise(acute_covid = sum(has_diag_acute_covid),
+  summarise(total_patients = n(),
+            acute_covid = sum(has_diag_acute_covid),
             ongoing_covid = sum(has_diag_og_covid),
             post_covid = sum(has_diag_pc_covid)) %>% 
   rename("Demographic" = region) %>% 
@@ -53,7 +55,8 @@ freq_imd <- cohort %>%
          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
   group_by(imd) %>% 
-  summarise(acute_covid = sum(has_diag_acute_covid),
+  summarise(total_patients = n(),
+            acute_covid = sum(has_diag_acute_covid),
             ongoing_covid = sum(has_diag_og_covid),
             post_covid = sum(has_diag_pc_covid)) %>% 
   rename("Demographic" = imd) %>% 
@@ -64,7 +67,8 @@ freq_ethnicity <- cohort %>%
          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
   group_by(ethnicity) %>% 
-  summarise(acute_covid = sum(has_diag_acute_covid),
+  summarise(total_patients = n(),
+            acute_covid = sum(has_diag_acute_covid),
             ongoing_covid = sum(has_diag_og_covid),
             post_covid = sum(has_diag_pc_covid)) %>% 
   rename("Demographic" = ethnicity) %>% 
@@ -75,13 +79,14 @@ freq_age_band <- cohort %>%
          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
   group_by(age_group) %>% 
-  summarise(acute_covid = sum(has_diag_acute_covid),
+  summarise(total_patients = n(),
+            acute_covid = sum(has_diag_acute_covid),
             ongoing_covid = sum(has_diag_og_covid),
             post_covid = sum(has_diag_pc_covid)) %>% 
   rename("Demographic" = age_group) %>% 
   mutate("Grouping" = "Age Band")
 
-freq_table <- bind_rows(freq_age_band, freq_ethnicity, freq_imd, freq_region, freq_sex)
+freq_table <- bind_rows(freq_age_band, freq_ethnicity, freq_imd, freq_region, freq_sex) %>% filter(across(where(is.numeric), ~ . >6))
 
 #alluvial datasets
 alluvial_ac_ogpc <- cohort %>% 
@@ -112,7 +117,7 @@ ggsave("output/ac_to_lc.png")
 #Ongoing to self-care / community / pc / 
 alluvial_og_destination <- cohort %>% 
   mutate("has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
-         "referral_self_care" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
+         "referral_yourcovidrecovery.nhs.uk" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
          "referral_community_care" = case_when(!is.na(referral_self_care) ~ "Community Care", TRUE ~ "No Community Care"),
          "referral_pc_clinic" = case_when(!is.na(referral_self_care) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
          ) %>% 
@@ -133,7 +138,7 @@ ggplot(as.data.frame(alluvial_og_destination), aes(y=freq,
   geom_alluvium(aes(fill = has_diag_og_covid)) + 
   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-  scale_x_discrete(limits = c("has_diag_og_covid", "referral_self_care", "referral_community_care", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
+  scale_x_discrete(limits = c("has_diag_og_covid", "referral_yourcovidrecovery.nhs.uk", "referral_community_care", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) + 
   ggtitle("Patient flow from ongoing covid to referral destinations") 
 
@@ -142,7 +147,7 @@ ggsave("output/og_destination.png")
 #Ongoing to self-care / community / pc / 
 alluvial_pc_destination <- cohort %>% 
   mutate("has_diag_post_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid"),
-         "referral_self_care" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
+         "referral_yourcovidrecovery.nhs.uk" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
          "referral_community_care" = case_when(!is.na(referral_self_care) ~ "Community Care", TRUE ~ "No Community Care"),
          "referral_pc_clinic" = case_when(!is.na(referral_self_care) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
   ) %>% 
@@ -163,7 +168,7 @@ ggplot(as.data.frame(alluvial_pc_destination), aes(y=freq,
   geom_alluvium(aes(fill = has_diag_post_covid)) + 
   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-  scale_x_discrete(limits = c("has_diag_post_covid", "referral_self_care", "referral_community_care", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
+  scale_x_discrete(limits = c("has_diag_post_covid", "referral_yourcovidrecovery.nhs.uk", "referral_community_care", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) +
   ggtitle("Patient flow from post covid to referral destinations") 
 
@@ -181,10 +186,21 @@ line_graph_df <- cohort %>%
   summarise(n= n()) %>% 
   filter(!is.na(month), n > 10)
 
+#all diag & refer codes
 line_graph_df %>% 
   ggplot(aes(x= month, y= n, color = code)) + 
   geom_line()+
   theme_minimal() + 
   labs(title= "Long Covid diagnosis and referral codes through time")
 
+#remove ycr code for scale
+
+line_graph_df %>% 
+  filter(code != "referral_self_care") %>% 
+  ggplot(aes(x= month, y= n, color = code)) + 
+  geom_line()+
+  theme_minimal() + 
+  labs(title= "Long Covid diagnosis and referral codes through time")
+  
 ggsave("output/coding_through_time.png")
+ggsave("output/coding_through_time_noycr.png")

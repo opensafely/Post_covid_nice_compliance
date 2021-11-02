@@ -52,3 +52,4 @@ actions:
         time_acute_to_lc: output/mean_diff_to_days.csv
         freq_table: output/freq_table.csv
         codes_through_time: output/coding_through_time.png
+        codes_through_time_noycr: output/coding_through_time_noycr.png

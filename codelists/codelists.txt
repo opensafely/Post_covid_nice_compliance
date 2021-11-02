@@ -11,7 +11,7 @@ user/rob_w/lying-and-standing-blood-pressure-readings/6ded6838
 user/rob_w/chest-x-ray-code/54ddf503
 user/rob_w/management-in-community-care-code/22bf0e99
 user/rob_w/primary-care-management-code/0c625b5a
-user/rob_w/self-management-referral-codes-for-covid-recovery/7352e824
+user/rob_w/self-management-referral-codes-for-covid-recovery/2500574c
 user/rob_w/risk-of-self-harm/7605a81a
 user/rob_w/mild-anxiety-or-depression/78b86810
 user/rob_w/referral-to-iapt-programme-mental-health-team/2d8a0e71

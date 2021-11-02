@@ -24,7 +24,8 @@ study = StudyDefinition(
     index_date = "2020-11-01",
 
     #keep to Alex's date (2020-11-01) to sense check outputs for now 
-    population = patients.registered_as_of("index_date"),
+    population =patients.satisfying("registered AND (sex = 'M' OR sex = 'F')",
+                                    registered = patients.registered_as_of("index_date")),
 
     # Import common health inequalities variables (defined in another script)   
     **health_inequalities,
