@@ -84,13 +84,4 @@ study = StudyDefinition(
                                                             date_format = "YYYY-MM-DD",
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
-                                                                                    ),
-    referral_primary_care_codes = patients.with_these_clinical_events(primary_care_codes, 
-                                                            find_first_match_in_period = True,
-                                                            #between = ["pc_or_oc_diag_dat", end_date],
-                                                            returning = "date",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
-                                                                                    "rate": "uniform"}
-                                                                                    )
-)
+                                                                                    ))

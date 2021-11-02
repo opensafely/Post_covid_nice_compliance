@@ -4,6 +4,32 @@ library(tidyverse)
 library(lubridate)
 library(ggalluvial)
 
+#function to generate frequency tables
+generate_freq_tables <- function(cohort_df, grouping_var){
+
+  grouping_var_name = names(cohort_df %>% select({{ grouping_var}} ))
+  
+  cohort_df %>% 
+    group_by({{ grouping_var }}) %>% 
+    summarise(total_patients = n(),
+              acute_covid = sum(!is.na(diag_acute_covid)),
+              ongoing_covid = sum(!is.na(diag_ongoing_covid)),
+              post_covid = sum(!is.na(diag_post_covid)),
+              refer_post_covid_clinic = sum(!is.na(referral_pc_clinic)),
+              refer_primary_care = sum(!is.na(referral_primary_care_codes)),
+              refer_self_care = sum(!is.na(referral_self_care)),
+              mean_days_acute_to_og = mean(diff_acute_to_og, na.rm = TRUE),
+              mean_days_acute_to_pc = mean(diff_acute_to_pc, na.rm = TRUE)
+              ) %>% 
+  rename("Group" = {{ grouping_var }}) %>% 
+  mutate("Demographic" = grouping_var_name) %>%   
+  select(Demographic,
+          everything())
+  
+}
+
+
+
 # Start with time gap between acute and long covid diagnosis
 cohort <- read_csv(file = "output/input_all.csv",
                    col_types = cols(patient_id = col_number(),
@@ -24,69 +50,24 @@ time_acute_to_lc <- cohort %>%
   summarise(mean(diff_acute_to_og, na.rm = TRUE),
             mean(diff_acute_to_pc, na.rm = TRUE))
 
+#2x2 referral_diag_table
+diag_referral_tab <- cohort %>% 
+  group_by("diag" = case_when(!is.na(diag_any_lc_diag) ~ "OG/PC Diagnosis Coded", TRUE ~ "No OG/PC Diagnosis Coded"),
+           "referral" = !(is.na(referral_pc_clinic) & is.na(referral_self_care))) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = referral, values_from = n, names_prefix = "referral_") %>% 
+  rename()
+  
+write_csv(diag_referral_tab, "diag_v_referral.csv")
+
+#demographic_variables
+demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
+
 #freq_table
-freq_sex <- cohort %>%
-  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
-         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
-         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
-  group_by(sex) %>% 
-  summarise(total_patients = n(),
-            acute_covid = sum(has_diag_acute_covid),
-            ongoing_covid = sum(has_diag_og_covid),
-            post_covid = sum(has_diag_pc_covid)) %>% 
-  rename("Demographic" = sex) %>% 
-  mutate("Grouping" = "Sex") 
-
-freq_region <- cohort %>%
-  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
-         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
-         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
-  group_by(region) %>% 
-  summarise(total_patients = n(),
-            acute_covid = sum(has_diag_acute_covid),
-            ongoing_covid = sum(has_diag_og_covid),
-            post_covid = sum(has_diag_pc_covid)) %>% 
-  rename("Demographic" = region) %>% 
-  mutate("Grouping" = "region")
-
-
-freq_imd <- cohort %>%
-  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
-         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
-         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
-  group_by(imd) %>% 
-  summarise(total_patients = n(),
-            acute_covid = sum(has_diag_acute_covid),
-            ongoing_covid = sum(has_diag_og_covid),
-            post_covid = sum(has_diag_pc_covid)) %>% 
-  rename("Demographic" = imd) %>% 
-  mutate("Grouping" = "IMD")
-
-freq_ethnicity <- cohort %>%
-  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
-         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
-         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
-  group_by(ethnicity) %>% 
-  summarise(total_patients = n(),
-            acute_covid = sum(has_diag_acute_covid),
-            ongoing_covid = sum(has_diag_og_covid),
-            post_covid = sum(has_diag_pc_covid)) %>% 
-  rename("Demographic" = ethnicity) %>% 
-  mutate("Grouping" = "ethnicity")
-
-freq_age_band <- cohort %>%
-  mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ 1, TRUE ~ 0),
-         "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ 1, TRUE ~ 0),
-         "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ 1, TRUE ~ 0)) %>% 
-  group_by(age_group) %>% 
-  summarise(total_patients = n(),
-            acute_covid = sum(has_diag_acute_covid),
-            ongoing_covid = sum(has_diag_og_covid),
-            post_covid = sum(has_diag_pc_covid)) %>% 
-  rename("Demographic" = age_group) %>% 
-  mutate("Grouping" = "Age Band")
-
-freq_table <- bind_rows(freq_age_band, freq_ethnicity, freq_imd, freq_region, freq_sex) %>% filter(across(where(is.numeric), ~ . >6))
+freq_table <- demo_vars %>% 
+  map(~generate_freq_tables(grouping_var = .data[[.x]], cohort_df = cohort)) %>%
+  bind_rows() %>%
+  filter(across(where(is.numeric), ~ . >6))
 
 #alluvial datasets
 alluvial_ac_ogpc <- cohort %>% 
@@ -194,7 +175,6 @@ line_graph_df %>%
   labs(title= "Long Covid diagnosis and referral codes through time")
 
 #remove ycr code for scale
-
 line_graph_df %>% 
   filter(code != "referral_self_care") %>% 
   ggplot(aes(x= month, y= n, color = code)) + 

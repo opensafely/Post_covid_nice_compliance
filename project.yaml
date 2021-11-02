@@ -53,3 +53,4 @@ actions:
         freq_table: output/freq_table.csv
         codes_through_time: output/coding_through_time.png
         codes_through_time_noycr: output/coding_through_time_noycr.png
+        diag_v_referral: output/diag_v_referral.csv
