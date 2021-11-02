@@ -82,29 +82,27 @@ alluvial_ac_ogpc <- cohort %>%
   filter(freq > 6)
 
 #Acute to ongoing / post covid
-# ggplot(as.data.frame(alluvial_ac_ogpc), aes(y=freq, 
-#                      axis1=has_diag_acute_covid,
-#                      axis2=has_diag_og_covid,
-#                      axis3=has_diag_pc_covid)) +
-#   geom_alluvium(aes(fill = has_diag_acute_covid)) + 
-#   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
-#   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-#   scale_x_discrete(limits = c("has_diag_acute_covid", "has_diag_og_covid", "has_diag_pc_covid"), expand = c(0.05, 0.05)) + 
-#   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) + 
-#   ggtitle("Patient flow from acute to ongoing and post covid conditions")
-# 
-# ggsave("output/ac_to_lc.png")
+ggplot(as.data.frame(alluvial_ac_ogpc), aes(y=freq,
+                     axis1=has_diag_acute_covid,
+                     axis2=has_diag_og_covid,
+                     axis3=has_diag_pc_covid)) +
+  geom_alluvium(aes(fill = has_diag_acute_covid)) +
+  geom_stratum(width = 1/12, fill = "black", color = "grey") +
+  geom_label(stat = "stratum", aes(label = after_stat(stratum))) +
+  scale_x_discrete(limits = c("has_diag_acute_covid", "has_diag_og_covid", "has_diag_pc_covid"), expand = c(0.05, 0.05)) +
+  scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) +
+  ggtitle("Patient flow from acute to ongoing and post covid conditions")
 
-#Ongoing to self-care / community / pc / 
+ggsave("output/ac_to_lc.png")
+
+#Ongoing to self-care / pc 
 alluvial_og_destination <- cohort %>% 
   mutate("has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
          "referral_yourcovidrecovery.nhs.uk" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
-         "referral_community_care" = case_when(!is.na(referral_self_care) ~ "Community Care", TRUE ~ "No Community Care"),
-         "referral_pc_clinic" = case_when(!is.na(referral_self_care) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
+         "referral_pc_clinic" = case_when(!is.na(referral_pc_clinic) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
          ) %>% 
   group_by(has_diag_og_covid,
-           referral_self_care,
-           referral_community_care,
+           referral_yourcovidrecovery.nhs.uk,
            referral_pc_clinic
            ) %>% 
   summarise(freq = n()) %>% 
@@ -113,28 +111,25 @@ alluvial_og_destination <- cohort %>%
 #alluvial graph - og destinations
 ggplot(as.data.frame(alluvial_og_destination), aes(y=freq, 
                                     axis1=has_diag_og_covid,
-                                    axis2=referral_self_care,
-                                    axis3=referral_community_care,
-                                    axis4=referral_pc_clinic)) +
+                                    axis2=referral_yourcovidrecovery.nhs.uk,
+                                    axis3=referral_pc_clinic)) +
   geom_alluvium(aes(fill = has_diag_og_covid)) + 
   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-  scale_x_discrete(limits = c("has_diag_og_covid", "referral_yourcovidrecovery.nhs.uk", "referral_community_care", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
+  scale_x_discrete(limits = c("has_diag_og_covid", "referral_yourcovidrecovery.nhs.uk", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) + 
   ggtitle("Patient flow from ongoing covid to referral destinations") 
 
 ggsave("output/og_destination.png")
 
-#Ongoing to self-care / community / pc / 
+#Ongoing to self-care / pc 
 alluvial_pc_destination <- cohort %>% 
   mutate("has_diag_post_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid"),
          "referral_yourcovidrecovery.nhs.uk" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
-         "referral_community_care" = case_when(!is.na(referral_self_care) ~ "Community Care", TRUE ~ "No Community Care"),
-         "referral_pc_clinic" = case_when(!is.na(referral_self_care) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
+         "referral_pc_clinic" = case_when(!is.na(referral_pc_clinic) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
   ) %>% 
   group_by(has_diag_post_covid,
-           referral_self_care,
-           referral_community_care,
+           referral_yourcovidrecovery.nhs.uk,
            referral_pc_clinic
   ) %>% 
   summarise(freq = n()) %>% 
@@ -143,13 +138,12 @@ alluvial_pc_destination <- cohort %>%
 #alluvial graph - pc destinations
 ggplot(as.data.frame(alluvial_pc_destination), aes(y=freq, 
                                                    axis1=has_diag_post_covid,
-                                                   axis2=referral_self_care,
-                                                   axis3=referral_community_care,
-                                                   axis4=referral_pc_clinic)) +
+                                                   axis2=referral_yourcovidrecovery.nhs.uk,
+                                                   axis3=referral_pc_clinic)) +
   geom_alluvium(aes(fill = has_diag_post_covid)) + 
   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-  scale_x_discrete(limits = c("has_diag_post_covid", "referral_yourcovidrecovery.nhs.uk", "referral_community_care", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
+  scale_x_discrete(limits = c("has_diag_post_covid", "referral_yourcovidrecovery.nhs.uk", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, nrow(cohort)), expand = c(0.005, 0.005)) +
   ggtitle("Patient flow from post covid to referral destinations") 
 
@@ -174,6 +168,8 @@ line_graph_df %>%
   theme_minimal() + 
   labs(title= "Long Covid diagnosis and referral codes through time")
 
+ggsave("output/coding_through_time.png")
+
 #remove ycr code for scale
 line_graph_df %>% 
   filter(code != "referral_self_care") %>% 
@@ -182,5 +178,4 @@ line_graph_df %>%
   theme_minimal() + 
   labs(title= "Long Covid diagnosis and referral codes through time")
   
-ggsave("output/coding_through_time.png")
 ggsave("output/coding_through_time_noycr.png")
