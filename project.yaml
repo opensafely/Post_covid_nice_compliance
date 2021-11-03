@@ -54,3 +54,12 @@ actions:
         codes_through_time: output/coding_through_time.png
         codes_through_time_noycr: output/coding_through_time_noycr.png
         diag_v_referral: output/diag_v_referral.csv
+
+  HE_compliance_summary:
+    run: r:latest analysis/HE_compliance_summary.R
+    needs: [generate_acute_cohort, generate_og_pc_cohort]
+    outputs:
+      moderately_sensitive:
+        HE_bar_chart: output/HE_bar_1_1.png
+        HE_summary_table: output/HE_summary_1_1.csv
+        
