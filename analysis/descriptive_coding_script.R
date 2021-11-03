@@ -27,8 +27,6 @@ generate_freq_tables <- function(cohort_df, grouping_var){
   
 }
 
-
-
 # Start with time gap between acute and long covid diagnosis
 cohort <- read_csv(file = "output/input_all.csv",
                    col_types = cols(patient_id = col_number(),
@@ -49,13 +47,13 @@ time_acute_to_lc <- cohort %>%
   summarise(mean(diff_acute_to_og, na.rm = TRUE),
             mean(diff_acute_to_pc, na.rm = TRUE))
 
-#2x2 referral_diag_table
+#referral_diag_table
 diag_referral_tab <- cohort %>% 
   group_by("diag" = case_when(!is.na(diag_any_lc_diag) ~ "OG/PC Diagnosis Coded", TRUE ~ "No OG/PC Diagnosis Coded"),
-           "referral" = !(is.na(referral_pc_clinic) & is.na(referral_self_care))) %>% 
-  summarise(n = n()) %>% 
-  pivot_wider(names_from = referral, values_from = n, names_prefix = "referral_") %>% 
-  rename()
+           ) %>%  
+  summarise(n = n(),
+            referral_self_care = sum(!is.na(referral_self_care)),
+            referral_pc_clinic = sum(!is.na(referral_pc_clinic)))
   
 write_csv(diag_referral_tab, "output/diag_v_referral.csv")
 
@@ -71,6 +69,7 @@ freq_table <- demo_vars %>%
 
 #alluvial datasets
 alluvial_ac_ogpc <- cohort %>% 
+  filter(!is.na(diag_acute_covid)) %>% 
   mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ "Acute Covid", TRUE ~ "No Acute Covid"),
          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid")) %>% 
@@ -86,7 +85,7 @@ ggplot(as.data.frame(alluvial_ac_ogpc), aes(y=freq,
                      axis1=has_diag_acute_covid,
                      axis2=has_diag_og_covid,
                      axis3=has_diag_pc_covid)) +
-  geom_alluvium(aes(fill = has_diag_acute_covid)) +
+  geom_alluvium(fill = "light green") +
   geom_stratum(width = 1/12, fill = "black", color = "grey") +
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) +
   scale_x_discrete(limits = c("has_diag_acute_covid", "has_diag_og_covid", "has_diag_pc_covid"), expand = c(0.05, 0.05)) +
@@ -97,6 +96,7 @@ ggsave("output/ac_to_lc.png")
 
 #Ongoing to self-care / pc 
 alluvial_og_destination <- cohort %>% 
+  filter(!is.na(diag_ongoing_covid)) %>% 
   mutate("has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
          "referral_yourcovidrecovery.nhs.uk" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
          "referral_pc_clinic" = case_when(!is.na(referral_pc_clinic) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
@@ -113,7 +113,7 @@ ggplot(as.data.frame(alluvial_og_destination), aes(y=freq,
                                     axis1=has_diag_og_covid,
                                     axis2=referral_yourcovidrecovery.nhs.uk,
                                     axis3=referral_pc_clinic)) +
-  geom_alluvium(aes(fill = has_diag_og_covid)) + 
+  geom_alluvium(fill = "pink") + 
   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
   scale_x_discrete(limits = c("has_diag_og_covid", "referral_yourcovidrecovery.nhs.uk", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
@@ -122,8 +122,9 @@ ggplot(as.data.frame(alluvial_og_destination), aes(y=freq,
 
 ggsave("output/og_destination.png")
 
-#Ongoing to self-care / pc 
+#Post covid to self-care / pc 
 alluvial_pc_destination <- cohort %>% 
+  filter(!is.na(diag_post_covid)) %>% 
   mutate("has_diag_post_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid"),
          "referral_yourcovidrecovery.nhs.uk" = case_when(!is.na(referral_self_care) ~ "Self Care", TRUE ~ "No Self Care"),
          "referral_pc_clinic" = case_when(!is.na(referral_pc_clinic) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
@@ -140,7 +141,7 @@ ggplot(as.data.frame(alluvial_pc_destination), aes(y=freq,
                                                    axis1=has_diag_post_covid,
                                                    axis2=referral_yourcovidrecovery.nhs.uk,
                                                    axis3=referral_pc_clinic)) +
-  geom_alluvium(aes(fill = has_diag_post_covid)) + 
+  geom_alluvium(fill = "light blue") + 
   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
   scale_x_discrete(limits = c("has_diag_post_covid", "referral_yourcovidrecovery.nhs.uk", "referral_pc_clinic"), expand = c(0.05, 0.05)) + 
