@@ -175,6 +175,8 @@ line_graph_df <- cohort %>%
   summarise(n= n()) %>% 
   filter(!is.na(month), n > 10)
 
+write_csv(line_graph_df, "output/line_graph.df.csv")
+
 #all diag & refer codes
 line_graph_df %>% 
   ggplot(aes(x= month, y= n, color = code)) + 
