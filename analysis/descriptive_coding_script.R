@@ -18,7 +18,11 @@ generate_freq_tables <- function(cohort_df, grouping_var){
               refer_post_covid_clinic = sum(!is.na(referral_pc_clinic)),
               refer_self_care = sum(!is.na(referral_self_care)),
               mean_days_acute_to_og = mean(diff_acute_to_og, na.rm = TRUE),
-              mean_days_acute_to_pc = mean(diff_acute_to_pc, na.rm = TRUE)
+              mean_days_acute_to_pc = mean(diff_acute_to_pc, na.rm = TRUE),
+              mean(diff_og_diag_to_pc_referral, na.rm = TRUE),
+              mean(diff_og_diag_to_yourcovidrecovery_referral, na.rm = TRUE),
+              mean(diff_pc_diag_to_pc_referral, na.rm = TRUE),
+              mean(diff_pc_diag_to_yourcovidrecovery_referral, na.rm = TRUE)
               ) %>% 
   rename("Group" = {{ grouping_var }}) %>% 
   mutate("Demographic" = grouping_var_name) %>%   
@@ -40,12 +44,21 @@ cohort <- read_csv(file = "output/input_all.csv",
 
 cohort <- cohort %>% 
    mutate("diff_acute_to_og" = diag_ongoing_covid - diag_acute_covid,
-          "diff_acute_to_pc" = diag_post_covid - diag_acute_covid)
+          "diff_acute_to_pc" = diag_post_covid - diag_acute_covid,
+          "diff_og_diag_to_pc_referral" = referral_pc_clinic - diag_ongoing_covid,
+          "diff_og_diag_to_yourcovidrecovery_referral" = referral_self_care - diag_ongoing_covid,
+          "diff_pc_diag_to_pc_referral" = referral_pc_clinic - diag_ongoing_covid,
+          "diff_pc_diag_to_yourcovidrecovery_referral" = referral_pc_clinic - diag_post_covid)
 
 #summarise time differences
 time_acute_to_lc <- cohort %>% 
   summarise(mean(diff_acute_to_og, na.rm = TRUE),
-            mean(diff_acute_to_pc, na.rm = TRUE))
+            mean(diff_acute_to_pc, na.rm = TRUE),
+            mean(diff_og_diag_to_pc_referral, na.rm = TRUE),
+            mean(diff_og_diag_to_yourcovidrecovery_referral, na.rm = TRUE),
+            mean(diff_pc_diag_to_pc_referral, na.rm = TRUE),
+            mean(diff_pc_diag_to_yourcovidrecovery_referral, na.rm = TRUE)
+            )
 
 #referral_diag_table
 diag_referral_tab <- cohort %>% 
