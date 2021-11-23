@@ -61,11 +61,11 @@ actions:
     needs: [generate_acute_cohort]
     outputs:
       moderately_sensitive:
-        HE_summary_table_1_1: output/monthly_summary_tables/monthly_summary_tab_1_1.csv
-        HE_summary_fig_1_1_age: output/monthly_summary_figures/line_chart_1_1_age_group.png
-        HE_summary_fig_1_1_eth: output/monthly_summary_figures/line_chart_1_1_ethnicity.png
-        HE_summary_fig_1_1_IMD: output/monthly_summary_figures/line_chart_1_1_imd.png
-        HE_summary_fig_1_1_region: output/monthly_summary_figures/line_chart_1_1_region.png
-        HE_summary_fig_1_1_sex: output/monthly_summary_figures/line_chart_1_1_sex.png
-        HE_summary_fig_1_1_total: output/monthly_summary_figures/line_chart_1_1_total.png
-        HE_summary_table_1_8: output/monthly_summary_tables/monthly_summary_tab_1_8.csv
+        HE_summary_table_1_1: monthly_summary_tab_1_1.csv
+        HE_summary_fig_1_1_age: line_chart_1_1_age_group.png
+        HE_summary_fig_1_1_eth: line_chart_1_1_ethnicity.png
+        HE_summary_fig_1_1_IMD: line_chart_1_1_imd.png
+        HE_summary_fig_1_1_region: line_chart_1_1_region.png
+        HE_summary_fig_1_1_sex: line_chart_1_1_sex.png
+        HE_summary_fig_1_1_total: line_chart_1_1_total.png
+        HE_summary_table_1_8: monthly_summary_tab_1_8.csv
