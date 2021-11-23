@@ -1,42 +1,88 @@
 library(tidyverse)
+library(lubridate)
 
-# Define a function to take numerator and denominator dataframes and generate a table with num/denoms and ratios
-# broken up by each health inequality variable
+### Define functions ###
 
-HE_summary <-function(num_df, denom_df, inequality_vars) {
-  HE_summary_table <- setNames(data.frame(matrix(ncol = 5, nrow = 0)), c("HE_var", "Num", "Denom", "Ratio", "HE_category"))
-  Rec_denom <- nrow(denominator_df)
-  Rec_num <- nrow(numerator_df)
-  Rec_ratio <- round(Rec_num / Rec_denom, 3)
-  HE_summary_table[nrow(HE_summary_table)+1,] <- c("Total", Rec_num, Rec_denom, Rec_ratio, "Total")
+# Function to produce a summary table of num, denom, ratios per month, split by HE variables
+monthly_table <-function(num_df, denom_df, inequality_vars, rec_no) {
+  summary_tab <- denom_df %>% group_by(year_month) %>% summarise("Denom" = n())
+  temp <- num_df %>% group_by(year_month) %>% summarise("Num" = n())
+  summary_tab$Num <- as.numeric(temp$Num)
+  summary_tab <- summary_tab %>% mutate("Ratio" = Num/Denom, "HE_var" = "total", "HE_category" = "total")
   
-  for (col in inequality_vars) {
-    temp_num_tab <- num_df %>% group_by(num_df[[col]]) %>% summarise("Num" = (count = n())) %>% rename(HE_var = 1)
-    temp_denom_tab <- denom_df %>% group_by(denom_df[[col]]) %>% summarise("Denom" = (count = n())) %>% rename(HE_var = 1)
-    temp_full_table <- merge(temp_num_tab, temp_denom_tab, by="HE_var") %>% mutate("Ratio" = round(Num/Denom, 3), "HE_category" = col)
-    HE_summary_table <- rbind(HE_summary_table, temp_full_table)
-    HE_summary_table <- transform(HE_summary_table, Num = as.numeric(Num), Denom = as.numeric(Denom), Ratio = as.numeric(Ratio))
+  for (ineq_var in inequality_vars) {
+    temp <- denom_df %>% group_by(year_month, denom_df[ineq_var]) %>% summarise("Denom" = n())
+    temp_num <- num_df %>% group_by(year_month, num_df[ineq_var]) %>% summarise("Num" = n())
+    temp$Num <- as.numeric(temp_num$Num)
+    temp <- temp %>% mutate("Ratio" = round(Num/Denom,3), "HE_category" = ineq_var) %>% rename("HE_var" = ineq_var)
+    summary_tab <- rbind(summary_tab, temp)
+    summary_tab <- transform(summary_tab, Num = as.numeric(Num), Denom = as.numeric(Denom), Ratio = as.numeric(Ratio)) %>% 
+      arrange(HE_category, HE_var, year_month)
   }
-  return(HE_summary_table)
+  write_csv(summary_tab, gsub(" ", "", paste("output/monthly_summary_tables/", "monthly_summary_tab_",rec_no, ".csv")))
+  return(summary_tab)
 }
 
-# Create a function to produce summary bar charts showing uptake split by each HE variable
-create_bar_chart <- function(df, x_var, y_var, heading) {
-  test_fig <- ggplot(df, mapping = aes(x = x_var, y = y_var)) + 
-    geom_bar(stat="identity", position="identity", fill="#004650") +
-    geom_hline(yintercept = 0, size = 1, colour="#333333") + 
-    NICE_theme +
-    coord_flip() +
-    theme(panel.grid.major.x = element_line(color="#cbcbcb"), panel.grid.major.y=element_blank()) +
-    scale_y_continuous(limits=c(0,1),
-                       breaks = seq(0, 1, by = 0.2),
-                       labels = c("0","0.2", "0.4", "0.6", "0.8", "1.0")) +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 14)) +
-    facet_wrap(~HE_category,ncol=2, scales = 'free') + 
-    labs(title= heading, y = element_blank(), x = "Compliance Ratio")
+# Function to make a line graph
+create_line_plot <- function(monthly_df, ineq_var, heading, rec_no = NULL) {
+  temp <- ggplot(monthly_df, mapping = aes(x = year_month, y = Ratio)) +
+    geom_line(mapping = aes(colour = HE_var)) + 
+    scale_y_continuous(limits=c(0,1), expand = c(0,0), breaks = seq(0, 1, by = 0.2), labels = c("0","0.2", "0.4", "0.6", "0.8", "1.0")) +
+    scale_x_date(breaks = unique(monthly_df$year_month)[seq(1,length(unique(monthly_df$year_month)),by=3)]) +
+    labs(title= heading, subtitle = paste("Split by",ineq_var), x = element_blank(), y = "Compliance Ratio") +
+    nice_line_theme
+  return(temp)
 }
 
-# Import the relevant dataframes
+# Function to create multiple line graphs. Shows uptake over time split by each health inequality variable
+create_line_plots <- function(df, heading, rec_no) {
+  for (ineq_var in unique(df$HE_category)) {
+    temp <- df %>% filter(HE_category == ineq_var)
+    temp_fig <- create_line_plot(temp, ineq_var, heading, rec_no)
+    ggsave(gsub(" ", "", paste("output/monthly_summary_figures/", "line_chart_", rec_no, "_", ineq_var, ".png")), temp_fig)
+  }
+}
+
+### Import theme to improve look of graphs ###
+
+font <- "Arial"
+
+nice_line_theme <- ggplot2::theme(
+  #Text formatting: title, and caption
+  plot.title = ggplot2::element_text(family = font, size=28, face="bold", colour ="#222222"),
+  plot.subtitle = ggplot2::element_text(family = font, size=20, colour ="#222222"),
+  plot.caption = ggplot2::element_blank(),
+  
+  # Format legend
+  legend.position = "bottom",
+  legend.text.align = 0,
+  legend.background = ggplot2::element_blank(),
+  legend.title = ggplot2::element_blank(),
+  legend.key = ggplot2::element_blank(),
+  legend.text = ggplot2::element_text(family=font, size=12, colour="#222222"),
+  
+  #Format Axes
+  axis.title.x = ggplot2::element_blank(),
+  axis.title.y = ggplot2::element_text(family=font, size=14, colour="#222222"),
+  axis.text.x =  ggplot2::element_text(family=font, size=10, colour="#222222", angle = 45, hjust=1),
+  axis.text.y = ggplot2::element_text(family=font, size=14, colour="#222222"),
+  axis.ticks.x = ggplot2::element_line(colour = "#222222", size = 0.5),
+  axis.ticks.y = ggplot2::element_blank(),
+  axis.line.x = ggplot2::element_line(colour = "#222222", size = 0.5),
+  axis.line.y = ggplot2::element_blank(),
+  
+  #Grid lines
+  panel.grid.minor = ggplot2::element_blank(),
+  panel.grid.major.y = ggplot2::element_line(color="#c8c8c8"),
+  panel.grid.major.x = ggplot2::element_blank(),
+  panel.background = ggplot2::element_blank(),
+)
+
+### Create list containing the inequality variables ###
+inequality_vars <- c("sex", "region", "imd", "age_group", "ethnicity")
+
+### Import the relevant dataframe ###
+
 acute_df <- read_csv("output/input_any_acute_covid_pri_care.csv",
                               col_types = cols(
                                 acute_diag_dat = col_date(format = "%Y-%m-%d"),
@@ -54,176 +100,31 @@ acute_df <- read_csv("output/input_any_acute_covid_pri_care.csv",
                                 patient_id = col_double()),
                               na = c("", "NA", "0"))
 
-og_pc_df <- read_csv("output/input_ongoing_post_covid.csv",
-                     col_types = cols(
-                       pc_or_oc_diag_dat = col_date(format = "%Y-%m-%d"),
-                       diag_ongoing_covid = col_date(format = "%Y-%m-%d"),
-                       diag_post_covid = col_date(format = "%Y-%m-%d"),
-                       diagnostic_bloods = col_date(format = "%Y-%m-%d"),
-                       diagnostic_sit_stand = col_date(format = "%Y-%m-%d"),
-                       diagnostic_chest_xray = col_date(format = "%Y-%m-%d"),
-                       referral_paed = col_date(format = "%Y-%m-%d"),
-                       referral_psych = col_date(format = "%Y-%m-%d"),
-                       referral_psych_iapt = col_date(format = "%Y-%m-%d"),
-                       referral_respiratory = col_date(format = "%Y-%m-%d"),
-                       referral_cardiology = col_date(format = "%Y-%m-%d"),
-                       referral_pain = col_date(format = "%Y-%m-%d"),
-                       referral_gastro = col_date(format = "%Y-%m-%d"),
-                       referral_endocrinology = col_date(format = "%Y-%m-%d"),
-                       referral_neurology = col_date(format = "%Y-%m-%d"),
-                       referral_rheumatology = col_date(format = "%Y-%m-%d"),
-                       referral_dermatology = col_date(format = "%Y-%m-%d"),
-                       referral_ent = col_date(format = "%Y-%m-%d"),
-                       referral_inf_diseases = col_date(format = "%Y-%m-%d"),
-                       referral_pc_clinic = col_date(format = "%Y-%m-%d"),
-                       referral_pc_clinic_counts = col_number(),
-                       referral_social_worker = col_date(format = "%Y-%m-%d"),
-                       risk_of_self_harm = col_date(format = "%Y-%m-%d"),
-                       mild_anxiety_or_depression = col_date(format = "%Y-%m-%d"),
-                       psych_referral = col_date(format = "%Y-%m-%d"),
-                       psych_referral_iapt = col_date(format = "%Y-%m-%d"),
-                       discussion_about_daily_living = col_date(format = "%Y-%m-%d"),
-                       self_care_advise_or_support = col_date(format = "%Y-%m-%d"),
-                       primary_care_managment = col_date(format = "%Y-%m-%d"),
-                       community_care = col_date(format = "%Y-%m-%d"),
-                       age_at_diag = col_double(),
-                       prac_id = col_double(),
-                       prac_msoa = col_character(),
-                       diagnostic_bp_test = col_double(),
-                       sex = col_character(),
-                       region = col_character(),
-                       imd = col_double(),
-                       age_group = col_character(),
-                       ethnicity = col_double(),
-                       patient_id = col_double()),
-                     na = c("", "NA", "0"))
+### Dataframe preprocessing ###
 
+# Add start and end date to filter data, add year_month column for monthly calculations
+start_date = ymd("2019-06-01")
+end_date = ymd("2021-05-30")
 
-# Create list containing the inequality variables
-inequality_vars <- c("sex", "region", "imd", "age_group", "ethnicity")
+acute_df <- acute_df %>% filter(!is.na(acute_diag_dat)) %>% 
+  mutate(year_month = floor_date(acute_diag_dat, "month")) %>% 
+  filter((year_month >= start_date) & (year_month <= end_date))
 
-# For each recommendation, define datasets for the denominator and numerator, then use HE_summary_function 
-# to create a summary dataframe containing denoms,nums, and ratios split by each HE variable
-
-# Need to check all below to make sure the num/denoms are correct
 
 ##### Suspected or confirmed acute COVID‑19 #####
+
 # Recommendation 1.1 - Provision of advice and information to people with suspected or confirmed acute COVID‑19
 denominator_df <- acute_df
-numerator_df <- acute_df %>% filter(advice_given >= acute_diag_dat)
-HE_summary_1_1 <- HE_summary(numerator_df,denominator_df,inequality_vars)
+numerator_df <- acute_df %>% filter(!is.na(advice_given))
+monthly_table_1_1 <- monthly_table(numerator_df,denominator_df,inequality_vars, "1_1")
 
 # Recommendation 1.8 - Provision of interpreter when needed for people with suspected or confirmed acute COVID‑19
 denominator_df <- acute_df %>% filter(!is.na(interpreter_needed))
-numerator_df <- denominator_df %>% filter(!is.na(interpreter_booked), interpreter_booked >= interpreter_needed)
-HE_summary_1_8 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 2.4 - Have discussions about life and activities for people with ongoing COVID-19
-denominator_df <- og_pc_df
-numerator_df <- og_pc_df %>% filter(!is.na(discussion_about_daily_living), discussion_about_daily_living >= pc_or_oc_diag_dat)
-HE_summary_2_4 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-##### Guidelines for new or ongoing 4 weeks or more after suspected or confirmed acute COVID‑19 #####
-# Recommendation 3.4 - Offering blood tests to people with ongoing COVID‑19
-denominator_df <- og_pc_df
-numerator_df <- og_pc_df %>% filter(!is.na(diagnostic_bloods),  diagnostic_bloods >= pc_or_oc_diag_dat)
-HE_summary_3_4 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 3.5 - Offer of exercise tolerance test to people with ongoing COVID‑19
-denominator_df <- og_pc_df
-numerator_df <- og_pc_df %>% filter(!is.na(diagnostic_sit_stand), diagnostic_sit_stand >= pc_or_oc_diag_dat)
-HE_summary_3_5 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 3.6 - Offer blood pressure recording for people with ongoing COVID‑19 that also have posturing symptoms
-denominator_df <- og_pc_df
-numerator_df <- og_pc_df %>% filter(!is.na(diagnostic_bp_test))
-HE_summary_3_6 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 3.7 - Offer chest X-ray (between 4 and 12 weeks) to people with ongoing COVID‑19
-denominator_df <- og_pc_df
-numerator_df <- og_pc_df %>% filter(!is.na(diagnostic_chest_xray), diagnostic_chest_xray >= pc_or_oc_diag_dat)
-HE_summary_3_7 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 3.8 - Refer for psychiatric assessment if person has ongoing COVID-19 and severe psychiatric symptoms/ is self-harm risk
-denominator_df <- og_pc_df %>% filter(!is.na(risk_of_self_harm))
-numerator_df <- denominator_df %>% filter(!is.na(referral_psych), referral_psych >= pc_or_oc_diag_dat)    ## Check - 2 psych referral columns
-HE_summary_3_8 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 3.9 - Refer for psychological therapies if person has ongoing COVID-19 and anxiety or depression
-# or to liaison psychiatry for more complex needs
-denominator_df <- og_pc_df %>% filter(!is.na(mild_anxiety_or_depression))
-numerator_df <- denominator_df %>% filter(!is.na(referral_psych_iapt), referral_psych_iapt >= pc_or_oc_diag_dat)
-HE_summary_3_9 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 3.10 - Refer to integrated multidisciplinary assessment service, after ruling out other diagnoses
-denominator_df <- og_pc_df
-numerator_df <- denominator_df %>% filter(!is.na(referral_pc_clinic), referral_pc_clinic >= pc_or_oc_diag_dat)
-HE_summary_3_10 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-##### Guidelines for people with ongoing symptomatic COVID-19 or post-COVID syndrome who have been assessed in primary care #####
-# Recommendation 4.1 - Provide advice on self management, provide support from primary care/community, rehab and mental health services
-denominator_df <- og_pc_df
-numerator_df <- og_pc_df %>% filter(!is.na(self_care_advise_or_support), self_care_advise_or_support >= pc_or_oc_diag_dat)
-HE_summary_4_1_self_care_advice <- HE_summary(numerator_df,denominator_df,inequality_vars)
-numerator_df <- og_pc_df %>% filter(!is.na(community_care), community_care >= pc_or_oc_diag_dat)
-HE_summary_4_1_community_care <- HE_summary(numerator_df,denominator_df,inequality_vars)
-numerator_df <- og_pc_df %>% filter(!is.na(primary_care_managment), primary_care_managment >= pc_or_oc_diag_dat)
-HE_summary_4_1_prim_care <- HE_summary(numerator_df,denominator_df,inequality_vars)
-                                            
-# Recommendation 5.7 - Consider support for older people with short-term care packages,advance care planning 
-# and support with social isolation, loneliness and bereavement
-denominator_df <- og_pc_df %>% filter(age_at_diag >= 60)
-numerator_df <- denominator_df %>% filter(!is.na(referral_social_worker), referral_social_worker >= pc_or_oc_diag_dat)
-HE_summary_5_7 <- HE_summary(numerator_df,denominator_df,inequality_vars)
-
-# Recommendation 5.8 - Consider referral for specialist advice (after 4 weeks) with specialist advice for 
-# children with ongoing COVID-19 or post COVID syndrome
-denominator_df <- og_pc_df %>% filter(age_at_diag <= 18)
-numerator_df <- denominator_df %>% filter(!is.na(referral_paed), referral_paed >= pc_or_oc_diag_dat)
-HE_summary_5_8 <- HE_summary(numerator_df,denominator_df,inequality_vars)
+numerator_df <- denominator_df %>% filter(!is.na(interpreter_booked)) # interpreter_booked >= interpreter_needed
+monthly_table_1_8 <- monthly_table(numerator_df,denominator_df,inequality_vars, "1_8")
 
 
 ##### Create Figures #####
 
-#Define a NICE theme to improve look of charts (taken and slightly modified from bbplot package)
-
-font <- "Arial"
-NICE_theme <- theme(
-  plot.title = ggplot2::element_text(family=font, size=18, face="bold",color="#222222"),
-  plot.caption = ggplot2::element_blank(),
-
-  #Legend
-  legend.position = "bottom",
-  legend.text.align = 0,
-  legend.background = ggplot2::element_blank(),
-  legend.title = ggplot2::element_blank(),
-  legend.key = ggplot2::element_blank(),
-  legend.text = ggplot2::element_text(family=font, size=14, color="#222222"),
-
-  #Axis format
-  #axis.title = ggplot2::element_blank(),
-  axis.text = ggplot2::element_text(family=font, size=8, color="#222222"),
-  axis.text.x = ggplot2::element_text(margin=ggplot2::margin(5, b = 10)),
-  axis.ticks = ggplot2::element_blank(),
-  axis.line = ggplot2::element_blank(),
-
-  #Grid lines
-  panel.grid.minor = ggplot2::element_blank(),
-  panel.grid.major.y = ggplot2::element_line(color="#cbcbcb"),
-  panel.grid.major.x = ggplot2::element_blank(),
-
-  #Blank background
-  panel.background = ggplot2::element_blank(),
-  panel.border = ggplot2::element_rect(color="#222222", fill=NA, size = 0.5),
-
-  #Strip background (facet wrapped)
-  strip.background = ggplot2::element_rect(color = "black", fill = "#c8c8c8", linetype = "solid", size = 1),
-  strip.text = ggplot2::element_text(size = 14, color = "black", hjust = 0.5)
-)
-
-
-# Example figure - Faceted bar plot showing a summary of compliance to the rec, split by HE variable
-HE_bar_1_1 <- create_bar_chart(HE_summary_1_1, HE_summary_1_1$HE_var, HE_summary_1_1$Ratio,
-                            "Recommendation 1.1 - Acute COVID advice")
-ggsave("output/HE_bar_1_1.png",HE_bar_1_1)
-write_csv(HE_summary_1_1, "output/HE_summary_1_1.csv")
+# Create a line charts showing monthly uptake, split by health inequalities
+create_line_plots(monthly_table_1_1, "Recommendation 1.1 - Acute COVID: advice given", "1_1")
