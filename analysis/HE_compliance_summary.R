@@ -127,4 +127,4 @@ monthly_table_1_8 <- monthly_table(numerator_df,denominator_df,inequality_vars, 
 ##### Create Figures #####
 
 # Create a line charts showing monthly uptake, split by health inequalities
-create_line_plots(monthly_table_1_1, "Recommendation 1.1 - Acute COVID: advice given", "1_1")
+create_line_plots(monthly_table_1_1, "Recommendation 1.1", "1_1")
