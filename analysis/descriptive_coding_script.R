@@ -85,7 +85,7 @@ write_csv(diag_referral_tab, "output/diag_v_referral.csv")
 demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
 
 #freq_table
-freq_table_2 <- demo_vars %>% 
+freq_table <- demo_vars %>% 
   map(~generate_freq_tables(grouping_var = .data[[.x]],
                             cohort_df = cohort)) %>%
   bind_rows() %>%
@@ -183,7 +183,7 @@ ggplot(as.data.frame(alluvial_pc_destination), aes(y=freq,
 ggsave("output/pc_destinations.png")
 
 write_csv(time_acute_to_lc, "output/mean_diff_to_days.csv")
-write_csv(freq_table_2, "output/freq_table_2.csv")
+write_csv(freq_table, "output/freq_table.csv")
 
 #add lc and referral codes through time
 
