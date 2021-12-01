@@ -19,6 +19,7 @@ study = StudyDefinition(
         "date": {"earliest": "1900-01-01", "latest": end_date},
         "rate": "uniform",
         "incidence": 0.95,
+        "int": {"distribution": "poisson", "mean" : 2}, "incidence" : 0.2
     },
 
     index_date= "2019-02-01",
@@ -98,7 +99,9 @@ study = StudyDefinition(
                                                         attended = True,
                                                         with_these_treatment_function_codes = '348',
                                                         between = ["pc_or_oc_diag_dat", end_date],
-                                                        #return_expectations = {"int" : {"distribution": "poisson", "mean" : 3}, "incidence": 0.9}
+                                                        # return_expectations = {
+                                                        #     "int" : {"distribution": "poisson", "mean" : 3},
+                                                        #     "incidence": 0.9}
                                                         ),
 
     #diagnostic dates
