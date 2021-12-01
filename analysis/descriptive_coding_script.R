@@ -37,8 +37,6 @@ generate_freq_tables <- function(cohort_df, grouping_var){
   
 }
 
-#TODO
-
 #1. Table 1 cohort (all)?
 
 
@@ -58,7 +56,7 @@ cohort <- cohort %>%
           "diff_acute_to_pc" = ifelse((diag_post_covid - diag_acute_covid > 0), diag_post_covid - diag_acute_covid, NA),
           "diff_og_diag_to_pc_referral" = ifelse((referral_pc_clinic - diag_ongoing_covid) > 0, referral_pc_clinic - diag_ongoing_covid, NA),
           "diff_og_diag_to_yourcovidrecovery_referral" = ifelse((referral_self_care - diag_ongoing_covid) > 0, referral_self_care - diag_ongoing_covid, NA),
-          "diff_pc_diag_to_pc_referral" = ifelse((referral_pc_clinic - diag_ongoing_covid) > 0, referral_pc_clinic - diag_ongoing_covid, NA),
+          "diff_pc_diag_to_pc_referral" = ifelse((referral_pc_clinic - diag_post_covid) > 0, referral_pc_clinic - diag_ongoing_covid, NA),
           "diff_pc_diag_to_yourcovidrecovery_referral" = ifelse((referral_pc_clinic - diag_post_covid) > 0, referral_pc_clinic - diag_post_covid, NA))
 
 #summarise time differences
