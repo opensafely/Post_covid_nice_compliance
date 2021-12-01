@@ -123,7 +123,6 @@ denominator_df <- acute_df %>% filter(!is.na(interpreter_needed))
 numerator_df <- denominator_df %>% filter(!is.na(interpreter_booked)) # interpreter_booked >= interpreter_needed
 monthly_table_1_8 <- monthly_table(numerator_df,denominator_df,inequality_vars, "1_8")
 
-
 ##### Create Figures #####
 
 # Create a line charts showing monthly uptake, split by health inequalities

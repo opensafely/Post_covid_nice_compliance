@@ -11,7 +11,6 @@ from cohortextractor import (
 acute_covid_codes = codelist_from_csv("codelists/user-rob_w-acute-covid-codes.csv", system = "snomed", column = "code")
 ongoing_covid_code = codelist_from_csv("codelists/user-rob_w-ongoing-effects-of-covid.csv", system = "snomed", column = "code")
 pc_code = codelist_from_csv("codelists/user-rob_w-post-covid-codelist.csv", system = "snomed", column = "code")
-ongoing_and_pc_diag_codes = combine_codelists(ongoing_covid_code, pc_code)
 
 #diagnostics
 diagnostic_bloods = codelist_from_csv("codelists/user-rob_w-diagnostic-blood-test.csv", system = "snomed", column = "code")
@@ -53,3 +52,7 @@ discussion_about_daily_living = codelist_from_csv("codelists/user-rob_w-discussi
 
 #demographics
 ethnicity_codes = codelist_from_csv("codelists/opensafely-ethnicity.csv", system="ctv3", column="Code", category_column="Grouping_6")
+
+#combinations
+ongoing_and_pc_diag_codes = combine_codelists(ongoing_covid_code, pc_code)
+ongoing_and_pc_diag_and_referal_codes = combine_codelists(ongoing_covid_code, pc_code, referral_pc_clinic)

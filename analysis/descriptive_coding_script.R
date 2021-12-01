@@ -4,6 +4,7 @@ library(tidyverse)
 library(lubridate)
 library(ggalluvial)
 
+
 #function to generate frequency tables
 generate_freq_tables <- function(cohort_df, grouping_var){
 
@@ -43,10 +44,10 @@ generate_freq_tables <- function(cohort_df, grouping_var){
 # Start with time gap between acute and long covid diagnosis
 cohort <- read_csv(file = "output/input_all.csv",
                    col_types = cols(patient_id = col_number(),
-                                    age_group = col_factor(),
+                                    age_group = col_factor(levels = c("0-17","18-24", "25-34", "35-44", "45-54", "55-69", "70-79", "80+")),
                                     region = col_factor(),
                                     sex = col_factor(),
-                                    imd = col_factor(),
+                                    imd = col_factor(levels = c("1 (Most Deprived)", "2", "3", "4", "5 (Least Deprived)", "Unknown")),
                                     ethnicity = col_factor(),
                                     .default = col_date())
                    )
@@ -215,4 +216,56 @@ ggsave("output/coding_through_time_noycr.png")
 
 ## OP table for OG / PC diagnoses
 
-og_pc_cohort <- read_csv("output/input_ongoing_post_covid.csv")
+cohort_og_pc <- read_csv(file = "output/input_ongoing_post_covid.csv",
+                         col_types = cols(patient_id = col_number(),
+                                          age_group = col_factor(levels = c("0-17","18-24", "25-34", "35-44", "45-54", "55-69", "70-79", "80+")),
+                                          imd = col_factor(levels = c("1 (Most Deprived)", "2", "3", "4", "5 (Least Deprived)", "Unknown")),
+                                          region = col_factor(),
+                                          sex = col_factor(),
+                                          ethnicity = col_factor(),
+                                          op_count_card = col_integer(), 
+                                          op_count_rheum = col_integer(),
+                                          op_count_respiratory = col_integer(), 
+                                          op_count_pc = col_integer(), 
+                                          referral_pc_clinic_counts = col_integer(),
+                                          age_at_diag = col_integer(), 
+                                          prac_id = col_integer(),
+                                          prac_msoa = col_character(), 
+                                          op_count_neuro = col_integer(), 
+                                          diagnostic_bp_test = col_double(),
+                                          .default = col_date(format = "%Y-%m-%d")))
+
+generate_freq_tables_ogpc <- function(cohort_df, grouping_var){
+  
+  grouping_var_name = names(cohort_df %>% select({{ grouping_var}} ))
+  
+  cohort_df %>% 
+    group_by({{ grouping_var }}) %>% 
+    summarise(total_patients = n(),
+              total_og_diags = sum(!is.na(diag_ongoing_covid), na.rm = TRUE),
+              total_pc_diags = sum(!is.na(diag_post_covid), na.rm = TRUE),
+              total_pc_referrals = sum(!is.na(referral_pc_clinic), na.rm = TRUE),
+              total_pc_op_visits = sum(op_count_pc, na.rm = TRUE),
+              mean_pc_op_visits = mean(op_count_pc, na.rm = TRUE),
+              total_cardiology_op_visits = sum(op_count_card, na.rm = TRUE),
+              mean_cardio_op_visits = mean(op_count_card, na.rm = TRUE),
+              total_rheum_op_visits = sum(op_count_rheum, na.rm = TRUE),
+              mean_rheum_op_visits = mean(op_count_rheum, na.rm = TRUE),
+              total_respiratory_visits = sum(op_count_respiratory, na.rm = TRUE),
+              mean_rheum_op_visits = mean(op_count_respiratory, na.rm = TRUE),
+              total_neuro_visits = sum(op_count_neuro, na.rm = TRUE),
+              mean_neuro_op_visits = mean(op_count_neuro, na.rm = TRUE)
+    ) %>% 
+    rename("Group" = {{ grouping_var }}) %>% 
+    mutate("Demographic" = grouping_var_name) %>%   
+    select(Demographic,
+           everything()) %>% 
+    ungroup()
+}
+
+freq_table_og_pc <- demo_vars %>% 
+  map(~generate_freq_tables_ogpc(grouping_var = .data[[.x]],
+                            cohort_df = cohort_og_pc)) %>%
+  bind_rows()
+
+write_csv(freq_table_og_pc, "freq_table_op.csv")

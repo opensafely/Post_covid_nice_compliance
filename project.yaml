@@ -43,7 +43,7 @@ actions:
         
   descriptive_coding_script:
     run: r:latest analysis/descriptive_coding_script.R
-    needs: [generate_cohort_all]
+    needs: [generate_cohort_all, generate_og_pc_cohort]
     outputs:
       moderately_sensitive:
         ac_to_lc: output/ac_to_lc.png
@@ -51,10 +51,12 @@ actions:
         pc_dest: output/pc_destinations.png
         time_acute_to_lc: output/mean_diff_to_days.csv
         freq_table: output/freq_table.csv
+        freq_table_op: output/freq_table_op.csv
         codes_through_time: output/coding_through_time.png
         codes_through_time_noycr: output/coding_through_time_noycr.png
         diag_v_referral: output/diag_v_referral.csv
         line_graph_df: output/line_graph.df.csv
+        
 
   HE_compliance_summary:
     run: r:latest analysis/HE_compliance_summary.R
