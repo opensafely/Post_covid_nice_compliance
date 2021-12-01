@@ -68,27 +68,27 @@ study = StudyDefinition(
     #outpatient usages
     op_count_card = patients.outpatient_appointment_date(returning = "number_of_matches_in_period", 
                                                         attended = True,
-                                                        with_these_treatment_function_codes = 320),
+                                                        with_these_treatment_function_codes = 320,
                                                         between = ["pc_or_oc_diag_dat", end_date]),
                                                         
     op_count_rheum = patients.outpatient_appointment_date(returning = "number_of_matches_in_period", 
                                                         attended = True,
-                                                        with_these_treatment_function_codes = 410),
+                                                        with_these_treatment_function_codes = 410,
                                                         between = ["pc_or_oc_diag_dat", end_date]),
                                                         
     op_count_neuro = patients.outpatient_appointment_date(returning = "number_of_matches_in_period", 
                                                         attended = True,
-                                                        with_these_treatment_function_codes = 400),
+                                                        with_these_treatment_function_codes = 400,
                                                         between = ["pc_or_oc_diag_dat", end_date]),
 
     op_count_respatory = patients.outpatient_appointment_date(returning = "number_of_matches_in_period", 
                                                         attended = True,
-                                                        with_these_treatment_function_codes = 400),
+                                                        with_these_treatment_function_codes = 400,
                                                         between = ["pc_or_oc_diag_dat", end_date]),
 
     op_count_pc = patients.outpatient_appointment_date(returning = "number_of_matches_in_period", 
                                                         attended = True,
-                                                        with_these_treatment_function_codes = 348),
+                                                        with_these_treatment_function_codes = 348,
                                                         between = ["pc_or_oc_diag_dat", end_date]),
 
     #diagnostic dates
