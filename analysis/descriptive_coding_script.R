@@ -22,12 +22,12 @@ generate_freq_tables <- function(cohort_df, grouping_var){
               refer_post_covid_clinic_rate_per_100000 = round(refer_post_covid_clinic/total_patients * 100000, 1),
               refer_self_care = sum(!is.na(referral_self_care)),
               refer_self_care_rate_per_100000 = round(refer_self_care / total_patients * 100000, 1),
-              mean_days_acute_diag_to_og = mean(diff_acute_to_og, na.rm = TRUE),
-              mean_days_acute_diag_to_pc = mean(diff_acute_to_pc, na.rm = TRUE),
-              mean_days_og_diag_to_pc_referral = mean(diff_og_diag_to_pc_referral, na.rm = TRUE),
-              mean_days_og_diag_to_website_referral = mean(diff_og_diag_to_yourcovidrecovery_referral, na.rm = TRUE),
-              mean_days_pc_diag_to_pc_clinic_referral = mean(diff_pc_diag_to_pc_referral, na.rm = TRUE),
-              mean_days_pc_diag_to_website_referral = mean(diff_pc_diag_to_yourcovidrecovery_referral, na.rm = TRUE)
+              # mean_days_acute_diag_to_og = mean(diff_acute_to_og, na.rm = TRUE),
+              # mean_days_acute_diag_to_pc = mean(diff_acute_to_pc, na.rm = TRUE),
+              # mean_days_og_diag_to_pc_referral = mean(diff_og_diag_to_pc_referral, na.rm = TRUE),
+              # mean_days_og_diag_to_website_referral = mean(diff_og_diag_to_yourcovidrecovery_referral, na.rm = TRUE),
+              # mean_days_pc_diag_to_pc_clinic_referral = mean(diff_pc_diag_to_pc_referral, na.rm = TRUE),
+              # mean_days_pc_diag_to_website_referral = mean(diff_pc_diag_to_yourcovidrecovery_referral, na.rm = TRUE)
               ) %>% 
   rename("Group" = {{ grouping_var }}) %>% 
   mutate("Demographic" = grouping_var_name) %>%   
@@ -51,7 +51,7 @@ cohort <- read_csv(file = "output/input_all.csv",
                                     .default = col_date())
                    )
 
-cohort <- cohort %>% 
+cohort_time <- cohort %>% 
    mutate("diff_acute_to_og" = ifelse((diag_ongoing_covid - diag_acute_covid) > 0, diag_ongoing_covid - diag_acute_covid, NA),
           "diff_acute_to_pc" = ifelse((diag_post_covid - diag_acute_covid > 0), diag_post_covid - diag_acute_covid, NA),
           "diff_og_diag_to_pc_referral" = ifelse((referral_pc_clinic - diag_ongoing_covid) > 0, referral_pc_clinic - diag_ongoing_covid, NA),
@@ -60,7 +60,7 @@ cohort <- cohort %>%
           "diff_pc_diag_to_yourcovidrecovery_referral" = ifelse((referral_pc_clinic - diag_post_covid) > 0, referral_pc_clinic - diag_post_covid, NA))
 
 #summarise time differences
-time_acute_to_lc <- cohort %>% 
+time_acute_to_lc <- cohort_time %>% 
   summarise(mean_time_acute_to_og_diag = mean(diff_acute_to_og, na.rm = TRUE),
             mean_time_acute_to_pc_diag = mean(diff_acute_to_pc, na.rm = TRUE),
             mean_time_og_diag_to_pc_clinic_referral = mean(diff_og_diag_to_pc_referral, na.rm = TRUE),
@@ -215,4 +215,4 @@ ggsave("output/coding_through_time_noycr.png")
 
 ## OP table for OG / PC diagnoses
 
-og_pc_cohort <- read_csv("output/input_any_acute_covid_pri_care.csv")
+og_pc_cohort <- read_csv("output/input_ongoing_post_covid.csv")
