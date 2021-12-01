@@ -212,3 +212,7 @@ line_graph_df %>%
   labs(title= "Long Covid diagnosis and referral codes through time")
   
 ggsave("output/coding_through_time_noycr.png")
+
+## OP table for OG / PC diagnoses
+
+og_pc_cohort <- read_csv("output/input_any_acute_covid_pri_care.csv")
