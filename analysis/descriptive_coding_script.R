@@ -268,4 +268,4 @@ freq_table_og_pc <- demo_vars %>%
                             cohort_df = cohort_og_pc)) %>%
   bind_rows()
 
-write_csv(freq_table_og_pc, "freq_table_op.csv")
+write_csv(freq_table_og_pc, "output/freq_table_op.csv")

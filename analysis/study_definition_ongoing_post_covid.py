@@ -71,6 +71,16 @@ study = StudyDefinition(
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
+    
+    pc_or_oc_diag_dat = patients.with_these_clinical_events(ongoing_and_pc_diag_codes,
+                                                            find_first_match_in_period = True,
+                                                            between = ["pc_or_oc_diag_or_referral_date", end_date],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                                                    "rate": "uniform"}
+                                                                                    ),                                                                                
+                                                                                    
     #outpatient usages
     op_count_card = patients.outpatient_appointment_date(returning = "number_of_matches_in_period",
                                                         attended = True,
