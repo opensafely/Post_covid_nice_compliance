@@ -223,6 +223,7 @@ cohort_og_pc <- read_csv(file = "output/input_ongoing_post_covid.csv",
                                           region = col_factor(),
                                           sex = col_factor(),
                                           ethnicity = col_factor(),
+                                          gp_contact_count = col_integer(),
                                           op_count_card = col_integer(), 
                                           op_count_rheum = col_integer(),
                                           op_count_respiratory = col_integer(), 
@@ -242,6 +243,8 @@ generate_freq_tables_ogpc <- function(cohort_df, grouping_var){
   cohort_df %>% 
     group_by({{ grouping_var }}) %>% 
     summarise(total_patients = n(),
+              total_gp_contacts = sum(!is.na(gp_contact_count), na.rm = TRUE),
+              mean_gp_contacts = mean(!is.na(gp_contact_count), na.rm = TRUE),
               total_og_diags = sum(!is.na(diag_ongoing_covid), na.rm = TRUE),
               total_pc_diags = sum(!is.na(diag_post_covid), na.rm = TRUE),
               total_pc_referrals = sum(!is.na(referral_pc_clinic), na.rm = TRUE),

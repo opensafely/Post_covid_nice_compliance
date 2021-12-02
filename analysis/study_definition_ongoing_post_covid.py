@@ -79,7 +79,11 @@ study = StudyDefinition(
                                                             date_format = "YYYY-MM-DD",
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
-                                                                                    ),                                                                                
+                                                                                    ),  
+                                                                                    
+    gp_contact_count = patients.with_gp_consultations(returning = "number_of_matches_in_period",
+                                                     between = ["pc_or_oc_diag_or_referral_date", end_date],
+                                                     return_expectations = {"int" : {"distribution": "poisson", "mean" : 5}, "incidence" : 0.95}),
                                                                                     
     #outpatient usages
     op_count_card = patients.outpatient_appointment_date(returning = "number_of_matches_in_period",
