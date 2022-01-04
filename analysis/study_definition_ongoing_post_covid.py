@@ -303,6 +303,24 @@ study = StudyDefinition(
                                                             return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                                     "rate": "uniform"}
                                                                                     ),
+                                                                                    
+    referral_yourcovidrecovery_website_only = patients.with_these_clinical_events(referral_yourcovidrecovery_website, 
+                                                            find_first_match_in_period = True,
+                                                            #between = ["pc_or_oc_diag_dat", end_date],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                                                    "rate": "uniform"}
+                                                                                    ),                                                                                
+                                                                                    
+    referral_yourcovidrecovery_website_program = patients.with_these_clinical_events(referral_yourcovidrecovery_website, 
+                                                            find_first_match_in_period = True,
+                                                            #between = ["pc_or_oc_diag_dat", end_date],
+                                                            returning = "date",
+                                                            date_format = "YYYY-MM-DD",
+                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                                                    "rate": "uniform"}
+                                                                                    ),    
 
     #risk of self harm/anxiety/depression
     risk_of_self_harm = patients.with_these_clinical_events(risk_of_self_harm,
@@ -344,15 +362,6 @@ study = StudyDefinition(
 
     #self-care, community or primary care management
     discussion_about_daily_living = patients.with_these_clinical_events(discussion_about_daily_living, #check
-                                                            find_first_match_in_period = True,
-                                                            between = ["pc_or_oc_diag_or_referral_date", end_date],
-                                                            returning = "date",
-                                                            date_format = "YYYY-MM-DD",
-                                                            return_expectations = {"date": {"earliest":start_date, "latest":end_date},
-                                                                                    "rate": "uniform"}
-                                                                                    ),
-
-    self_care_advise_or_support = patients.with_these_clinical_events(self_care_codes, #check
                                                             find_first_match_in_period = True,
                                                             between = ["pc_or_oc_diag_or_referral_date", end_date],
                                                             returning = "date",

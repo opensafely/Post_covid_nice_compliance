@@ -18,7 +18,7 @@ diagnostic_bp_test = codelist_from_csv("codelists/user-rob_w-lying-and-standing-
 diagnostic_sit_stand = codelist_from_csv("codelists/user-rob_w-assessment-using-1-min-sit-to-stand-test.csv", system = "snomed", column = "code")
 diagnostic_chest_xray = codelist_from_csv("codelists/user-rob_w-chest-x-ray-code.csv", system = "snomed", column = "code")
  
-# #referrals
+#referrals
 referral_paed = codelist_from_csv("codelists/user-rob_w-referral-to-paediatric-service.csv", system = "snomed", column = "code")
 referral_respiratory = codelist_from_csv("codelists/user-rob_w-referral-to-respiratory-medicine-service.csv", system = "snomed", column = "code")
 referral_cardiology = codelist_from_csv("codelists/user-rob_w-referral-to-cardiology-service.csv", system = "snomed", column = "code")
@@ -32,6 +32,8 @@ referral_ent = codelist_from_csv("codelists/user-rob_w-referral-to-ent-service.c
 referral_inf_diseases = codelist_from_csv("codelists/user-rob_w-referral-to-infectious-diseases-service.csv", system = "snomed", column = "code")
 referral_pc_clinic = codelist_from_csv("codelists/user-rob_w-referral-to-post-covid-clinic.csv", system = "snomed", column = "code")
 referral_social_worker = codelist_from_csv("codelists/user-rob_w-referral-to-social-worker.csv", system = "snomed", column = "code")
+referral_yourcovidrecovery_website = codelist_from_csv("codelists/user-rob_w-referral-to-yourcovidrecovery-website.csv", system = "snomed", column = "code")
+referral_yourcovidrecovery_website_program = codelist_from_csv("codelists/user-rob_w-referral-to-yourcovidrecovery-website-program.csv", system = "snomed", column = "code")
 
 #pysch variables
 risk_of_self_harm = codelist_from_csv("codelists/user-rob_w-risk-of-self-harm.csv", system = "snomed", column = "code")
@@ -40,7 +42,6 @@ referral_psych_iapt = codelist_from_csv("codelists/user-rob_w-referral-to-liason
 mild_anxiety_or_depression = codelist_from_csv("codelists/user-rob_w-mild-anxiety-or-depression.csv", system = "snomed", column = "code")
  
 #management
-self_care_codes = codelist_from_csv("codelists/user-rob_w-self-management-referral-codes-for-covid-recovery.csv", system = "snomed", column = "code")
 primary_care_codes = codelist_from_csv("codelists/user-rob_w-primary-care-management-code.csv", system = "snomed", column = "code")
 community_care_codes = codelist_from_csv("codelists/user-rob_w-management-in-community-care-code.csv", system = "snomed", column = "code")
 

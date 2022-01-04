@@ -19,7 +19,7 @@ monthly_table <-function(num_df, denom_df, inequality_vars, rec_no) {
     summary_tab <- transform(summary_tab, Num = as.numeric(Num), Denom = as.numeric(Denom), Ratio = as.numeric(Ratio)) %>% 
       arrange(HE_category, HE_var, year_month)
   }
-  write_csv(summary_tab, gsub(" ", "", paste("monthly_summary_tab_",rec_no, ".csv")))
+  write_csv(summary_tab, gsub(" ", "", paste("output/monthly_summary_tab_",rec_no, ".csv")))
   return(summary_tab)
 }
 
@@ -39,7 +39,7 @@ create_line_plots <- function(df, heading, rec_no) {
   for (ineq_var in unique(df$HE_category)) {
     temp <- df %>% filter(HE_category == ineq_var)
     temp_fig <- create_line_plot(temp, ineq_var, heading, rec_no)
-    ggsave(gsub(" ", "", paste("line_chart_", rec_no, "_", ineq_var, ".png")), temp_fig)
+    ggsave(gsub(" ", "", paste("output/line_chart_", rec_no, "_", ineq_var, ".png")), temp_fig)
   }
 }
 
