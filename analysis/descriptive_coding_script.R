@@ -69,7 +69,7 @@ Fig_1 <- cohort %>%
   summarise(n= n()) %>% 
   filter(!is.na(month), n > 10)
 
-write_csv(line_graph_df, "output/line_graph.df.csv")
+write_csv(Fig_1, "output/Fig_1_numbers.csv")
 
 Fig_1 %>% 
   ggplot(aes(x= month, y= n, color = code)) + 
@@ -113,6 +113,7 @@ Table_3 <- demo_vars %>%
          ) %>% 
   select(Demographic, Group, total_patients, starts_with("acute_"), starts_with("ongoing_"), starts_with("post_"), starts_with("refer_post"), starts_with("refer_your"), everything())
 
+write_csv(Table_3, "output/Table_3.csv")
 
 #alluvial datasets
 
@@ -144,7 +145,7 @@ Table_3 <- demo_vars %>%
 # ggsave("output/ac_to_lc.png")
 
 #Ongoing to self-care / pc 
-alluvial_og_destination <- cohort %>% 
+Fig_2 <- cohort %>% 
   filter(!is.na(diag_ongoing_covid)) %>% 
   mutate("has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
          "referral_yourcovidrecovery_website_only" = case_when(!is.na(referral_yourcovidrecovery_website_only) ~ "YCR Website Only", TRUE ~ "No Referral"),
@@ -162,7 +163,7 @@ alluvial_og_destination <- cohort %>%
   filter(freq > 6)
 
 #alluvial graph - og destinations
-ggplot(as.data.frame(alluvial_og_destination), aes(y=freq, 
+ggplot(as.data.frame(Fig_2), aes(y=freq, 
                                     axis1=has_diag_og_covid,
                                     axis2=referral_yourcovidrecovery_website_only,
                                     axis3=has_diag_post_covid,
@@ -183,7 +184,7 @@ ggplot(as.data.frame(alluvial_og_destination), aes(y=freq,
 ggsave("output/Fig_2.png")
 
 #Post covid to self-care / pc 
-alluvial_pc_destination <- cohort %>% 
+Fig_3 <- cohort %>% 
   filter(!is.na(diag_post_covid)) %>% 
   mutate("has_diag_post_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid"),
          "referral_yourcovidrecovery_program" = case_when(!is.na(referral_yourcovidrecovery_website_program) ~ "YCR Website Program", TRUE ~ "No Referral"),
@@ -197,7 +198,7 @@ alluvial_pc_destination <- cohort %>%
   filter(freq > 6)
 
 #alluvial graph - pc destinations
-ggplot(as.data.frame(alluvial_pc_destination), aes(y=freq, 
+ggplot(as.data.frame(Fig_3), aes(y=freq, 
                                                    axis1=has_diag_post_covid,
                                                    axis2=referral_yourcovidrecovery_program,
                                                    axis3=referral_pc_clinic)) +

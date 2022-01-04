@@ -43,31 +43,28 @@ actions:
         
   descriptive_coding_script:
     run: r:latest analysis/descriptive_coding_script.R
-    needs: [generate_cohort_all, generate_og_pc_cohort]
+    needs: [generate_cohort_all]
     outputs:
       moderately_sensitive:
-        ac_to_lc: output/ac_to_lc.png
-        og_dest: output/og_destination.png
-        pc_dest: output/pc_destinations.png
-        time_acute_to_lc: output/mean_diff_to_days.csv
-        freq_table: output/freq_table.csv
-        freq_table_op: output/freq_table_op.csv
-        codes_through_time: output/coding_through_time.png
-        codes_through_time_noycr: output/coding_through_time_noycr.png
-        diag_v_referral: output/diag_v_referral.csv
-        line_graph_df: output/line_graph.df.csv
-        
+        Fig1: output/Fig1.png
+        Fig1_numbers: output/Fig1_numbers.csv
+        Fig2: output/Fig1.png
+        Fig3: output/Fig3.png
+        Table_1: output/Table_1.csv
+        Table_2: output/Table_2.csv
+        Table_3: output/Table_3.csv
+
 
   HE_compliance_summary:
     run: r:latest analysis/HE_compliance_summary.R
     needs: [generate_acute_cohort]
     outputs:
       moderately_sensitive:
-        HE_summary_table_1_1: monthly_summary_tab_1_1.csv
-        HE_summary_fig_1_1_age: line_chart_1_1_age_group.png
-        HE_summary_fig_1_1_eth: line_chart_1_1_ethnicity.png
-        HE_summary_fig_1_1_IMD: line_chart_1_1_imd.png
-        HE_summary_fig_1_1_region: line_chart_1_1_region.png
-        HE_summary_fig_1_1_sex: line_chart_1_1_sex.png
-        HE_summary_fig_1_1_total: line_chart_1_1_total.png
-        HE_summary_table_1_8: monthly_summary_tab_1_8.csv
+        HE_summary_table_1_1: output/monthly_summary_tab_1_1.csv
+        HE_summary_fig_1_1_age: output/line_chart_1_1_age_group.png
+        HE_summary_fig_1_1_eth: output/line_chart_1_1_ethnicity.png
+        HE_summary_fig_1_1_IMD: output/line_chart_1_1_imd.png
+        HE_summary_fig_1_1_region: output/line_chart_1_1_region.png
+        HE_summary_fig_1_1_sex: output/line_chart_1_1_sex.png
+        HE_summary_fig_1_1_total: output/line_chart_1_1_total.png
+        HE_summary_table_1_8: output/monthly_summary_tab_1_8.csv
