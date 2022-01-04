@@ -48,7 +48,7 @@ actions:
       moderately_sensitive:
         Fig1: output/Fig1.png
         Fig1_numbers: output/Fig1_numbers.csv
-        Fig2: output/Fig1.png
+        Fig2: output/Fig2.png
         Fig3: output/Fig3.png
         Table_1: output/Table_1.csv
         Table_2: output/Table_2.csv
