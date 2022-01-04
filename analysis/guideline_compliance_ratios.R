@@ -50,13 +50,14 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                            referral_ent = col_date(format = "%Y-%m-%d"),
                                            referral_inf_diseases = col_date(format = "%Y-%m-%d"),
                                            referral_social_worker = col_date(format = "%Y-%m-%d"),
+                                           referral_yourcovidrecovery_website_only = col_date(format = "%Y-%m-%d"),
+                                           referral_yourcovidrecovery_website_program = col_date(format = "%Y-%m-%d"),
                                            referral_pc_clinic = col_date(format = "%Y-%m-%d"),
                                            risk_of_self_harm = col_date(format = "%Y-%m-%d"),
                                            mild_anxiety_or_depression = col_date(format = "%Y-%m-%d"),
                                            psych_referral = col_date(format = "%Y-%m-%d"),
                                            psych_referral_iapt = col_date(format = "%Y-%m-%d"),
                                            discussion_about_daily_living = col_date(format = "%Y-%m-%d"),
-                                           self_care_advise_or_support = col_date(format = "%Y-%m-%d"),
                                            primary_care_managment = col_date(format = "%Y-%m-%d"),
                                            community_care = col_date(format = "%Y-%m-%d"),
                                            age_at_diag = col_double(),
@@ -110,7 +111,8 @@ Rec_3_10_ratio <- Rec_3_10_num / Rec_3_10_denom
 #3 referral patterns, self-care, secondary care, treated in primary care
 
 Rec_4_1_denom <- Rec_2_4_denom
-Rec_4_1_num_self_management <- cohort_ongoing_or_post_covid %>% filter(self_care_advise_or_support > ymd("20190101")) %>% nrow()
+Rec_4_1_num_ycl_website_only <- cohort_ongoing_or_post_covid %>% filter(referral_yourcovidrecovery_website_only > ymd("20190101")) %>% nrow()
+Rec_4_1_num_ycl_website_program <- cohort_ongoing_or_post_covid %>% filter(referral_yourcovidrecovery_website_program > ymd("20190101")) %>% nrow()
 Rec_4_1_num_community_referral <- cohort_ongoing_or_post_covid %>% filter(community_care > ymd("20190101")) %>% nrow()
 Rec_4_1_prim_care <- cohort_ongoing_or_post_covid %>% filter(primary_care_managment > ymd("20190101")) %>% nrow()
 
@@ -124,14 +126,14 @@ Rec_5_8_denom <- cohort_ongoing_or_post_covid %>% filter(age_at_diag < 19) %>% n
 Rec_5_8_num <- cohort_ongoing_or_post_covid %>% filter(age_at_diag < 19, referral_paed > ymd("20190101")) %>% nrow()
 Rec_5_8 <- Rec_5_8_num / Rec_5_8_denom
 
-ref_rates <-
+ref_rates_pc <-
   cohort_ongoing_or_post_covid %>%
     mutate("was_referred" = !is.na(cohort_ongoing_or_post_covid$referral_pc_clinic)) %>% 
     group_by(month = floor_date(pc_or_oc_diag_dat, "month")) %>% 
     summarise(ref_rate = sum(was_referred, na.rm = TRUE)/sum(!is.na(pc_or_oc_diag_dat), na.rm = TRUE))
   
-write_csv(ref_rates, "output/ref_rates_by_month.csv")
-rm(ref_rates)
+write_csv(ref_rates_pc, "output/ref_rates_by_month.csv")
+rm(ref_rates_pc)
 
 #4 long covid rates by practice - need 
 
@@ -140,6 +142,6 @@ rm(ref_rates)
     #demographic - age, ethnicity, health worker?, socioeconomic deprivation
     #comorbidities
 
-rm(cohort_any_acute_covid_recorded, cohort_ongoing_or_post_covid, cohort_all)
+rm(cohort_any_acute_covid_recorded, cohort_ongoing_or_post_covid)
 
 mget(ls()) %>% bind_rows() %>% write_csv('output/ratios.csv')
