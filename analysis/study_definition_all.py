@@ -21,11 +21,19 @@ study = StudyDefinition(
         "incidence": 0.95
     },
 
-    index_date = "2020-11-01",
+    index_date = "2020-12-01",
 
-    #keep to Alex's date (2020-11-01) to sense check outputs for now 
-    population = patients.satisfying("registered AND (sex = 'M' OR sex = 'F')",
-                                    registered = patients.registered_as_of("index_date")),
+    pc_or_oc_diag_or_referral_date = patients.with_these_clinical_events(ongoing_and_pc_diag_and_referal_codes,
+                                                     find_first_match_in_period = True,
+                                                     returning = "date",
+                                                     date_format = "YYYY-MM-DD",
+                                                     return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                                             "rate": "uniform"}, 
+                                                    ),
+
+    population = patients.satisfying("registered AND (sex = 'M' OR sex = 'F') AND age_at_diag >= 18",
+                                    registered = patients.registered_as_of("index_date"),
+                                    age_at_diag=patients.age_as_of("pc_or_oc_diag_or_referral_date")),
 
     # Import common health inequalities variables (defined in another script)   
     **health_inequalities,
@@ -86,7 +94,7 @@ study = StudyDefinition(
                                                                                     "rate": "uniform"}
                                                                                     ),                                                                                
                                                                                     
-    referral_yourcovidrecovery_website_program = patients.with_these_clinical_events(referral_yourcovidrecovery_website, 
+    referral_yourcovidrecovery_website_program = patients.with_these_clinical_events(referral_yourcovidrecovery_website_program, 
                                                             find_first_match_in_period = True,
                                                             #between = ["pc_or_oc_diag_dat", end_date],
                                                             returning = "date",

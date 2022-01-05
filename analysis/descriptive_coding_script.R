@@ -4,6 +4,7 @@
 library(tidyverse)
 library(lubridate)
 library(ggalluvial)
+library(janitor)
 
 #FUNCTIONS
 #function to generate frequency tables
@@ -15,26 +16,56 @@ generate_freq_tables <- function(cohort_df, grouping_var){
     group_by({{ grouping_var }}) %>% 
     summarise(total_patients = n(),
               acute_covid = sum(!is.na(diag_acute_covid)),
-              acute_covid_rate_per_100000 = round(acute_covid/total_patients * 100000, 1),
               ongoing_covid = sum(!is.na(diag_ongoing_covid)),
-              ongoing_covid_rate_per_100000 = round(ongoing_covid/total_patients * 100000,1),
               post_covid = sum(!is.na(diag_post_covid)),
-              post_covid_rate_per_100000 = round(post_covid/total_patients * 100000, 1),
               refer_post_covid_clinic = sum(!is.na(referral_pc_clinic)),
-              refer_post_covid_clinic_rate_per_100000 = round(refer_post_covid_clinic/total_patients * 100000, 1),
               refer_yourcovidrecovery_website_only = sum(!is.na(referral_yourcovidrecovery_website_only)),
-              refer_yourcovidrecovery_website_only_per_100000 = round(refer_yourcovidrecovery_website_only / total_patients * 100000, 1),
               refer_yourcovidrecovery_website_program = sum(!is.na(referral_yourcovidrecovery_website_program)),
-              refer_yourcovidrecovery_website_program_rate_per_100000 = round(refer_yourcovidrecovery_website_program / total_patients * 100000, 1),
               ) %>% 
   rename("Group" = {{ grouping_var }}) %>% 
   mutate("Demographic" = grouping_var_name) %>%   
+  adorn_totals("row") %>% 
   select(Demographic,
           everything()) %>% 
-  ungroup()
-  
+  mutate(acute_covid_rate_per_100000 = round(acute_covid/total_patients * 100000, 1),
+         acute_covid_rate_CI_lower = round(crude_rate_normal_approx(acute_covid, total_patients, "lower") * 100000, 1),
+         acute_covid_rate_CI_upper = round(crude_rate_normal_approx(acute_covid, total_patients, "upper") * 100000, 1),
+         ongoing_covid_rate_per_100000 = round(ongoing_covid/total_patients * 100000,1),
+         ongoing_covid_rate_CI_lower = round(crude_rate_normal_approx(ongoing_covid, total_patients, "lower")*100000, 1),
+         ongoing_covid_rate_CI_upper = round(crude_rate_normal_approx(ongoing_covid, total_patients, "upper")*100000, 1),
+         post_covid_rate_per_100000 = round(post_covid/total_patients * 100000, 1),
+         post_covid_rate_CI_lower = round(crude_rate_normal_approx(post_covid, total_patients, "lower") * 100000, 1),
+         post_covid_rate_CI_upper = round(crude_rate_normal_approx(post_covid, total_patients, "upper") * 100000, 1),
+         refer_post_covid_clinic_rate_per_100000 = round(refer_post_covid_clinic/total_patients * 100000, 1),
+         refer_post_covid_clinic_rate_CI_lower = round(crude_rate_normal_approx(post_covid, total_patients, "lower") * 100000, 1),
+         refer_post_covid_clinic_rate_CI_upper = round(crude_rate_normal_approx(post_covid, total_patients, "upper") * 100000, 1),
+         refer_yourcovidrecovery_website_only_per_100000 = round(refer_yourcovidrecovery_website_only / total_patients * 100000, 1),
+         refer_yourcovidrecovery_website_only_CI_lower = round(crude_rate_normal_approx(refer_yourcovidrecovery_website_only, total_patients, "lower") * 100000, 1),
+         refer_yourcovidrecovery_website_only_CI_upper = round(crude_rate_normal_approx(refer_yourcovidrecovery_website_only, total_patients, "upper") * 100000, 1),
+         refer_yourcovidrecovery_website_program_rate_per_100000 = round(refer_yourcovidrecovery_website_program / total_patients * 100000, 1),
+         refer_yourcovidrecovery_website_program_rate_CI_lower = round(crude_rate_normal_approx(refer_yourcovidrecovery_website_program, total_patients, "lower") * 100000, 1),
+         refer_yourcovidrecovery_website_program_rate_CI_upper = round(crude_rate_normal_approx(refer_yourcovidrecovery_website_program, total_patients, "upper") * 100000, 1)
+         ) %>% 
+  ungroup() 
+
 }
 
+crude_rate_normal_approx <- function(num, denom, upper_or_lower) {
+  
+  upper <- num/denom + 1.96*sqrt(num)/denom
+  lower <- num/denom - 1.96*sqrt(num)/denom
+
+  return(
+    if (upper_or_lower == "upper"){
+      upper
+    } else if (upper_or_lower == "lower") {
+      lower
+    } else "error"
+  )
+  
+  }
+  
+  
 #REUSED VARIABLES
 #demographic_variables
 demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
@@ -104,12 +135,12 @@ Table_3 <- demo_vars %>%
   bind_rows() %>%
   filter(across(where(is.numeric), ~ . >6)) %>% 
   group_by(Demographic) %>% 
-  mutate(acute_covid_percentage =  round(acute_covid / sum(acute_covid) * 100, 1),
-         ongoing_covid_percentage = round(ongoing_covid / sum(ongoing_covid) * 100, 1),
-         post_covid_percentage = round(post_covid / sum(post_covid) * 100, 1),
-         refer_yourcovidrecovery_website_only_percentage = round(refer_yourcovidrecovery_website_only / sum(refer_yourcovidrecovery_website_only) * 100, 1),
-         refer_yourcovidrecovery_website_program_percentage = round(refer_yourcovidrecovery_website_program / sum(refer_yourcovidrecovery_website_program) * 100, 1),
-         refer_post_covid_clinic_percentage = round(refer_post_covid_clinic / sum(refer_post_covid_clinic) * 100, 1)
+  mutate(acute_covid_percentage =  ifelse(Group == "Total", NA, round(acute_covid / sum(acute_covid) * 100, 1)),
+         ongoing_covid_percentage = ifelse(Group == "Total", NA, round(ongoing_covid / sum(ongoing_covid) * 100, 1)),
+         post_covid_percentage = ifelse(Group == "Total", NA, round(post_covid / sum(post_covid) * 100, 1)),
+         refer_yourcovidrecovery_website_only_percentage = ifelse(Group == "Total", NA, round(refer_yourcovidrecovery_website_only / sum(refer_yourcovidrecovery_website_only) * 100, 1)),
+         refer_yourcovidrecovery_website_program_percentage = ifelse(Group == "Total", NA, round(refer_yourcovidrecovery_website_program / sum(refer_yourcovidrecovery_website_program) * 100, 1)),
+         refer_post_covid_clinic_percentage = ifelse(Group == "Total", NA, round(refer_post_covid_clinic / sum(refer_post_covid_clinic) * 100, 1))
          ) %>% 
   select(Demographic, Group, total_patients, starts_with("acute_"), starts_with("ongoing_"), starts_with("post_"), starts_with("refer_post"), starts_with("refer_your"), everything())
 
@@ -147,11 +178,11 @@ write_csv(Table_3, "output/Table_3.csv")
 #Ongoing to self-care / pc 
 Fig_2 <- cohort %>% 
   filter(!is.na(diag_ongoing_covid)) %>% 
-  mutate("has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
-         "referral_yourcovidrecovery_website_only" = case_when(!is.na(referral_yourcovidrecovery_website_only) ~ "YCR Website Only", TRUE ~ "No Referral"),
-         "has_diag_post_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Ongoing Covid"),
-         "referral_yourcovidrecovery_program"  = case_when(!is.na(referral_yourcovidrecovery_website_program) ~ "YCR Website Program", TRUE ~ "No Referral"),
-         "referral_pc_clinic" = case_when(!is.na(referral_pc_clinic) ~ "Post Covid Clinic", TRUE ~ "No PC clinic")
+  mutate("has_diag_og_covid" = factor(case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"), ordered = TRUE),
+         "referral_yourcovidrecovery_website_only" = factor(case_when(!is.na(referral_yourcovidrecovery_website_only) ~ "YCR (website only)", TRUE ~ "No Referral"), ordered = TRUE),
+         "has_diag_post_covid" = factor(case_when(!is.na(diag_post_covid) ~ "Post-COVID-19", TRUE ~ "No Post-COVID-19"), ordered = TRUE),
+         "referral_yourcovidrecovery_program"  = factor(case_when(!is.na(referral_yourcovidrecovery_website_program) ~ "YCR (website program)", TRUE ~ "No Referral"), ordered = TRUE),
+         "referral_pc_clinic" = factor(case_when(!is.na(referral_pc_clinic) ~ "Post Covid Clinic", TRUE ~ "No Referral"), ordered = TRUE)
          ) %>% 
   group_by(has_diag_og_covid,
            referral_yourcovidrecovery_website_only,
@@ -169,17 +200,19 @@ ggplot(as.data.frame(Fig_2), aes(y=freq,
                                     axis3=has_diag_post_covid,
                                     axis4=referral_yourcovidrecovery_program,
                                     axis5=referral_pc_clinic)) +
-  geom_alluvium(fill = "pink") + 
-  geom_stratum(width = 1/12, fill = "black", color = "grey") + 
+  geom_alluvium(aes(fill = referral_yourcovidrecovery_website_only), aes.bind = TRUE) + 
+  geom_stratum(width = 1/6, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-  scale_x_discrete(limits = c("has_diag_og_covid",
-                              "referral_yourcovidrecovery_website_only",
-                              "has_diag_post_covid",
-                              "referral_yourcovidrecovery_program",
-                              "referral_pc_clinic"),
+  scale_x_discrete(limits = c("Ongoing Symptomatic Diagnosis",
+                              "Yourcovidrecovery website",
+                              "Post-COVID-19 Syndrome",
+                              "Yourcovidrecovery program",
+                              "Post-COVID-19 Clinic"),
                    expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, sum(!is.na(cohort$diag_ongoing_covid))), expand = c(0.005, 0.005)) + 
-  ggtitle("Fig. 2 - Patient flow from ongoing covid to referral destinations") 
+  ggtitle("Fig. 2 - Patient flow from ongoing covid to referral destinations") + 
+  theme_minimal() + 
+  theme(legend.position = "bottom", legend.title = element_blank())
 
 ggsave("output/Fig_2.png")
 
@@ -202,15 +235,17 @@ ggplot(as.data.frame(Fig_3), aes(y=freq,
                                                    axis1=has_diag_post_covid,
                                                    axis2=referral_yourcovidrecovery_program,
                                                    axis3=referral_pc_clinic)) +
-  geom_alluvium(fill = "light blue") + 
+  geom_alluvium(aes(fill = referral_yourcovidrecovery_program)) + 
   geom_stratum(width = 1/12, fill = "black", color = "grey") + 
   geom_label(stat = "stratum", aes(label = after_stat(stratum))) + 
-  scale_x_discrete(limits = c("Post-COVID-19 Diagnosis",
-                              "Referral to yourcovidrecovery.nhs.uk program",
-                              "Referral to Post Covid secondary care clinic"),
+  scale_x_discrete(limits = c("Post-COVID-19 Syndrome",
+                              "Yourcovidrecovery program",
+                              "Post-COVID-19 Clinic"),
                    expand = c(0.05, 0.05)) + 
   scale_y_continuous(limits = c(0, sum(!is.na(cohort$diag_post_covid))), expand = c(0.005, 0.005)) +
-  ggtitle("Fig. 3 - Patient flow from Post-COVID-19 syndrome diagnosis code to referral destinations") 
+  ggtitle("Fig. 3 - Patient flow from Post-COVID-19 syndrome diagnosis code") + 
+  theme_minimal() + 
+  theme(legend.position = "bottom", legend.title = element_blank())
 
 ggsave("output/Fig_3.png")
 

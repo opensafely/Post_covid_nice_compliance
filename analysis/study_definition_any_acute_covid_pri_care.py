@@ -25,7 +25,7 @@ study = StudyDefinition(
 
     population=patients.satisfying(
         """
-        has_acute_covid
+        has_acute_covid 
         """, 
         has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = start_date)
     ),

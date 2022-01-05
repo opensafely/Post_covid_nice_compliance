@@ -32,17 +32,19 @@ study = StudyDefinition(
                                                                              "rate": "uniform"}, 
                                                     ),
 
-    population = patients.satisfying(
-        """
-        ongoing_and_pc_diag_and_referal_codes AND registered AND (sex = 'M' OR sex = 'F')
-        """,
-        ongoing_and_pc_diag_and_referal_codes = patients.with_these_clinical_events(ongoing_and_pc_diag_and_referal_codes, on_or_before = end_date),
-        registered = patients.registered_as_of("index_date")),
-    
     age_at_diag=patients.age_as_of(
         "pc_or_oc_diag_or_referral_date",
         return_expectations={"int": {"distribution": "population_ages"}}
     ),
+
+    population = patients.satisfying(
+        """
+        ongoing_and_pc_diag_and_referal_codes AND registered AND (sex = 'M' OR sex = 'F') AND age_at_diag >=18
+        """,
+        ongoing_and_pc_diag_and_referal_codes = patients.with_these_clinical_events(ongoing_and_pc_diag_and_referal_codes, on_or_before = end_date),
+        registered = patients.registered_as_of("index_date")),
+    
+
 
     prac_id = patients.registered_practice_as_of("pc_or_oc_diag_or_referral_date",
                                                 returning="pseudo_id",
