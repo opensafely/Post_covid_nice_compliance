@@ -114,7 +114,7 @@ Fig_1 %>%
                               "Referral to yourcovidrecovery.nhs.uk Online Program Code")) + 
   theme(legend.position = "bottom", legend.direction = "vertical", legend.title = element_blank())
 
-ggsave("output/Fig_1.png")
+ggsave("output/Fig_1.png", width = 10, height = 7, units = "in")
 
 #Table 2 referral_diag_table
 Table_2 <- cohort %>% 
@@ -214,7 +214,7 @@ ggplot(as.data.frame(Fig_2), aes(y=freq,
   theme_minimal() + 
   theme(legend.position = "bottom", legend.title = element_blank())
 
-ggsave("output/Fig_2.png")
+ggsave("output/Fig_2.png", width = 10, height = 7, units = "in")
 
 #Post covid to self-care / pc 
 Fig_3 <- cohort %>% 
@@ -247,7 +247,7 @@ ggplot(as.data.frame(Fig_3), aes(y=freq,
   theme_minimal() + 
   theme(legend.position = "bottom", legend.title = element_blank())
 
-ggsave("output/Fig_3.png")
+ggsave("output/Fig_3.png", width = 10, height = 7, units = "in")
 
 #add lc and referral codes through time
 
