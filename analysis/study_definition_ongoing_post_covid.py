@@ -11,7 +11,7 @@ from codelists import *
 from health_inequalities_var import health_inequalities
 
 start_date = "2019-02-01"
-end_date = "2021-10-01"
+end_date = "2022-01-01"
 
 study = StudyDefinition(
     
@@ -22,7 +22,7 @@ study = StudyDefinition(
         "int": {"distribution": "poisson", "mean" : 2}, "incidence" : 0.2
     },
 
-    index_date= "2019-02-01",
+    index_date= "2022-01-01",
 
     pc_or_oc_diag_or_referral_date = patients.with_these_clinical_events(ongoing_and_pc_diag_and_referal_codes,
                                                      find_first_match_in_period = True,
@@ -39,10 +39,11 @@ study = StudyDefinition(
 
     population = patients.satisfying(
         """
-        ongoing_and_pc_diag_and_referal_codes AND registered AND (sex = 'M' OR sex = 'F') AND age_at_diag >=18
+        ongoing_and_pc_diag_and_referal_codes AND registered AND (sex = 'M' OR sex = 'F') AND age >=18
         """,
         ongoing_and_pc_diag_and_referal_codes = patients.with_these_clinical_events(ongoing_and_pc_diag_and_referal_codes, on_or_before = end_date),
-        registered = patients.registered_as_of("index_date")),
+        registered = patients.registered_as_of("index_date"))
+        age = patients.age_as_of("index_date"),
     
 
 
