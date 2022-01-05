@@ -25,21 +25,21 @@ study = StudyDefinition(
 
     population=patients.satisfying(
         """
-        has_acute_covid AND "registered AND (sex = 'M' OR sex = 'F') AND age >= 18",
+        has_acute_covid AND registered AND (sex = 'M' OR sex = 'F') AND (pat_age > 17)
         """, 
-        has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = start_date,
+        has_acute_covid = patients.with_these_clinical_events(acute_covid_codes, on_or_after = start_date),
         registered = patients.registered_as_of("index_date"),
-        age = patients.age_as_of("index_date")
-        )
+        pat_age = patients.age_as_of("2019-02-01")
+        
     ),
     
     acute_diag_dat = patients.with_these_clinical_events(acute_covid_codes,
-                                                     find_first_match_in_period = True,
-                                                     returning = "date",
-                                                     date_format = "YYYY-MM-DD",
-                                                     return_expectations = {"date": {"earliest":start_date, "latest":end_date},
+                                                        find_first_match_in_period = True,
+                                                        returning = "date",
+                                                        date_format = "YYYY-MM-DD",
+                                                        return_expectations = {"date": {"earliest":start_date, "latest":end_date},
                                                                             "rate": "uniform"}, 
-                                                    ),
+                                                        ),
 
     age_at_diag=patients.age_as_of(
         "acute_diag_dat",

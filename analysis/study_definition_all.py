@@ -31,9 +31,12 @@ study = StudyDefinition(
                                                                              "rate": "uniform"}, 
                                                     ),
 
-    population = patients.satisfying("registered AND (sex = 'M' OR sex = 'F') AND age >= 18",
+    population = patients.satisfying("""
+                                    registered AND (sex = 'M' OR sex = 'F') AND (pat_age > 17)
+                                    """,
                                     registered = patients.registered_as_of("index_date"),
-                                    age = patients.age_as_of("index_date")),
+                                    pat_age = patients.age_as_of("2019-02-01")
+                                    ),
 
     # Import common health inequalities variables (defined in another script)   
     **health_inequalities,
