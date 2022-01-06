@@ -215,6 +215,7 @@ ggplot(as.data.frame(Fig_2), aes(y=freq,
   theme(legend.position = "bottom", legend.title = element_blank())
 
 ggsave("output/Fig_2.png", width = 10, height = 7, units = "in")
+write_csv(Fig_2, "output/Fig_2_numbers.csv")
 
 #Post covid to self-care / pc 
 Fig_3 <- cohort %>% 

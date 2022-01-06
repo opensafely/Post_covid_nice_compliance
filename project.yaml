@@ -49,6 +49,7 @@ actions:
         Fig1: output/Fig_1.png
         Fig1_numbers: output/Fig_1_numbers.csv
         Fig2: output/Fig_2.png
+        Fig2_numbers: output/Fig_2_numbers.csv
         Fig3: output/Fig_3.png
         Table_1: output/Table_1.csv
         Table_2: output/Table_2.csv
