@@ -133,7 +133,7 @@ Table_3 <- demo_vars %>%
   map(~generate_freq_tables(grouping_var = .data[[.x]],
                             cohort_df = cohort)) %>%
   bind_rows() %>%
-  filter(across(where(is.numeric), ~ . >6)) %>% 
+  filter(across(where(is.integer), ~ . >6)) %>% 
   group_by(Demographic) %>% 
   mutate(acute_covid_percentage =  ifelse(Group == "Total", NA, round(acute_covid / sum(acute_covid) * 100, 1)),
          ongoing_covid_percentage = ifelse(Group == "Total", NA, round(ongoing_covid / sum(ongoing_covid) * 100, 1)),
