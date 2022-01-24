@@ -47,7 +47,7 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                             psych_referral = col_date(format = "%Y-%m-%d"),
                                             psych_referral_iapt = col_date(format = "%Y-%m-%d"),
                                             discussion_about_daily_living = col_date(format = "%Y-%m-%d"),
-                                            self_care_advise_or_support = col_date(format = "%Y-%m-%d"),
+                                            #self_care_advise_or_support = col_date(format = "%Y-%m-%d"),
                                             primary_care_managment = col_date(format = "%Y-%m-%d"),
                                             community_care = col_date(format = "%Y-%m-%d"),
                                             age_at_diag = col_double(),
@@ -63,7 +63,13 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                          na = c("", "NA", "0"))
 
 cohort_all <- read_csv('output/input_all.csv',
-                       col_types = cols(.default = col_date())
+                       col_types = cols(.default = col_date(),
+                                        sex = col_factor(),
+                                        region = col_factor(),
+                                        imd = col_factor(),
+                                        age_group = col_factor(),
+                                        ethnicity = col_factor(),
+                                        patient_id = col_guess())
 )
 
 debug_all_counts <- cohort_all %>% summarise(across(.fns = ~sum(!is.na(.x))))
