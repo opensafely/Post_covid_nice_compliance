@@ -79,3 +79,6 @@ write_csv(debug_oc_count, 'output/debug_oc_counts.csv')
 
 debug_referral_count <- cohort_ongoing_or_post_covid %>% summarise(ref_total = sum(referral_pc_clinic_counts, na.rm = TRUE))
 write_csv(debug_referral_count, 'output/debug_referral_count.csv')
+
+debug_nuts_1_region <- cohort_all %>% group_by(region) %>% summarise(n = n())
+write_csv(debug_nuts_1_region, 'output/debug_nuts_1_region.csv')
