@@ -32,6 +32,7 @@ actions:
         debug_ac: output/debug_ac_counts.csv
         debug_all_counts: output/debug_all_counts.csv
         debug_all_crosstab: output/debug_all_diag_refer_crosstab.csv
+        debug_nuts_1_region: output/debug_nuts_1_region.csv
 
   compliance_ratios:
     run: r:latest analysis/guideline_compliance_ratios.R
