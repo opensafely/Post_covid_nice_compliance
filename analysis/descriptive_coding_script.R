@@ -249,6 +249,7 @@ ggplot(as.data.frame(Fig_3), aes(y=freq,
   theme(legend.position = "bottom", legend.title = element_blank())
 
 ggsave("output/Fig_3.png", width = 10, height = 7, units = "in")
+write_csv(Fig_3, "output/Fig_3_numbers.csv")
 
 #add lc and referral codes through time
 
