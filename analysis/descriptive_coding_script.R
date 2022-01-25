@@ -179,7 +179,7 @@ write_csv(Table_3, "output/Table_3.csv")
 Fig_2 <- cohort %>% 
   filter(!is.na(diag_ongoing_covid)) %>% 
   mutate("has_diag_og_covid" = factor(case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"), ordered = TRUE),
-         "referral_yourcovidrecovery_website_only" = factor(case_when(!is.na(referral_yourcovidrecovery_website_only) ~ "YCR (website only)", TRUE ~ "No Referral"), ordered = TRUE),
+         "referral_yourcovidrecovery_website_only" = factor(case_when(!is.na(referral_yourcovidrecovery_website_only) ~ "YCR (website only)", TRUE ~ "No Signpost"), ordered = TRUE),
          "has_diag_post_covid" = factor(case_when(!is.na(diag_post_covid) ~ "Post-COVID-19", TRUE ~ "No Post-COVID-19"), ordered = TRUE),
          "referral_yourcovidrecovery_program"  = factor(case_when(!is.na(referral_yourcovidrecovery_website_program) ~ "YCR (website program)", TRUE ~ "No Referral"), ordered = TRUE),
          "referral_pc_clinic" = factor(case_when(!is.na(referral_pc_clinic) ~ "Post Covid Clinic", TRUE ~ "No Referral"), ordered = TRUE)
