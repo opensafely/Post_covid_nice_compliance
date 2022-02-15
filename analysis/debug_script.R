@@ -72,16 +72,7 @@ cohort_all <- read_csv('output/input_all.csv',
                                         patient_id = col_guess())
 )
 
-MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv", 
-                               col_types = cols(OA11CD = col_skip(), 
-                                                OAC11CD = col_skip(), OAC11NM = col_skip(), 
-                                                LSOA11CD = col_skip(), LSOA11NM = col_skip(), 
-                                                SOAC11CD = col_skip(), SOAC11NM = col_skip(), 
-                                                MSOA11CD = col_character(), MSOA11NM = col_skip(), 
-                                                LAD17CD = col_skip(), LAD17NM = col_skip(), 
-                                                LACCD = col_skip(), LACNM = col_skip(), 
-                                                RGN11CD = col_skip(), CTRY11CD = col_skip(), 
-                                                CTRY11NM = col_skip(), FID = col_skip()))
+MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
 
 cohort_any_acute_covid_recorded <- cohort_any_acute_covid_recorded %>% 
   left_join(MSOA_Region_Lookup,

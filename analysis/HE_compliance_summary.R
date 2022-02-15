@@ -104,16 +104,7 @@ acute_df <- read_csv("output/input_any_acute_covid_pri_care.csv",
 #Convert prac MSOA to region
 #Read in MSOA lookup
 #https://geoportal.statistics.gov.uk/datasets/fe6c55f0924b4734adf1cf7104a0173e_0/explore?showTable=true
-MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv", 
-                               col_types = cols(OA11CD = col_skip(), 
-                                                OAC11CD = col_skip(), OAC11NM = col_skip(), 
-                                                LSOA11CD = col_skip(), LSOA11NM = col_skip(), 
-                                                SOAC11CD = col_skip(), SOAC11NM = col_skip(), 
-                                                MSOA11CD = col_character(), MSOA11NM = col_skip(), 
-                                                LAD17CD = col_skip(), LAD17NM = col_skip(), 
-                                                LACCD = col_skip(), LACNM = col_skip(), 
-                                                RGN11CD = col_skip(), CTRY11CD = col_skip(), 
-                                                CTRY11NM = col_skip(), FID = col_skip()))
+MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
 
 acute_df <- acute_df %>% 
   left_join(MSOA_Region_Lookup,
