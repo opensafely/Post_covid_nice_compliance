@@ -74,12 +74,32 @@ demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
 cohort <- read_csv(file = "output/input_all.csv",
                    col_types = cols(patient_id = col_number(),
                                     age_group = col_factor(levels = c("0-17","18-24", "25-34", "35-44", "45-54", "55-69", "70-79", "80+")),
-                                    region = col_factor(),
+                                    msoa = col_factor(),
                                     sex = col_factor(),
                                     imd = col_factor(levels = c("1 (Most Deprived)", "2", "3", "4", "5 (Least Deprived)", "Unknown")),
                                     ethnicity = col_factor(),
                                     .default = col_date())
                    )
+
+#Read in MSOA lookup
+#https://geoportal.statistics.gov.uk/datasets/fe6c55f0924b4734adf1cf7104a0173e_0/explore?showTable=true
+MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv", 
+                               col_types = cols(OA11CD = col_skip(), 
+                                                OAC11CD = col_skip(), OAC11NM = col_skip(), 
+                                                LSOA11CD = col_skip(), LSOA11NM = col_skip(), 
+                                                SOAC11CD = col_skip(), SOAC11NM = col_skip(), 
+                                                MSOA11CD = col_character(), MSOA11NM = col_skip(), 
+                                                LAD17CD = col_skip(), LAD17NM = col_skip(), 
+                                                LACCD = col_skip(), LACNM = col_skip(), 
+                                                RGN11CD = col_skip(), CTRY11CD = col_skip(), 
+                                                CTRY11NM = col_skip(), FID = col_skip()))
+
+cohort <- cohort %>% 
+  left_join(MSOA_Region_Lookup,
+            by = c("msoa" = "MSOA11CD")) %>% 
+  rename("region" = "RGN11NM")
+
+rm(MSOA_Region_Lookup)
 
 #Table 1 Cohort
 Table_1 <- demo_vars %>% 

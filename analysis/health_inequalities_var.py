@@ -13,21 +13,21 @@ health_inequalities = dict(
     ),
 
     # Get NHS region
-    region=patients.registered_practice_as_of(
+    msoa=patients.address_as_of(
         "index_date",
-        returning="nuts1_region_name",
+        returning="msoa",
         return_expectations={
             "rate": "universal",
             "category": {
                 "ratios": {
-                    "North East": 0.1,
-                    "North West": 0.1,
-                    "Yorkshire and the Humber": 0.1,
-                    "East Midlands": 0.1,
-                    "West Midlands": 0.1,
-                    "East of England": 0.1,
-                    "London": 0.2,
-                    "South East": 0.2,
+                    "E02002559": 0.1,
+                    "E02002583": 0.1,
+                    "E02002786": 0.1,
+                    "E02002810": 0.1,
+                    "E02002932": 0.1,
+                    "E02003060": 0.1,
+                    "E02006784": 0.2,
+                    "E02005993": 0.2,
                 },
             },
         },

@@ -52,7 +52,17 @@ study = StudyDefinition(
 
     prac_msoa = patients.registered_practice_as_of("acute_diag_dat",
                                                     returning='msoa',
-                                                    return_expectations={"rate":"universal", "category": {"ratios" : {'msoa1':0.5, 'msoa2':0.5}}}
+                                                    return_expectations={"rate": "universal",
+                                                    "category": {"ratios": {"E02002559": 0.1,
+                                                                            "E02002583": 0.1,
+                                                                            "E02002786": 0.1,
+                                                                            "E02002810": 0.1,
+                                                                            "E02002932": 0.1,
+                                                                            "E02003060": 0.1,
+                                                                            "E02006784": 0.2,
+                                                                            "E02005993": 0.2}
+                                                                            }
+                                                                            },
     ),
 
     advice_given = patients.with_these_clinical_events(advice_given,

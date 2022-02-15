@@ -1,7 +1,7 @@
 library(tidyverse)
 library(lubridate)
 
-cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_care.csv',
+cohort_any_acute_covid_recorded <- read_csv("output/input_any_acute_covid_pri_care.csv",
                                             col_types = cols(
                                               acute_diag_dat = col_date(format = "%Y-%m-%d"),
                                               advice_given = col_date(format = "%Y-%m-%d"),
@@ -11,8 +11,8 @@ cohort_any_acute_covid_recorded <- read_csv('output/input_any_acute_covid_pri_ca
                                               prac_id = col_double(),
                                               prac_msoa = col_character(),
                                               sex = col_character(),
-                                              region = col_character(),
-                                              imd = col_double(),
+                                              msoa = col_character(),
+                                              imd = col_character(),
                                               age_group = col_character(),
                                               ethnicity = col_double(),
                                               patient_id = col_double()),
@@ -55,8 +55,8 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
                                             prac_msoa = col_character(),
                                             diagnostic_bp_test = col_double(),
                                             sex = col_character(),
-                                            region = col_character(),
-                                            imd = col_double(),
+                                            msoa = col_character(),
+                                            imd = col_factor(),
                                             age_group = col_character(),
                                             ethnicity = col_double(),
                                             patient_id = col_double()),
@@ -65,12 +65,38 @@ cohort_ongoing_or_post_covid <- read_csv('output/input_ongoing_post_covid.csv',
 cohort_all <- read_csv('output/input_all.csv',
                        col_types = cols(.default = col_date(),
                                         sex = col_factor(),
-                                        region = col_factor(),
+                                        msoa = col_factor(),
                                         imd = col_factor(),
                                         age_group = col_factor(),
                                         ethnicity = col_factor(),
                                         patient_id = col_guess())
 )
+
+MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv", 
+                               col_types = cols(OA11CD = col_skip(), 
+                                                OAC11CD = col_skip(), OAC11NM = col_skip(), 
+                                                LSOA11CD = col_skip(), LSOA11NM = col_skip(), 
+                                                SOAC11CD = col_skip(), SOAC11NM = col_skip(), 
+                                                MSOA11CD = col_character(), MSOA11NM = col_skip(), 
+                                                LAD17CD = col_skip(), LAD17NM = col_skip(), 
+                                                LACCD = col_skip(), LACNM = col_skip(), 
+                                                RGN11CD = col_skip(), CTRY11CD = col_skip(), 
+                                                CTRY11NM = col_skip(), FID = col_skip()))
+
+cohort_any_acute_covid_recorded <- cohort_any_acute_covid_recorded %>% 
+  left_join(MSOA_Region_Lookup,
+            by = c("msoa" = "MSOA11CD")) %>% 
+  rename("region" = "RGN11NM")
+
+cohort_ongoing_or_post_covid <- cohort_ongoing_or_post_covid %>% 
+  left_join(MSOA_Region_Lookup,
+            by = c("msoa" = "MSOA11CD")) %>% 
+  rename("region" = "RGN11NM")
+
+cohort_all <- cohort_all %>% 
+  left_join(MSOA_Region_Lookup,
+            by = c("msoa" = "MSOA11CD")) %>% 
+  rename("region" = "RGN11NM")
 
 debug_all_counts <- cohort_all %>% summarise(across(.fns = ~sum(!is.na(.x))))
 debug_all_crosstab <- table(!is.na(cohort_all$diag_any_lc_diag), !is.na(cohort_all$referral_pc_clinic))

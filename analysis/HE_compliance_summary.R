@@ -93,7 +93,7 @@ acute_df <- read_csv("output/input_any_acute_covid_pri_care.csv",
                                 prac_id = col_double(),
                                 prac_msoa = col_character(),
                                 sex = col_character(),
-                                region = col_character(),
+                                msoa = col_character(),
                                 imd = col_character(),
                                 age_group = col_character(),
                                 ethnicity = col_double(),
@@ -101,6 +101,24 @@ acute_df <- read_csv("output/input_any_acute_covid_pri_care.csv",
                               na = c("", "NA", "0"))
 
 ### Dataframe preprocessing ###
+#Convert prac MSOA to region
+#Read in MSOA lookup
+#https://geoportal.statistics.gov.uk/datasets/fe6c55f0924b4734adf1cf7104a0173e_0/explore?showTable=true
+MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv", 
+                               col_types = cols(OA11CD = col_skip(), 
+                                                OAC11CD = col_skip(), OAC11NM = col_skip(), 
+                                                LSOA11CD = col_skip(), LSOA11NM = col_skip(), 
+                                                SOAC11CD = col_skip(), SOAC11NM = col_skip(), 
+                                                MSOA11CD = col_character(), MSOA11NM = col_skip(), 
+                                                LAD17CD = col_skip(), LAD17NM = col_skip(), 
+                                                LACCD = col_skip(), LACNM = col_skip(), 
+                                                RGN11CD = col_skip(), CTRY11CD = col_skip(), 
+                                                CTRY11NM = col_skip(), FID = col_skip()))
+
+acute_df <- acute_df %>% 
+  left_join(MSOA_Region_Lookup,
+            by = c("prac_msoa" = "MSOA11CD")) %>% 
+  rename("region" = "RGN11NM")
 
 # Add start and end date to filter data, add year_month column for monthly calculations
 start_date = ymd("2019-06-01")
