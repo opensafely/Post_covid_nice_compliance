@@ -159,33 +159,6 @@ write_csv(Table_3, "output/Table_3.csv")
 
 #alluvial datasets
 
-#Acute to ongoing to post covid - comment out as not used
-# alluvial_ac_ogpc <- cohort %>% 
-#   filter(!is.na(diag_acute_covid)) %>% 
-#   mutate("has_diag_acute_covid" = case_when(!is.na(diag_acute_covid) ~ "Acute Covid", TRUE ~ "No Acute Covid"),
-#          "has_diag_og_covid" = case_when(!is.na(diag_ongoing_covid) ~ "Ongoing Covid", TRUE ~ "No Ongoing Covid"),
-#          "has_diag_pc_covid" = case_when(!is.na(diag_post_covid) ~ "Post Covid", TRUE ~ "No Post Covid")) %>% 
-#   group_by(sex, 
-#            has_diag_acute_covid,
-#            has_diag_og_covid,
-#            has_diag_pc_covid) %>% 
-#   summarise(freq = n()) %>% 
-#   filter(freq > 6)
-# 
-# #Acute to ongoing / post covid
-# ggplot(as.data.frame(alluvial_ac_ogpc), aes(y=freq,
-#                      axis1=has_diag_acute_covid,
-#                      axis2=has_diag_og_covid,
-#                      axis3=has_diag_pc_covid)) +
-#   geom_alluvium(fill = "light green") +
-#   geom_stratum(width = 1/12, fill = "black", color = "grey") +
-#   geom_label(stat = "stratum", aes(label = after_stat(stratum))) +
-#   scale_x_discrete(limits = c("has_diag_acute_covid", "has_diag_og_covid", "has_diag_pc_covid"), expand = c(0.05, 0.05)) +
-#   scale_y_continuous(limits = c(0, sum(!is.na(cohort$diag_acute_covid))), expand = c(0.005, 0.005)) +
-#   ggtitle("Patient flow from acute to ongoing and post covid conditions")
-# 
-# ggsave("output/ac_to_lc.png")
-
 #Ongoing to self-care / pc 
 Fig_2 <- cohort %>% 
   filter(!is.na(diag_ongoing_covid)) %>% 
@@ -261,18 +234,6 @@ ggplot(as.data.frame(Fig_3), aes(y=freq,
 
 ggsave("output/Fig_3.png", width = 10, height = 7, units = "in")
 write_csv(Fig_3, "output/Fig_3_numbers.csv")
-
-#add lc and referral codes through time
-
-# #remove ycr code for scale
-# line_graph_df %>% 
-#   filter(code != "referral_self_care") %>% 
-#   ggplot(aes(x= month, y= n, color = code)) + 
-#   geom_line()+
-#   theme_minimal() + 
-#   labs(title= "Long Covid diagnosis and referral codes through time")
-#   
-# ggsave("output/coding_through_time_noycr.png")
 
 ## OP table for OG / PC diagnoses - Second paper [should be post-covid diags only or all patients] - comment out for now
 
