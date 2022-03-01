@@ -11,7 +11,7 @@ from codelists import *
 from health_inequalities_var import health_inequalities
 
 start_date = "2019-02-01"
-end_date = "2022-01-01"
+end_date = "2022-02-01"
 
 study = StudyDefinition(
     
@@ -21,7 +21,7 @@ study = StudyDefinition(
         "incidence": 0.95
     },
 
-    index_date = "2022-01-01",
+    index_date = "2022-02-01",
 
     pc_or_oc_diag_or_referral_date = patients.with_these_clinical_events(ongoing_and_pc_diag_and_referal_codes,
                                                      find_first_match_in_period = True,
