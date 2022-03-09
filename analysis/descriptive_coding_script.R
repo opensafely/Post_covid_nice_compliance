@@ -245,4 +245,4 @@ RefDiag_tab <- cohort %>%
   summarise(n = n()) %>% 
   pivot_wider(names_from = Referral, values_from = n, names_prefix = "Referral_")
 
-write_csv(RefDiag_tab, "RefDiag_vals.csv")
+write_csv(RefDiag_tab, "RefDiag_tab.csv")
