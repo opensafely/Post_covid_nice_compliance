@@ -68,7 +68,7 @@ crude_rate_normal_approx <- function(num, denom, upper_or_lower) {
   
 #REUSED VARIABLES
 #demographic_variables
-demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
+demo_vars <- c('sex', 'region', 'region_msoa', 'imd', 'ethnicity', 'age_group')
 
 # Load cohort of all patients
 cohort <- read_csv(file = "output/input_all.csv",
@@ -88,7 +88,7 @@ MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
 cohort <- cohort %>%
   left_join(MSOA_Region_Lookup,
             by = c("msoa" = "MSOA11CD")) %>%
-  rename("region" = "RGN11NM")
+  rename("region_msoa" = "RGN11NM")
 
 rm(MSOA_Region_Lookup)
 
