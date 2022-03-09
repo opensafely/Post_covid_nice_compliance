@@ -236,3 +236,13 @@ ggplot(as.data.frame(Fig_3), aes(y=freq,
 
 ggsave("output/Fig_3.png", width = 10, height = 7, units = "in")
 write_csv(Fig_3, "output/Fig_3_numbers.csv")
+
+RefDiag_tab <- cohort %>% 
+  mutate(Diag = !is.na(diag_any_lc_diag),
+         Referral = !is.na(referral_pc_clinic)|!is.na(referral_yourcovidrecovery_website_only)|!is.na(referral_yourcovidrecovery_website_program)) %>% 
+  select(Diag, Referral) %>% 
+  group_by(Diag, Referral) %>% 
+  summarise(n = n()) %>% 
+  pivot_wider(names_from = Referral, values_from = n, names_prefix = "Referral_")
+
+write_csv(RefDiag_tab, "RefDiag_vals.csv")
