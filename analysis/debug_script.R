@@ -72,22 +72,22 @@ cohort_all <- read_csv('output/input_all.csv',
                                         patient_id = col_guess())
 )
 
-MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
-
-cohort_any_acute_covid_recorded <- cohort_any_acute_covid_recorded %>% 
-  left_join(MSOA_Region_Lookup,
-            by = c("msoa" = "MSOA11CD")) %>% 
-  rename("region" = "RGN11NM")
-
-cohort_ongoing_or_post_covid <- cohort_ongoing_or_post_covid %>% 
-  left_join(MSOA_Region_Lookup,
-            by = c("msoa" = "MSOA11CD")) %>% 
-  rename("region" = "RGN11NM")
-
-cohort_all <- cohort_all %>% 
-  left_join(MSOA_Region_Lookup,
-            by = c("msoa" = "MSOA11CD")) %>% 
-  rename("region" = "RGN11NM")
+# MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
+# 
+# cohort_any_acute_covid_recorded <- cohort_any_acute_covid_recorded %>% 
+#   left_join(MSOA_Region_Lookup,
+#             by = c("msoa" = "MSOA11CD")) %>% 
+#   rename("region" = "RGN11NM")
+# 
+# cohort_ongoing_or_post_covid <- cohort_ongoing_or_post_covid %>% 
+#   left_join(MSOA_Region_Lookup,
+#             by = c("msoa" = "MSOA11CD")) %>% 
+#   rename("region" = "RGN11NM")
+# 
+# cohort_all <- cohort_all %>% 
+#   left_join(MSOA_Region_Lookup,
+#             by = c("msoa" = "MSOA11CD")) %>% 
+#   rename("region" = "RGN11NM")
 
 debug_all_counts <- cohort_all %>% summarise(across(.fns = ~sum(!is.na(.x))))
 debug_all_crosstab <- table(!is.na(cohort_all$diag_any_lc_diag), !is.na(cohort_all$referral_pc_clinic))

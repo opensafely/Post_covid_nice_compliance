@@ -104,12 +104,12 @@ acute_df <- read_csv("output/input_any_acute_covid_pri_care.csv",
 #Convert prac MSOA to region
 #Read in MSOA lookup
 #https://geoportal.statistics.gov.uk/datasets/fe6c55f0924b4734adf1cf7104a0173e_0/explore?showTable=true
-MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
-
-acute_df <- acute_df %>% 
-  left_join(MSOA_Region_Lookup,
-            by = c("prac_msoa" = "MSOA11CD")) %>% 
-  rename("region" = "RGN11NM")
+# MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
+# 
+# acute_df <- acute_df %>% 
+#   left_join(MSOA_Region_Lookup,
+#             by = c("prac_msoa" = "MSOA11CD")) %>% 
+#   rename("region" = "RGN11NM")
 
 # Add start and end date to filter data, add year_month column for monthly calculations
 start_date = ymd("2019-06-01")

@@ -12,26 +12,36 @@ health_inequalities = dict(
             }
     ),
 
-    # Get NHS region
-    msoa=patients.address_as_of(
-        "index_date",
-        returning="msoa_code",
-        return_expectations={
-            "rate": "universal",
-            "category": {
-                "ratios": {
-                    "E02002559": 0.1,
-                    "E02002583": 0.1,
-                    "E02002786": 0.1,
-                    "E02002810": 0.1,
-                    "E02002932": 0.1,
-                    "E02003060": 0.1,
-                    "E02006784": 0.2,
-                    "E02005993": 0.2,
-                },
-            },
-        },
-    ),
+    # # Get NHS region
+    # msoa=patients.address_as_of(
+    #     "index_date",
+    #     returning="msoa",
+    #     return_expectations={
+    #         "rate": "universal",
+    #         "category": {
+    #             "ratios": {
+    #                 "E02002559": 0.1,
+    #                 "E02002583": 0.1,
+    #                 "E02002786": 0.1,
+    #                 "E02002810": 0.1,
+    #                 "E02002932": 0.1,
+    #                 "E02003060": 0.1,
+    #                 "E02006784": 0.2,
+    #                 "E02005993": 0.2,
+    #             },
+    #         },
+    #     },
+    # ),
+
+    region=patients.registered_practice_as_of("index_date",
+                                              returning = "nuts1_region_name",
+                                              return_expectations = {"rate": "universal",
+                                                                      "category": {
+                                                                          "ratios" : {
+                                                                              "NorthWest" : 0.5,
+                                                                              "London" : 0.5
+                                                                          }
+                                                                      }}),
 
     # Get information on deprivation and group into IMD categories 1-5
     imd=patients.categorised_as(
