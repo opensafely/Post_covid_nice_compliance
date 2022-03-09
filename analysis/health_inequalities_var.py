@@ -33,15 +33,15 @@ health_inequalities = dict(
     #     },
     # ),
 
-    region=patients.registered_practice_as_of("2022-02-01",
-                                              returning = "nuts1_region_name",
-                                              return_expectations = {"rate": "universal",
-                                                                      "category": {
-                                                                          "ratios" : {
-                                                                              "NorthWest" : 0.5,
-                                                                              "London" : 0.5
-                                                                          }
-                                                                      }}),
+    # region=patients.registered_practice_as_of("2022-02-01",
+    #                                           returning = "nuts1_region_name",
+    #                                           return_expectations = {"rate": "universal",
+    #                                                                   "category": {
+    #                                                                       "ratios" : {
+    #                                                                           "NorthWest" : 0.5,
+    #                                                                           "London" : 0.5
+    #                                                                       }
+    #                                                                   }}),
 
     # Get information on deprivation and group into IMD categories 1-5
     imd=patients.categorised_as(
