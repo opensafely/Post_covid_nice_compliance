@@ -56,6 +56,7 @@ actions:
         Table_1: output/Table_1.csv
         Table_2: output/Table_2.csv
         Table_3: output/Table_3.csv
+        RefDiag_tab: output/RefDiag_vals.csv
 
   HE_compliance_summary:
     run: r:latest analysis/HE_compliance_summary.R
