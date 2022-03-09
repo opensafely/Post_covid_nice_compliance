@@ -83,14 +83,14 @@ cohort <- read_csv(file = "output/input_all.csv",
 
 #Read in MSOA lookup
 #https://geoportal.statistics.gov.uk/datasets/fe6c55f0924b4734adf1cf7104a0173e_0/explore?showTable=true
-# MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
-# 
-# cohort <- cohort %>% 
-#   left_join(MSOA_Region_Lookup,
-#             by = c("msoa" = "MSOA11CD")) %>% 
-#   rename("region" = "RGN11NM")
-# 
-# rm(MSOA_Region_Lookup)
+MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
+
+cohort <- cohort %>%
+  left_join(MSOA_Region_Lookup,
+            by = c("msoa" = "MSOA11CD")) %>%
+  rename("region" = "RGN11NM")
+
+rm(MSOA_Region_Lookup)
 
 #Table 1 Cohort
 Table_1 <- demo_vars %>% 
