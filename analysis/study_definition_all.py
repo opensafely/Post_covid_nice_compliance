@@ -8,7 +8,7 @@ from cohortextractor import (
 )
 
 from codelists import *
-#from health_inequalities_var import health_inequalities
+from health_inequalities_var import health_inequalities
 
 start_date = "2019-02-01"
 end_date = "2022-02-01"
@@ -39,7 +39,7 @@ study = StudyDefinition(
                                     ),
 
     # Import common health inequalities variables (defined in another script)   
-    # **health_inequalities,
+    **health_inequalities,
 
     #diagnosis variables
     diag_acute_covid = patients.with_these_clinical_events(acute_covid_codes,

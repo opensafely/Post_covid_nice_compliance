@@ -68,13 +68,13 @@ crude_rate_normal_approx <- function(num, denom, upper_or_lower) {
   
 #REUSED VARIABLES
 #demographic_variables
-demo_vars <- c('sex', 'region', 'region_msoa', 'imd', 'ethnicity', 'age_group')
+demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
 
 # Load cohort of all patients
 cohort <- read_csv(file = "output/input_all.csv",
                    col_types = cols(patient_id = col_number(),
                                     age_group = col_factor(levels = c("0-17","18-24", "25-34", "35-44", "45-54", "55-69", "70-79", "80+")),
-                                    msoa = col_factor(),
+                                    region = col_factor(),
                                     sex = col_factor(),
                                     imd = col_factor(levels = c("1 (Most Deprived)", "2", "3", "4", "5 (Least Deprived)", "Unknown")),
                                     ethnicity = col_factor(),
@@ -83,14 +83,14 @@ cohort <- read_csv(file = "output/input_all.csv",
 
 #Read in MSOA lookup
 #https://geoportal.statistics.gov.uk/datasets/fe6c55f0924b4734adf1cf7104a0173e_0/explore?showTable=true
-MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
-
-cohort <- cohort %>%
-  left_join(MSOA_Region_Lookup,
-            by = c("msoa" = "MSOA11CD")) %>%
-  rename("region_msoa" = "RGN11NM")
-
-rm(MSOA_Region_Lookup)
+# MSOA_Region_Lookup <- read_csv("analysis/MSOA_Region_Lookup.csv")
+# 
+# cohort <- cohort %>%
+#   left_join(MSOA_Region_Lookup,
+#             by = c("msoa" = "MSOA11CD")) %>%
+#   rename("region_msoa" = "RGN11NM")
+# 
+# rm(MSOA_Region_Lookup)
 
 #Table 1 Cohort
 Table_1 <- demo_vars %>% 
