@@ -15,7 +15,7 @@ health_inequalities = dict(
     # Get NHS region
     msoa=patients.registered_practice_as_of(
         "index_date",
-        returning="msoa",
+        returning="msoa_code",
         return_expectations={
             "rate": "universal",
             "category": {
