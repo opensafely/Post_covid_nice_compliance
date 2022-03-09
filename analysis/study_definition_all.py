@@ -39,7 +39,7 @@ study = StudyDefinition(
                                     ),
 
     # Import common health inequalities variables (defined in another script)   
-    **health_inequalities,
+    # **health_inequalities,
 
     #diagnosis variables
     diag_acute_covid = patients.with_these_clinical_events(acute_covid_codes,
