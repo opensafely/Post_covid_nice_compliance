@@ -13,27 +13,27 @@ health_inequalities = dict(
     ),
 
     # Get NHS region
-    msoa=patients.registered_practice_as_of(
-        "index_date",
-        returning="msoa_code",
-        return_expectations={
-            "rate": "universal",
-            "category": {
-                "ratios": {
-                    "E02002559": 0.1,
-                    "E02002583": 0.1,
-                    "E02002786": 0.1,
-                    "E02002810": 0.1,
-                    "E02002932": 0.1,
-                    "E02003060": 0.1,
-                    "E02006784": 0.2,
-                    "E02005993": 0.2,
-                },
-            },
-        },
-    ),
+    # msoa=patients.registered_practice_as_of(
+    #     "2022-02-01",
+    #     returning="msoa_code",
+    #     return_expectations={
+    #         "rate": "universal",
+    #         "category": {
+    #             "ratios": {
+    #                 "E02002559": 0.1,
+    #                 "E02002583": 0.1,
+    #                 "E02002786": 0.1,
+    #                 "E02002810": 0.1,
+    #                 "E02002932": 0.1,
+    #                 "E02003060": 0.1,
+    #                 "E02006784": 0.2,
+    #                 "E02005993": 0.2,
+    #             },
+    #         },
+    #     },
+    # ),
 
-    region=patients.registered_practice_as_of("index_date",
+    region=patients.registered_practice_as_of("2022-02-01",
                                               returning = "nuts1_region_name",
                                               return_expectations = {"rate": "universal",
                                                                       "category": {
