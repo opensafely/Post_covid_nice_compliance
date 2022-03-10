@@ -52,7 +52,8 @@ interpreter_booked = codelist_from_csv("codelists/user-rob_w-interpreter-booked-
 discussion_about_daily_living = codelist_from_csv("codelists/user-rob_w-discussion-about-daily-living.csv", system = "snomed", column = "code")
 
 #demographics
-ethnicity_codes = codelist_from_csv("codelists/opensafely-ethnicity.csv", system="ctv3", column="Code", category_column="Grouping_6")
+ethnicity_codes_ctv = codelist_from_csv("codelists/opensafely-ethnicity.csv", system="ctv3", column="Code", category_column="Grouping_6")
+ethnicity_codes = codelist_from_csv("codelists/primis-covid19-vacc-uptake-eth2001.csv", system="snomed", column="code", category_column="grouping_6_id")
 
 #combinations
 ongoing_and_pc_diag_codes = combine_codelists(ongoing_covid_code, pc_code)

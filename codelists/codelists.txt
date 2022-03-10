@@ -32,3 +32,4 @@ user/rob_w/referral-to-social-worker/5221cc10
 user/rob_w/referral-to-yourcovidrecovery-website/5901e120
 user/rob_w/referral-to-yourcovidrecovery-website-program/3ff26deb
 opensafely/ethnicity/746e4c98
+primis-covid19-vacc-uptake/eth2001/357c1ef8

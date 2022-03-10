@@ -203,6 +203,12 @@
       "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity/746e4c98/",
       "downloaded_at": "2021-10-26 08:54:15.319304Z",
       "sha": "3d2f3998b71863a80b24d60f6f4282e14191ae13"
+    },
+    "primis-covid19-vacc-uptake-eth2001.csv": {
+      "id": "primis-covid19-vacc-uptake/eth2001/357c1ef8",
+      "url": "https://codelists.opensafely.org/codelist/primis-covid19-vacc-uptake/eth2001/357c1ef8/",
+      "downloaded_at": "2022-03-10 10:12:37.045721Z",
+      "sha": "36e4eacba898e6ec72da8ff66e8c673bfd9aa8e4"
     }
   }
 }
