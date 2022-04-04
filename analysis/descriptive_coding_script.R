@@ -65,7 +65,6 @@ crude_rate_normal_approx <- function(num, denom, upper_or_lower) {
   
   }
   
-  
 #REUSED VARIABLES
 #demographic_variables
 demo_vars <- c('sex', 'region', 'imd', 'ethnicity', 'age_group')
@@ -144,7 +143,6 @@ Table_3 <- demo_vars %>%
   map(~generate_freq_tables(grouping_var = .data[[.x]],
                             cohort_df = cohort)) %>%
   bind_rows() %>%
-  filter(across(where(is.integer), ~ . >6)) %>% 
   group_by(Demographic) %>% 
   mutate(acute_covid_percentage =  ifelse(Group == "Total", NA, round(acute_covid / sum(acute_covid) * 100, 1)),
          ongoing_covid_percentage = ifelse(Group == "Total", NA, round(ongoing_covid / sum(ongoing_covid) * 100, 1)),
@@ -153,7 +151,12 @@ Table_3 <- demo_vars %>%
          refer_yourcovidrecovery_website_program_percentage = ifelse(Group == "Total", NA, round(refer_yourcovidrecovery_website_program / sum(refer_yourcovidrecovery_website_program) * 100, 1)),
          refer_post_covid_clinic_percentage = ifelse(Group == "Total", NA, round(refer_post_covid_clinic / sum(refer_post_covid_clinic) * 100, 1))
          ) %>% 
-  select(Demographic, Group, total_patients, starts_with("acute_"), starts_with("ongoing_"), starts_with("post_"), starts_with("refer_post"), starts_with("refer_your"), everything())
+  select(Demographic, Group, total_patients, starts_with("acute_"), starts_with("ongoing_"), starts_with("post_"), starts_with("refer_post"), starts_with("refer_yourcovidrecovery_website_only"), everything()) %>% 
+  mutate(across(.fns = as.character)) %>% 
+  ungroup()
+
+Table_3[Table_3$Demographic == "imd" & Table_3$Group == "Unknown", 29:33] <- "*"
+Table_3[Table_3$Demographic == "imd" & Table_3$Group == 3, 29:33] <- "*"
 
 write_csv(Table_3, "output/Table_3.csv")
 
